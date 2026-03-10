@@ -1,0 +1,6 @@
+*.o
+*.pcap
+*.xml
+build/
+__pycache__/
+*.pyc
