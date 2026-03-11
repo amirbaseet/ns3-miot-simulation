@@ -1,0 +1,59 @@
+---
+title: MQTT-SN Message Flow (Sensor ↔ Gateway)
+---
+sequenceDiagram
+    participant ECG as ECG Sensor<br/>(Node 0-59)<br/>QoS=2 HIGH
+    participant HR as HR Sensor<br/>(Node 60-119)<br/>QoS=1 MEDIUM
+    participant Temp as Temp Sensor<br/>(Node 120-179)<br/>QoS=0 LOW
+    participant AODV as AODV Routing<br/>(Multi-hop)
+    participant GW as Gateway (CH)<br/>Priority Queue
+
+    Note over ECG,GW: Phase 1: Connection Establishment (t=5-20s)
+
+    ECG->>AODV: CONNECT (Topic=ECG, QoS=2)
+    AODV->>GW: Route Discovery (RREQ/RREP) + CONNECT
+    GW-->>AODV: CONNACK
+    AODV-->>ECG: CONNACK
+
+    HR->>AODV: CONNECT (Topic=HR, QoS=1)
+    AODV->>GW: CONNECT
+    GW-->>HR: CONNACK
+
+    Temp->>AODV: CONNECT (Topic=Temp, QoS=0)
+    AODV->>GW: CONNECT
+    GW-->>Temp: CONNACK
+
+    Note over ECG,GW: Phase 2: Data Publishing (t=5.5-95s)
+
+    loop Every 250ms
+        ECG->>GW: PUBLISH (ECG data, 128B, QoS=2, Priority=HIGH)
+        GW->>GW: Add to Priority Queue [HIGH]
+        GW-->>ECG: PUBACK ✓
+    end
+
+    loop Every 1s
+        HR->>GW: PUBLISH (HR data, 64B, QoS=1, Priority=MEDIUM)
+        GW->>GW: Add to Priority Queue [MEDIUM]
+        GW-->>HR: PUBACK ✓
+    end
+
+    loop Every 5s
+        Temp->>GW: PUBLISH (Temp data, 32B, QoS=0, Priority=LOW)
+        GW->>GW: Add to Priority Queue [LOW]
+        Note right of GW: No PUBACK (QoS=0)
+    end
+
+    Note over ECG,GW: Emergency Event (0.5% probability)
+
+    ECG->>GW: PUBLISH (EMERGENCY! TopicID=99, Priority=CRITICAL)
+    GW->>GW: ⚠️ CRITICAL → Process IMMEDIATELY
+    GW-->>ECG: PUBACK ✓
+
+    Note over ECG,GW: Priority Queue Processing Order
+    Note right of GW: 1. CRITICAL (Emergency)<br/>2. HIGH (ECG)<br/>3. MEDIUM (HR)<br/>4. LOW (Temperature)
+
+    Note over ECG,GW: Phase 3: Disconnection (t=98s)
+
+    ECG->>GW: DISCONNECT
+    HR->>GW: DISCONNECT
+    Temp->>GW: DISCONNECT

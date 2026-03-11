@@ -1,0 +1,50 @@
+---
+title: Simulation Activity Diagram (7 Steps)
+---
+flowchart TD
+    START([▶ Start Simulation]) --> S1
+
+    S1[📦 Step 1: CreateNodes<br/>180 sensors + 20 CH = 200 nodes] --> S2
+
+    S2[📡 Step 2: ConfigWifi<br/>802.11b Ad-Hoc<br/>LogDistance exp=2.5<br/>TxPower=20dBm] --> S3
+
+    S3[🌐 Step 3: InstallStack<br/>AODV routing<br/>IPv4: 10.1.0.0/16<br/>HelloInterval=2s<br/>RreqRetries=5] --> S4
+
+    S4[📍 Step 4: PositionNodes<br/>CH: 4×5 grid<br/>Sensors: random<br/>Area: 1000×1000m] --> S5
+
+    S5[🔗 Step 5: AssignClusters<br/>Each sensor → nearest CH<br/>Euclidean distance<br/>Avg 9 nodes/cluster] --> S6
+
+    S6[💊 Step 6: InstallMqtt] --> S6A
+
+    S6A{Sensor Type?}
+    S6A -->|Node 0-59| ECG[🔴 ECG Publisher<br/>250ms, 128B, QoS=2<br/>Priority: HIGH]
+    S6A -->|Node 60-119| HR[🔵 HR Publisher<br/>1s, 64B, QoS=1<br/>Priority: MEDIUM]
+    S6A -->|Node 120-179| TEMP[🟢 Temp Publisher<br/>5s, 32B, QoS=0<br/>Priority: LOW]
+
+    ECG --> GW[🟣 Gateway on each CH<br/>Port 1883<br/>Priority Queue]
+    HR --> GW
+    TEMP --> GW
+
+    GW --> S7[📊 Step 7: Run Simulation<br/>Duration: 100 seconds<br/>FlowMonitor enabled]
+
+    S7 --> RESULTS[📈 Collect Results<br/>PDR, Delay, Throughput<br/>Per-Gateway Stats<br/>Emergency Count]
+
+    RESULTS --> CSV[💾 Output CSV<br/>mqtt-sn-priority-results.csv]
+    RESULTS --> XML[💾 Output XML<br/>FlowMonitor + NetAnim]
+    RESULTS --> PRINT[🖥️ Print Summary<br/>PDR: 99.97%<br/>Delay: 0.85ms<br/>Emergencies: 126]
+
+    CSV --> END([⏹ End])
+    XML --> END
+    PRINT --> END
+
+    style ECG fill:#FF3B30,color:#fff
+    style HR fill:#007AFF,color:#fff
+    style TEMP fill:#34C759,color:#fff
+    style GW fill:#AF52DE,color:#fff
+    style RESULTS fill:#FF9500,color:#fff
+    style S1 fill:#E8EEF5
+    style S2 fill:#E8EEF5
+    style S3 fill:#E8EEF5
+    style S4 fill:#E8EEF5
+    style S5 fill:#E8EEF5
+    style S7 fill:#E8EEF5

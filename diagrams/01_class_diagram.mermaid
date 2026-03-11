@@ -1,0 +1,135 @@
+---
+title: MQTT-SN Class Diagram
+---
+classDiagram
+    direction TB
+
+    class Header {
+        <<ns3::Header>>
+    }
+
+    class MqttSnHeader {
+        -uint8_t m_msgType
+        -uint16_t m_topicId
+        -uint16_t m_msgId
+        -uint16_t m_payloadSize
+        -uint8_t m_qos
+        -uint8_t m_emergency
+        +SetMsgType(uint8_t)
+        +SetTopicId(uint16_t)
+        +SetMsgId(uint16_t)
+        +SetPayloadSize(uint16_t)
+        +SetQos(uint8_t)
+        +SetEmergency(bool)
+        +GetMsgType() uint8_t
+        +GetTopicId() uint16_t
+        +GetMsgId() uint16_t
+        +GetPriority() uint8_t
+        +GetPriorityName() string
+        +GetTopicName() string
+        +IsEmergency() bool
+        +Serialize(Buffer)
+        +Deserialize(Buffer)
+    }
+
+    class Application {
+        <<ns3::Application>>
+    }
+
+    class MqttSnPublisher {
+        -Ptr~Socket~ m_socket
+        -Address m_gatewayAddr
+        -uint16_t m_port
+        -uint16_t m_topicId
+        -Time m_interval
+        -uint32_t m_payloadSize
+        -uint8_t m_qos
+        -uint16_t m_msgCounter
+        -bool m_running
+        -bool m_emergencyEnabled
+        -double m_emergencyProb
+        -uint32_t m_txPackets
+        -uint32_t m_emergencyCount
+        +Setup(Address, port, topic, interval, payload, qos)
+        +EnableEmergencyDetection(double prob)
+        -StartApplication()
+        -StopApplication()
+        -SendConnect()
+        -SendPublish()
+        -SendEmergency()
+        -HandleRead(Ptr~Socket~)
+    }
+
+    class MqttSnGateway {
+        -Ptr~Socket~ m_socket
+        -uint16_t m_port
+        -GatewayStats m_stats
+        -priority_queue~PriorityPacket~ m_pQueue
+        +Setup(uint16_t port)
+        +GetStats() GatewayStats
+        +PrintStats()
+        -StartApplication()
+        -StopApplication()
+        -HandleRead(Ptr~Socket~)
+        -ProcessQueue()
+        -SendConnAck(Ptr~Socket~, Address)
+        -SendPubAck(Ptr~Socket~, Address, uint16_t)
+    }
+
+    class PriorityPacket {
+        +uint8_t priority
+        +uint16_t topicId
+        +uint16_t msgId
+        +uint32_t size
+        +double rxTime
+        +operator<(PriorityPacket) bool
+    }
+
+    class GatewayStats {
+        +uint32_t rxPackets
+        +uint32_t rxBytes
+        +uint32_t connects
+        +uint32_t disconnects
+        +uint32_t emergencies
+        +map topicCounts
+        +map priorityCounts
+        +uint32_t processedHigh
+        +uint32_t processedMed
+        +uint32_t processedLow
+    }
+
+    class MqttSnMsgType {
+        <<enumeration>>
+        CONNECT = 0x04
+        CONNACK = 0x05
+        PUBLISH = 0x0C
+        PUBACK = 0x0D
+        DISCONNECT = 0x18
+    }
+
+    class MqttSnTopicId {
+        <<enumeration>>
+        TOPIC_ECG = 10
+        TOPIC_HEART_RATE = 20
+        TOPIC_TEMPERATURE = 30
+        TOPIC_EMERGENCY = 99
+    }
+
+    class MqttSnPriority {
+        <<enumeration>>
+        PRIORITY_HIGH = 2
+        PRIORITY_MEDIUM = 1
+        PRIORITY_LOW = 0
+    }
+
+    Header <|-- MqttSnHeader : inherits
+    Application <|-- MqttSnPublisher : inherits
+    Application <|-- MqttSnGateway : inherits
+    MqttSnPublisher --> MqttSnHeader : creates & sends
+    MqttSnGateway --> MqttSnHeader : receives & parses
+    MqttSnGateway --> PriorityPacket : queues
+    MqttSnGateway --> GatewayStats : tracks
+    MqttSnHeader --> MqttSnMsgType : uses
+    MqttSnHeader --> MqttSnTopicId : uses
+    MqttSnHeader --> MqttSnPriority : uses
+    MqttSnPublisher ..> MqttSnGateway : UDP messages

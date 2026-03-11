@@ -1,0 +1,50 @@
+---
+title: Gateway (CH) Internal Processing
+---
+flowchart TD
+    RECV["📥 Receive MQTT-SN Packet<br/>(UDP Port 1883)"] --> PARSE["🔍 Parse Header<br/>Extract: MsgType, TopicID,<br/>MsgID, QoS, Emergency"]
+
+    PARSE --> CHECK{Message Type?}
+
+    CHECK -->|CONNECT| CONN["📋 Record Connection<br/>stats.connects++"]
+    CONN --> ACK["📤 Send CONNACK"]
+
+    CHECK -->|PUBLISH| PUB["📊 Update Stats<br/>topicCounts[topicId]++<br/>priorityCounts[priority]++"]
+    
+    PUB --> EMCHECK{Emergency?}
+    EMCHECK -->|Yes| EMLOG["🚨 stats.emergencies++<br/>Log: EMERGENCY ALERT!"]
+    EMCHECK -->|No| QUEUE
+
+    EMLOG --> QUEUE["📥 Add to Priority Queue<br/>PriorityPacket {<br/>  priority, topicId,<br/>  msgId, rxTime<br/>}"]
+
+    QUEUE --> QOSCHECK{QoS > 0?}
+    QOSCHECK -->|Yes| PUBACK["📤 Send PUBACK<br/>(ECG and HR get confirmation)"]
+    QOSCHECK -->|No| PROCESS
+    PUBACK --> PROCESS
+
+    PROCESS["⚡ ProcessQueue()"] --> QLOOP{Queue Empty?}
+
+    QLOOP -->|No| TOP["📤 Get Top Priority Packet<br/>(highest priority first)"]
+    TOP --> PCHECK{Priority Level?}
+    PCHECK -->|3 CRITICAL| HIGH["🚨 processedHigh++<br/>Emergency processed!"]
+    PCHECK -->|2 HIGH| HIGH2["🔴 processedHigh++<br/>ECG processed"]
+    PCHECK -->|1 MEDIUM| MED["🔵 processedMed++<br/>HR processed"]
+    PCHECK -->|0 LOW| LOW["🟢 processedLow++<br/>Temp processed"]
+
+    HIGH --> QLOOP
+    HIGH2 --> QLOOP
+    MED --> QLOOP
+    LOW --> QLOOP
+
+    QLOOP -->|Yes| DONE["✅ All packets processed"]
+
+    CHECK -->|DISCONNECT| DISC["📋 stats.disconnects++"]
+
+    style RECV fill:#1F4E79,color:#fff
+    style QUEUE fill:#AF52DE,color:#fff
+    style PROCESS fill:#FF9500,color:#fff
+    style HIGH fill:#C0392B,color:#fff
+    style HIGH2 fill:#E74C3C,color:#fff
+    style MED fill:#3498DB,color:#fff
+    style LOW fill:#27AE60,color:#fff
+    style EMLOG fill:#C0392B,color:#fff

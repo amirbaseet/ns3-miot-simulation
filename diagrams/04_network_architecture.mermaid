@@ -1,0 +1,61 @@
+---
+title: Network Architecture - 4 Layer Protocol Stack + Topology
+---
+flowchart TB
+    subgraph TOPOLOGY["📡 Network Topology (1000m × 1000m)"]
+        direction LR
+        subgraph C1["Cluster 1"]
+            E1[🔴 ECG] --> CH1[🟣 CH0<br/>Gateway]
+            H1[🔵 HR] --> CH1
+            T1[🟢 Temp] --> CH1
+        end
+        subgraph C2["Cluster 2"]
+            E2[🔴 ECG] --> CH2[🟣 CH1<br/>Gateway]
+            H2[🔵 HR] --> CH2
+            T2[🟢 Temp] --> CH2
+        end
+        subgraph C3["Cluster ..."]
+            E3[🔴 ECG] --> CH3[🟣 CH19<br/>Gateway]
+            H3[🔵 HR] --> CH3
+            T3[🟢 Temp] --> CH3
+        end
+    end
+
+    subgraph STACK["📚 Protocol Stack"]
+        direction TB
+        L4["<b>Application Layer</b><br/>MQTT-SN Protocol<br/>• Publisher (Sensors): CONNECT, PUBLISH, DISCONNECT<br/>• Gateway (CH): Priority Queue, CONNACK, PUBACK<br/>• Topics: ECG=10, HR=20, Temp=30, Emergency=99<br/>• QoS: 0=LOW, 1=MEDIUM, 2=HIGH"]
+        L3["<b>Transport Layer</b><br/>UDP (User Datagram Protocol)<br/>• Port: 1883 (MQTT standard)<br/>• Connectionless, lightweight<br/>• No TCP overhead for constrained sensors"]
+        L2["<b>Network Layer</b><br/>IPv4 + AODV Routing<br/>• Subnet: 10.1.0.0/16 (201 hosts)<br/>• AODV: Reactive route discovery<br/>• RREQ → RREP → Data → RERR<br/>• Tuned: HelloInterval=2s, RreqRetries=5"]
+        L1["<b>MAC / PHY Layer</b><br/>IEEE 802.11b Wi-Fi (Ad-Hoc)<br/>• Frequency: 2.4 GHz<br/>• Data Rate: 11 Mbps<br/>• Tx Power: 20 dBm (~300m range)<br/>• Propagation: LogDistance (exp=2.5)"]
+
+        L4 --> L3
+        L3 --> L2
+        L2 --> L1
+    end
+
+    subgraph PRIORITY["⚡ Priority System"]
+        direction TB
+        P4["🚨 CRITICAL (3)<br/>Emergency Alerts"]
+        P3["🔴 HIGH (2)<br/>ECG Data - QoS 2"]
+        P2["🔵 MEDIUM (1)<br/>Heart Rate - QoS 1"]
+        P1["🟢 LOW (0)<br/>Temperature - QoS 0"]
+
+        P4 --> P3
+        P3 --> P2
+        P2 --> P1
+    end
+
+    TOPOLOGY --> STACK
+    STACK --> PRIORITY
+
+    style L4 fill:#1F4E79,color:#fff
+    style L3 fill:#2874A6,color:#fff
+    style L2 fill:#3498DB,color:#fff
+    style L1 fill:#85C1E9,color:#000
+    style P4 fill:#C0392B,color:#fff
+    style P3 fill:#E74C3C,color:#fff
+    style P2 fill:#3498DB,color:#fff
+    style P1 fill:#27AE60,color:#fff
+    style CH1 fill:#AF52DE,color:#fff
+    style CH2 fill:#AF52DE,color:#fff
+    style CH3 fill:#AF52DE,color:#fff
