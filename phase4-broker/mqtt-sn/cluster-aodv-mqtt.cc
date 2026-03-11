@@ -1,17 +1,11 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /*
- * Priority-Aware MQTT-SN for MIoT (with Broker/Sink)
- * =====================================================
- * 201 Nodes | 180 Sensors | 20 CH/Gateway | 1 Broker/Sink
- * AODV | MQTT-SN | Priority Queue | Emergency Detection
- *
- * Data Flow:
- *   [180 Sensors] --MQTT-SN--> [20 Gateways] --Forward--> [1 Broker/Sink]
- *
- * Build:
- *   cp *.h *.cc ~/ns-3-dev/scratch/cluster-aodv-mqtt/
- *   cd ~/ns-3-dev && ./ns3 build
- *   ./ns3 run cluster-aodv-mqtt
+ * Priority-Aware MQTT-SN for MIoT (Scalability Version)
+ * =======================================================
+ * Supports command-line node count for experiments:
+ *   ./ns3 run "cluster-aodv-mqtt --nSensors=50 --nCH=5"
+ *   ./ns3 run "cluster-aodv-mqtt --nSensors=100 --nCH=10"
+ *   ./ns3 run "cluster-aodv-mqtt --nSensors=200 --nCH=20"
  */
 
 #include "mqtt-sn-header.h"
@@ -34,47 +28,25 @@
 #include <iomanip>
 #include <algorithm>
 #include <limits>
+#include <sstream>
 
 using namespace ns3;
 
 NS_LOG_COMPONENT_DEFINE ("ClusterAodvMqtt");
 
-static const uint32_t N_ECG  = 60, N_HR = 60, N_TEMP = 60;
-static const uint32_t N_REG  = N_ECG + N_HR + N_TEMP;  // 180
-static const uint32_t N_CH   = 20;
-static const uint32_t N_SINK = 1;
-static const uint32_t N_TOT  = N_REG + N_CH + N_SINK;  // 201
 static const double   AREA   = 1000.0;
-static const uint32_t COLS   = 5, ROWS = 4;
 static const double   SIM_T  = 100.0;
-static const uint16_t MQTT_PORT   = 1883;  // Sensor -> Gateway
-static const uint16_t BROKER_PORT = 1884;  // Gateway -> Broker
+static const uint16_t MQTT_PORT   = 1883;
+static const uint16_t BROKER_PORT = 1884;
 static const double   EMERGENCY_PROB = 0.005;
 
-std::vector<uint32_t> cAssign (N_REG, 0);
-std::vector<uint32_t> cSizes (N_CH, 0);
+// Dynamic vectors (sized at runtime)
+std::vector<uint32_t> cAssign;
+std::vector<uint32_t> cSizes;
 
 static double CalcDist (const Vector &a, const Vector &b)
 { return std::sqrt ((a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y)); }
 
-// ============================================================
-//  STEP 1: Create 201 Nodes
-// ============================================================
-void CreateNodes (NodeContainer &sens, NodeContainer &chs,
-                  NodeContainer &sink, NodeContainer &all)
-{
-  sens.Create (N_REG);
-  chs.Create (N_CH);
-  sink.Create (N_SINK);
-  // Order: sensors(0-179), CHs(180-199), sink(200)
-  all.Add (sens);
-  all.Add (chs);
-  all.Add (sink);
-}
-
-// ============================================================
-//  STEP 2: WiFi
-// ============================================================
 NetDeviceContainer ConfigWifi (NodeContainer &all, YansWifiPhyHelper &phy)
 {
   WifiHelper w; w.SetStandard (WIFI_STANDARD_80211b);
@@ -93,9 +65,6 @@ NetDeviceContainer ConfigWifi (NodeContainer &all, YansWifiPhyHelper &phy)
   return w.Install (phy, mac, all);
 }
 
-// ============================================================
-//  STEP 3: AODV + IP
-// ============================================================
 Ipv4InterfaceContainer InstallStack (NodeContainer &all, NetDeviceContainer &dev)
 {
   AodvHelper aodv;
@@ -110,108 +79,118 @@ Ipv4InterfaceContainer InstallStack (NodeContainer &all, NetDeviceContainer &dev
   return addr.Assign (dev);
 }
 
-// ============================================================
-//  STEP 4: Position Nodes
-// ============================================================
-void PositionNodes (NodeContainer &sens, NodeContainer &chs, NodeContainer &sink)
+void PositionNodes (NodeContainer &sens, NodeContainer &chs, NodeContainer &sink,
+                    uint32_t nCH)
 {
   MobilityHelper m; m.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
 
-  // CHs: 4x5 grid
+  // CH grid: auto calculate rows/cols
+  uint32_t cols = (uint32_t)std::ceil (std::sqrt ((double)nCH * AREA / AREA));
+  if (cols < 1) cols = 1;
+  uint32_t rows = (nCH + cols - 1) / cols;
+
   Ptr<ListPositionAllocator> cp = CreateObject<ListPositionAllocator> ();
-  double cW = AREA/COLS, cH = AREA/ROWS;
-  for (uint32_t i = 0; i < N_CH; i++)
-    cp->Add (Vector ((i%COLS+0.5)*cW, (i/COLS+0.5)*cH, 0));
+  double cW = AREA / cols, cH = AREA / rows;
+  for (uint32_t i = 0; i < nCH; i++)
+    cp->Add (Vector ((i%cols+0.5)*cW, (i/cols+0.5)*cH, 0));
   m.SetPositionAllocator (cp); m.Install (chs);
 
   // Sensors: random
+  uint32_t nSens = sens.GetN ();
   Ptr<ListPositionAllocator> sp = CreateObject<ListPositionAllocator> ();
   Ptr<UniformRandomVariable> rx = CreateObject<UniformRandomVariable> ();
   rx->SetAttribute ("Min", DoubleValue (0)); rx->SetAttribute ("Max", DoubleValue (AREA));
   Ptr<UniformRandomVariable> ry = CreateObject<UniformRandomVariable> ();
   ry->SetAttribute ("Min", DoubleValue (0)); ry->SetAttribute ("Max", DoubleValue (AREA));
-  for (uint32_t i = 0; i < N_REG; i++)
+  for (uint32_t i = 0; i < nSens; i++)
     sp->Add (Vector (rx->GetValue (), ry->GetValue (), 0));
   m.SetPositionAllocator (sp); m.Install (sens);
 
-  // Sink/Broker: center
+  // Sink: center
   Ptr<ListPositionAllocator> skp = CreateObject<ListPositionAllocator> ();
   skp->Add (Vector (AREA/2.0, AREA/2.0, 0));
   m.SetPositionAllocator (skp); m.Install (sink);
 }
 
-// ============================================================
-//  STEP 5: Cluster Assignment
-// ============================================================
-void AssignClusters (NodeContainer &sens, NodeContainer &chs)
+void AssignClusters (NodeContainer &sens, NodeContainer &chs, uint32_t nCH)
 {
-  std::vector<Vector> chP (N_CH);
-  for (uint32_t i = 0; i < N_CH; i++)
+  uint32_t nSens = sens.GetN ();
+  cAssign.resize (nSens, 0);
+  cSizes.resize (nCH, 0);
+
+  std::vector<Vector> chP (nCH);
+  for (uint32_t i = 0; i < nCH; i++)
     chP[i] = chs.Get (i)->GetObject<MobilityModel> ()->GetPosition ();
   std::fill (cSizes.begin (), cSizes.end (), 0);
-  for (uint32_t n = 0; n < N_REG; n++)
+
+  for (uint32_t n = 0; n < nSens; n++)
     {
       Vector np = sens.Get (n)->GetObject<MobilityModel> ()->GetPosition ();
       double md = 1e9; uint32_t ne = 0;
-      for (uint32_t c = 0; c < N_CH; c++)
+      for (uint32_t c = 0; c < nCH; c++)
         { double d = CalcDist (np, chP[c]); if (d < md) { md = d; ne = c; } }
       cAssign[n] = ne; cSizes[ne]++;
     }
   std::cout << "  Clusters: min=" << *std::min_element (cSizes.begin (), cSizes.end ())
             << " max=" << *std::max_element (cSizes.begin (), cSizes.end ())
             << " avg=" << std::fixed << std::setprecision (1)
-            << (double)N_REG/N_CH << "\n";
+            << (double)nSens/nCH << "\n";
 }
 
-// ============================================================
-//  STEP 6: Install MQTT-SN (Publisher + Gateway + Broker)
-// ============================================================
-void InstallMqtt (NodeContainer &sens, NodeContainer &chs,
-                  NodeContainer &sink, Ipv4InterfaceContainer &ifaces)
+void InstallMqtt (NodeContainer &sens, NodeContainer &chs, NodeContainer &sink,
+                  Ipv4InterfaceContainer &ifaces, uint32_t nSens, uint32_t nCH,
+                  bool useBroker, uint32_t nECGin, uint32_t nHRin)
 {
-  // Broker/Sink IP (index = N_REG + N_CH = 200)
-  uint32_t sinkIfIdx = N_REG + N_CH;
+  uint32_t sinkIfIdx = nSens + nCH;
   Ipv4Address brokerAddr = ifaces.GetAddress (sinkIfIdx);
 
-  // ---- Install Broker on Sink ----
-  Ptr<MqttSnBroker> broker = CreateObject<MqttSnBroker> ();
-  broker->Setup (BROKER_PORT);
-  sink.Get (0)->AddApplication (broker);
-  broker->SetStartTime (Seconds (0));
-  broker->SetStopTime (Seconds (SIM_T));
+  // Broker on sink
+  if (useBroker)
+    {
+      Ptr<MqttSnBroker> broker = CreateObject<MqttSnBroker> ();
+      broker->Setup (BROKER_PORT);
+      sink.Get (0)->AddApplication (broker);
+      broker->SetStartTime (Seconds (0));
+      broker->SetStopTime (Seconds (SIM_T));
+    }
 
-  // ---- Install Gateways on CHs (with broker forwarding) ----
-  for (uint32_t c = 0; c < N_CH; c++)
+  // Gateways on CHs
+  for (uint32_t c = 0; c < nCH; c++)
     {
       Ptr<MqttSnGateway> gw = CreateObject<MqttSnGateway> ();
       gw->Setup (MQTT_PORT);
-      gw->SetBroker (brokerAddr, BROKER_PORT);  // Enable forwarding to broker
+      if (useBroker)
+        gw->SetBroker (brokerAddr, BROKER_PORT);
       chs.Get (c)->AddApplication (gw);
       gw->SetStartTime (Seconds (0));
       gw->SetStopTime (Seconds (SIM_T));
     }
 
-  // ---- Install Publishers on Sensors ----
+  // Publishers on sensors
   Ptr<UniformRandomVariable> rng = CreateObject<UniformRandomVariable> ();
   rng->SetAttribute ("Min", DoubleValue (5.0));
   rng->SetAttribute ("Max", DoubleValue (20.0));
 
-  uint32_t ecg = 0, hr = 0, tmp = 0;
-  for (uint32_t n = 0; n < N_REG; n++)
+  uint32_t nECG = (nECGin > 0) ? nECGin : nSens / 3;
+  uint32_t nHR  = (nHRin > 0)  ? nHRin  : nSens / 3;
+  if (nECG + nHR > nSens) { nECG = nSens / 3; nHR = nSens / 3; }
+  // rest = temperature
+
+  for (uint32_t n = 0; n < nSens; n++)
     {
-      uint32_t chIf = N_REG + cAssign[n];
+      uint32_t chIf = nSens + cAssign[n];
       Ipv4Address gwAddr = ifaces.GetAddress (chIf);
 
       uint16_t topic; Time interval; uint32_t payload; uint8_t qos;
-      if (n < N_ECG) {
+      if (n < nECG) {
         topic = TOPIC_ECG; interval = MilliSeconds (250);
-        payload = 128; qos = PRIORITY_HIGH; ecg++;
-      } else if (n < N_ECG + N_HR) {
+        payload = 128; qos = PRIORITY_HIGH;
+      } else if (n < nECG + nHR) {
         topic = TOPIC_HEART_RATE; interval = Seconds (1.0);
-        payload = 64; qos = PRIORITY_MEDIUM; hr++;
+        payload = 64; qos = PRIORITY_MEDIUM;
       } else {
         topic = TOPIC_TEMPERATURE; interval = Seconds (5.0);
-        payload = 32; qos = PRIORITY_LOW; tmp++;
+        payload = 32; qos = PRIORITY_LOW;
       }
 
       Ptr<MqttSnPublisher> pub = CreateObject<MqttSnPublisher> ();
@@ -222,21 +201,14 @@ void InstallMqtt (NodeContainer &sens, NodeContainer &chs,
       pub->SetStopTime (Seconds (SIM_T - 2.0));
     }
 
-  std::cout << "\n  MQTT-SN Configuration:\n"
-            << "    ECG:         " << ecg << " nodes | QoS=2 HIGH     | 250ms | 128B\n"
-            << "    Heart Rate:  " << hr  << " nodes | QoS=1 MEDIUM   | 1s    | 64B\n"
-            << "    Temperature: " << tmp << " nodes | QoS=0 LOW      | 5s    | 32B\n"
-            << "    Gateways:    " << N_CH << " CHs (port " << MQTT_PORT << ")\n"
-            << "    Broker:      1 sink (port " << BROKER_PORT << ") at center\n"
-            << "    Emergency:   " << (EMERGENCY_PROB*100) << "% per publish\n"
-            << "    Data Flow:   Sensor -> Gateway -> Broker\n\n";
+  std::cout << "  Sensors: " << nECG << " ECG + " << nHR << " HR + "
+            << (nSens - nECG - nHR) << " Temp\n"
+            << "  Broker: " << (useBroker ? "enabled" : "disabled") << "\n\n";
 }
 
-// ============================================================
-//  STEP 7: Results
-// ============================================================
 void PrintResults (Ptr<FlowMonitor> fm, FlowMonitorHelper &fh,
-                   NodeContainer &chs, NodeContainer &sink)
+                   NodeContainer &chs, NodeContainer &sink,
+                   uint32_t nCH, bool useBroker, std::string csvName)
 {
   fm->CheckForLostPackets ();
   Ptr<Ipv4FlowClassifier> cls = DynamicCast<Ipv4FlowClassifier> (fh.GetClassifier ());
@@ -245,7 +217,7 @@ void PrintResults (Ptr<FlowMonitor> fm, FlowMonitorHelper &fh,
   uint64_t tTx = 0, tRx = 0, tRxB = 0;
   double tDel = 0; uint32_t fl = 0, dead = 0;
 
-  std::ofstream csv ("mqtt-sn-broker-results.csv");
+  std::ofstream csv (csvName);
   csv << "FlowID,SrcAddr,DstAddr,TxPackets,RxPackets,LostPackets,"
       << "PDR_pct,Throughput_kbps,AvgDelay_ms,AvgJitter_ms\n";
 
@@ -271,20 +243,19 @@ void PrintResults (Ptr<FlowMonitor> fm, FlowMonitorHelper &fh,
   double avgD = tRx > 0 ? tDel/tRx : 0;
 
   std::cout << "============================================================\n"
-    << "  MQTT-SN + BROKER SIMULATION RESULTS\n"
+    << "  RESULTS\n"
     << "============================================================\n"
     << "  Flows: " << fl << " (dead: " << dead << ")\n"
     << "  Tx: " << tTx << " | Rx: " << tRx << "\n"
     << "  PDR: " << std::fixed << std::setprecision (2) << pdr << "%\n"
     << "  Avg Delay: " << avgD << " ms\n"
     << "  Throughput: " << (tRxB*8.0/SIM_T/1000) << " kbps\n"
+    << "  Output: " << csvName << "\n"
     << "============================================================\n\n";
 
-  // Per-Gateway Stats
-  std::cout << "  Per-Gateway Statistics:\n"
-            << "  -----------------------\n";
+  // Per-Gateway
   uint32_t totalEmerg = 0, totalFwd = 0;
-  for (uint32_t c = 0; c < N_CH; c++)
+  for (uint32_t c = 0; c < nCH; c++)
     {
       Ptr<MqttSnGateway> gw = DynamicCast<MqttSnGateway> (chs.Get (c)->GetApplication (0));
       if (gw) {
@@ -294,16 +265,16 @@ void PrintResults (Ptr<FlowMonitor> fm, FlowMonitorHelper &fh,
       }
     }
 
-  // Broker Stats
-  Ptr<MqttSnBroker> br = DynamicCast<MqttSnBroker> (sink.Get (0)->GetApplication (0));
-  if (br) br->PrintStats ();
+  if (useBroker)
+    {
+      Ptr<MqttSnBroker> br = DynamicCast<MqttSnBroker> (sink.Get (0)->GetApplication (0));
+      if (br) br->PrintStats ();
+    }
 
-  std::cout << "  Total Emergencies: " << totalEmerg << "\n"
-            << "  Total Forwarded to Broker: " << totalFwd << "\n"
-            << "  Output: mqtt-sn-broker-results.csv\n"
-            << "============================================================\n\n";
+  std::cout << "  Emergencies: " << totalEmerg
+            << " | Forwarded: " << totalFwd << "\n\n";
 
-  fm->SerializeToXmlFile ("mqtt-sn-broker-flowmon.xml", true, true);
+  fm->SerializeToXmlFile (csvName + ".flowmon.xml", true, true);
 }
 
 // ============================================================
@@ -311,13 +282,26 @@ void PrintResults (Ptr<FlowMonitor> fm, FlowMonitorHelper &fh,
 // ============================================================
 int main (int argc, char *argv[])
 {
-  double simTime = SIM_T;
-  bool enableAnim = true, verbose = false;
+  uint32_t nSensors = 180;
+  uint32_t nCH      = 20;
+  uint32_t nECGcmd  = 0;   // 0 = auto (nSensors/3)
+  uint32_t nHRcmd   = 0;   // 0 = auto (nSensors/3)
+  double   simTime  = SIM_T;
+  bool     useBroker = true;
+  bool     enableAnim = false;
+  bool     verbose  = false;
+  std::string csvName = "";
 
   CommandLine cmd (__FILE__);
-  cmd.AddValue ("simTime", "Sim time", simTime);
-  cmd.AddValue ("anim", "NetAnim", enableAnim);
-  cmd.AddValue ("verbose", "Verbose", verbose);
+  cmd.AddValue ("nSensors", "Number of sensor nodes", nSensors);
+  cmd.AddValue ("nCH", "Number of cluster heads", nCH);
+  cmd.AddValue ("nECG", "Number of ECG sensors (0=auto)", nECGcmd);
+  cmd.AddValue ("nHR", "Number of HR sensors (0=auto)", nHRcmd);
+  cmd.AddValue ("simTime", "Simulation time", simTime);
+  cmd.AddValue ("broker", "Enable broker/sink", useBroker);
+  cmd.AddValue ("anim", "Enable NetAnim", enableAnim);
+  cmd.AddValue ("verbose", "Verbose logging", verbose);
+  cmd.AddValue ("csv", "Output CSV filename", csvName);
   cmd.Parse (argc, argv);
 
   if (verbose) {
@@ -327,29 +311,68 @@ int main (int argc, char *argv[])
     LogComponentEnable ("MqttSnBroker", LOG_LEVEL_INFO);
   }
 
+  // Auto CSV name
+  if (csvName.empty ())
+    {
+      std::ostringstream oss;
+      oss << "mqtt-sn-" << nSensors << "nodes";
+      if (useBroker) oss << "-broker";
+      oss << "-results.csv";
+      csvName = oss.str ();
+    }
+
+  uint32_t totalNodes = nSensors + nCH + (useBroker ? 1 : 0);
+
   SeedManager::SetSeed (42); SeedManager::SetRun (1);
 
   std::cout << "\n============================================================\n"
-    << "  MQTT-SN for MIoT (with Broker/Sink)\n"
-    << "  Sensors: " << N_REG << " (" << N_ECG << " ECG + "
-    << N_HR << " HR + " << N_TEMP << " Temp)\n"
-    << "  Gateways: " << N_CH << " | Broker: " << N_SINK
-    << " | Total: " << N_TOT << "\n"
-    << "  Flow: Sensor -> Gateway -> Broker\n"
+    << "  MQTT-SN MIoT Simulation\n"
+    << "  Sensors: " << nSensors << " | CHs: " << nCH
+    << " | Broker: " << (useBroker ? "yes" : "no")
+    << " | Total: " << totalNodes << "\n"
     << "  Area: " << AREA << "x" << AREA << "m | AODV | " << simTime << "s\n"
+    << "  CSV: " << csvName << "\n"
     << "============================================================\n\n";
 
   // Build
   NodeContainer sens, chs, sink, all;
-  CreateNodes (sens, chs, sink, all);
+  sens.Create (nSensors);
+  chs.Create (nCH);
+  if (useBroker) sink.Create (1);
+  all.Add (sens); all.Add (chs);
+  if (useBroker) all.Add (sink);
 
   YansWifiPhyHelper phy;
   NetDeviceContainer dev = ConfigWifi (all, phy);
   Ipv4InterfaceContainer ifaces = InstallStack (all, dev);
 
-  PositionNodes (sens, chs, sink);
-  AssignClusters (sens, chs);
-  InstallMqtt (sens, chs, sink, ifaces);
+  if (useBroker)
+    PositionNodes (sens, chs, sink, nCH);
+  else
+    {
+      // Position without sink
+      MobilityHelper m; m.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
+      uint32_t cols = (uint32_t)std::ceil (std::sqrt ((double)nCH));
+      if (cols < 1) cols = 1;
+      uint32_t rows = (nCH + cols - 1) / cols;
+      Ptr<ListPositionAllocator> cp = CreateObject<ListPositionAllocator> ();
+      double cW = AREA/cols, cH = AREA/rows;
+      for (uint32_t i = 0; i < nCH; i++)
+        cp->Add (Vector ((i%cols+0.5)*cW, (i/cols+0.5)*cH, 0));
+      m.SetPositionAllocator (cp); m.Install (chs);
+
+      Ptr<ListPositionAllocator> sp = CreateObject<ListPositionAllocator> ();
+      Ptr<UniformRandomVariable> rx = CreateObject<UniformRandomVariable> ();
+      rx->SetAttribute ("Min", DoubleValue (0)); rx->SetAttribute ("Max", DoubleValue (AREA));
+      Ptr<UniformRandomVariable> ry = CreateObject<UniformRandomVariable> ();
+      ry->SetAttribute ("Min", DoubleValue (0)); ry->SetAttribute ("Max", DoubleValue (AREA));
+      for (uint32_t i = 0; i < nSensors; i++)
+        sp->Add (Vector (rx->GetValue (), ry->GetValue (), 0));
+      m.SetPositionAllocator (sp); m.Install (sens);
+    }
+
+  AssignClusters (sens, chs, nCH);
+  InstallMqtt (sens, chs, sink, ifaces, nSensors, nCH, useBroker, nECGcmd, nHRcmd);
 
   FlowMonitorHelper fh;
   Ptr<FlowMonitor> fm = fh.InstallAll ();
@@ -358,48 +381,34 @@ int main (int argc, char *argv[])
   AnimationInterface *anim = nullptr;
   if (enableAnim)
     {
-      anim = new AnimationInterface ("mqtt-sn-broker-animation.xml");
+      anim = new AnimationInterface ("mqtt-sn-animation.xml");
       anim->SetMaxPktsPerTraceFile (500000);
-      // ECG = Red
-      for (uint32_t i = 0; i < N_ECG; i++) {
-        anim->UpdateNodeDescription (sens.Get (i), "ECG[H]");
+      uint32_t nECG = nSensors/3, nHR = nSensors/3;
+      for (uint32_t i = 0; i < nECG; i++) {
         anim->UpdateNodeColor (sens.Get (i), 255, 59, 48);
-        anim->UpdateNodeSize (sens.Get (i)->GetId (), 8, 8);
-      }
-      // HR = Blue
-      for (uint32_t i = N_ECG; i < N_ECG+N_HR; i++) {
-        anim->UpdateNodeDescription (sens.Get (i), "HR[M]");
+        anim->UpdateNodeSize (sens.Get (i)->GetId (), 8, 8); }
+      for (uint32_t i = nECG; i < nECG+nHR; i++) {
         anim->UpdateNodeColor (sens.Get (i), 0, 122, 255);
-        anim->UpdateNodeSize (sens.Get (i)->GetId (), 8, 8);
-      }
-      // Temp = Green
-      for (uint32_t i = N_ECG+N_HR; i < N_REG; i++) {
-        anim->UpdateNodeDescription (sens.Get (i), "Tmp[L]");
+        anim->UpdateNodeSize (sens.Get (i)->GetId (), 8, 8); }
+      for (uint32_t i = nECG+nHR; i < nSensors; i++) {
         anim->UpdateNodeColor (sens.Get (i), 52, 199, 89);
-        anim->UpdateNodeSize (sens.Get (i)->GetId (), 8, 8);
-      }
-      // Gateways = Purple
-      for (uint32_t i = 0; i < N_CH; i++) {
-        anim->UpdateNodeDescription (chs.Get (i),
-          "GW" + std::to_string (i) + "[" + std::to_string (cSizes[i]) + "]");
+        anim->UpdateNodeSize (sens.Get (i)->GetId (), 8, 8); }
+      for (uint32_t i = 0; i < nCH; i++) {
         anim->UpdateNodeColor (chs.Get (i), 175, 82, 222);
-        anim->UpdateNodeSize (chs.Get (i)->GetId (), 25, 25);
-      }
-      // Broker/Sink = Gold
-      anim->UpdateNodeDescription (sink.Get (0), "BROKER");
-      anim->UpdateNodeColor (sink.Get (0), 255, 204, 0);
-      anim->UpdateNodeSize (sink.Get (0)->GetId (), 40, 40);
+        anim->UpdateNodeSize (chs.Get (i)->GetId (), 25, 25); }
+      if (useBroker) {
+        anim->UpdateNodeColor (sink.Get (0), 255, 204, 0);
+        anim->UpdateNodeSize (sink.Get (0)->GetId (), 40, 40); }
     }
 
-  std::cout << "[RUN] Simulating " << simTime << "s...\n";
+  std::cout << "[RUN] " << simTime << "s...\n";
   Simulator::Stop (Seconds (simTime));
   Simulator::Run ();
 
-  PrintResults (fm, fh, chs, sink);
+  PrintResults (fm, fh, chs, sink, nCH, useBroker, csvName);
 
   Simulator::Destroy ();
   if (anim) delete anim;
-
   std::cout << "[DONE]\n\n";
   return 0;
 }
