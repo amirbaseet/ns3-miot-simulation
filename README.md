@@ -1,243 +1,252 @@
 # ns3-miot-simulation
 
-## Cluster-Based AODV with MQTT-SN for Medical IoT (MIoT)
+## Cluster-Based AODV with Priority-Aware MQTT-SN for Medical IoT
 
-A comprehensive ns-3 network simulation for Medical Internet of Things. Implements cluster-based wireless sensor network with AODV routing and priority-aware MQTT-SN messaging protocol.
+A comprehensive ns-3 network simulation comparing Traditional WSN vs MQTT-SN publish-subscribe architecture for Medical Internet of Things. Includes scalability, traffic load, mobility, and energy consumption experiments.
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    1000m × 1000m Area                    │
-│                                                         │
-│   [ECG]──┐    [HR]──┐     [Temp]──┐                    │
-│   [ECG]──┼──→ [GW0] │      [HR]──┼──→ [GW1]           │
-│   [ECG]──┘    [HR]──┘     [Temp]──┘                    │
-│                                                         │
-│   Priority: HIGH    MEDIUM       LOW                    │
-│   QoS:      2       1            0                      │
-│   Interval: 250ms   1s           5s                     │
-│                                                         │
-│   ★ Emergency alerts: CRITICAL priority (random 0.5%)   │
-│                                                         │
-│   Routing: AODV (Ad-hoc On-Demand Distance Vector)      │
-│   Transport: UDP                                        │
-│   Application: MQTT-SN (Publish/Subscribe)              │
-│   Wireless: IEEE 802.11b Ad-Hoc                         │
-└─────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│                    1000m x 1000m Area                        │
+│                                                              │
+│   [ECG]──┐         [HR]──┐          [Temp]──┐               │
+│   [ECG]──┼──> [Gateway] ──┼──> [BROKER/SINK] <── [Gateway]  │
+│   [ECG]──┘         [HR]──┘          [Temp]──┘               │
+│                                                              │
+│   Data Flow: Sensor -> Gateway (CH) -> Broker (Sink)         │
+│   Routing: AODV | Transport: UDP | App: MQTT-SN              │
+│   Priority: ECG=HIGH > HR=MEDIUM > Temp=LOW > Emergency=CRIT │
+└─────────────────────────────────────────────────────────────┘
 ```
+
+### Protocol Stack
+
+| Layer | Protocol |
+|-------|----------|
+| Application | MQTT-SN (Publish/Subscribe + Priority Queue) |
+| Transport | UDP (Port 1883 sensor to GW, 1884 GW to Broker) |
+| Network | IPv4 + AODV (tuned for 200 nodes) |
+| MAC / PHY | IEEE 802.11b Ad-Hoc (11 Mbps, 20 dBm) |
 
 ### Node Types
 
-| Type | Count | Role | Color (NetAnim) |
-|------|-------|------|-----------------|
-| ECG Sensors | 60 | Publish ECG data every 250ms | 🔴 Red |
-| Heart Rate Sensors | 60 | Publish HR data every 1s | 🔵 Blue |
-| Temperature Sensors | 60 | Publish temp data every 5s | 🟢 Green |
-| Cluster Head (Gateway) | 20 | Receive & process with priority queue | 🟣 Purple |
+| Type | Count | Role | Priority |
+|------|-------|------|----------|
+| ECG Sensors | 60 | Publish every 250ms, 128B | HIGH (QoS=2) |
+| Heart Rate Sensors | 60 | Publish every 1s, 64B | MEDIUM (QoS=1) |
+| Temperature Sensors | 60 | Publish every 5s, 32B | LOW (QoS=0) |
+| Cluster Heads (Gateway) | 20 | Priority queue + forward to broker | - |
+| Broker (Sink) | 1 | Central data collection | - |
 
 ---
 
-## 📊 Results
+## Experiments and Results
 
-### Phase Comparison
+### Experiment 1: Scalability (WSN vs MQTT-SN)
 
-| Metric | Phase 1 (OnOff) | Phase 2 (MQTT-SN) | Phase 3 (Priority) |
-|--------|:---:|:---:|:---:|
-| **PDR** | 79.81% | 98.21% | **99.97%** |
-| **Avg Delay** | 99.81 ms | 13.01 ms | **0.85 ms** |
-| **Dead Flows** | 123 | 62 | **15** |
-| **Emergencies** | - | - | **126** |
+Same network, different node counts (50/100/150/200):
 
-### Key Findings
+| Nodes | WSN PDR | MQTT-SN PDR | WSN Delay | MQTT-SN Delay |
+|:-----:|:-------:|:-----------:|:---------:|:-------------:|
+| 50 | 84.33% | 73.36% | 6.25 ms | 2.63 ms |
+| 100 | 97.95% | 99.66% | 6.37 ms | 3.94 ms |
+| 150 | 99.04% | 76.41% | 10.43 ms | 108.08 ms |
+| 200 | 97.42% | 69.81% | 32.57 ms | 112.67 ms |
 
-- MQTT-SN with heterogeneous sensor traffic reduces network load by 88% vs constant-rate OnOff
-- Priority queue ensures ECG (critical) packets are processed before temperature (low priority)
-- Emergency detection alerts are delivered with CRITICAL priority (QoS=3)
-- Cluster-based architecture with 20 CHs effectively manages 180 sensor nodes
+### Experiment 2: Traffic Load Impact
+
+Same network (180 nodes), different ECG sensor ratios:
+
+| Load | ECG/HR/Temp | Tx Packets | PDR | Delay |
+|:----:|:-----------:|:----------:|:---:|:-----:|
+| Low | 20/20/140 | 92K | 74.81% | 148 ms |
+| Medium | 60/60/60 | 220K | 71.82% | 137 ms |
+| High | 140/20/20 | 505K | 65.45% | 253 ms |
+
+### Experiment 3: Mobility Impact
+
+Same network (180 nodes), different patient movement speeds:
+
+| Speed | Scenario | PDR | Delay | Dead Flows |
+|:-----:|:--------:|:---:|:-----:|:----------:|
+| 0 m/s | Static (bedridden) | 71.50% | 131 ms | 211 |
+| 0.5 m/s | Slow walking | 73.60% | 79 ms | 470 |
+| 1.5 m/s | Normal walking | 64.49% | 121 ms | 1,242 |
+| 3.0 m/s | Running/emergency | 56.30% | 112 ms | 2,983 |
+
+### Experiment 4: Energy Consumption
+
+180 sensors (2.0J battery) + 20 CHs (5.0J battery):
+
+| Node Type | Initial | Consumed | Remaining | Dead |
+|:---------:|:-------:|:--------:|:---------:|:----:|
+| Sensors | 360 J | 260.66 J (72.4%) | 99.34 J | 0 |
+| CHs | 100 J | 72.06 J (72.1%) | 27.94 J | 0 |
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
 ```bash
 # ns-3-dev installed at ~/ns-3-dev
-# Python 3
 pip install matplotlib pandas --break-system-packages
 ```
 
-### Run Phase 1 (Baseline AODV)
-
-```bash
-cp phase1/cluster-aodv-nosink.cc ~/ns-3-dev/scratch/
-cd ~/ns-3-dev
-./ns3 build
-./ns3 run cluster-aodv-nosink
-```
-
-### Run Phase 3 (Priority MQTT-SN)
+### Build
 
 ```bash
 mkdir -p ~/ns-3-dev/scratch/cluster-aodv-mqtt
-cp phase3/mqtt-sn/* ~/ns-3-dev/scratch/cluster-aodv-mqtt/
+cp phase4-broker/mqtt-sn/* ~/ns-3-dev/scratch/cluster-aodv-mqtt/
+cp phase1/cluster-aodv-nosink.cc ~/ns-3-dev/scratch/cluster-aodv-nosink/
 cd ~/ns-3-dev
 ./ns3 build
-./ns3 run cluster-aodv-mqtt
 ```
 
-### Run with Options
+### Run Simulations
 
 ```bash
-# Verbose mode (see MQTT-SN messages)
-./ns3 run "cluster-aodv-mqtt --verbose=true"
+# Traditional WSN (Scenario A)
+./ns3 run "cluster-aodv-nosink --numRegular=200 --numCH=20"
 
-# Faster (disable NetAnim)
-./ns3 run "cluster-aodv-mqtt --anim=false"
+# MQTT-SN with Broker (Scenario B)
+./ns3 run "cluster-aodv-mqtt --nSensors=180 --nCH=20 --broker=true"
 
-# Short test
-./ns3 run "cluster-aodv-mqtt --simTime=30"
+# With mobility
+./ns3 run "cluster-aodv-mqtt --nSensors=180 --nCH=20 --broker=true --mobility=true --speed=1.5"
+
+# Custom traffic load
+./ns3 run "cluster-aodv-mqtt --nSensors=180 --nCH=20 --nECG=140 --nHR=20 --broker=true"
+```
+
+### Run All Experiments
+
+```bash
+chmod +x run-experiments.sh && ./run-experiments.sh
+chmod +x run-traffic-experiments.sh && ./run-traffic-experiments.sh
+chmod +x run-mobility-experiments.sh && ./run-mobility-experiments.sh
 ```
 
 ### Analyze Results
 
 ```bash
-# Copy results to project
-cp ~/ns-3-dev/cluster-aodv-nosink-results.csv results/
-cp ~/ns-3-dev/mqtt-sn-priority-results.csv results/
-
-# Generate comparison graphs (8 graphs)
 python3 compare_phases.py
-
-# Analyze single phase
-python3 analyze_results.py results/mqtt-sn-priority-results.csv
-```
-
-### View NetAnim
-
-```bash
-cd ~/ns-3-dev/netanim/build
-./netanim
-# Open: mqtt-sn-priority-animation.xml
+python3 analyze_scalability.py
+python3 analyze_traffic.py
+python3 analyze_mobility.py
+python3 analyze_energy.py experiments/energy_test.csv.energy.csv
 ```
 
 ---
 
-## 📁 Project Structure
+## Command-Line Parameters
+
+### cluster-aodv-mqtt (MQTT-SN)
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| --nSensors | 180 | Number of sensor nodes |
+| --nCH | 20 | Number of cluster heads |
+| --nECG | 0 (auto) | ECG sensors (0 = nSensors/3) |
+| --nHR | 0 (auto) | HR sensors (0 = nSensors/3) |
+| --broker | true | Enable broker/sink node |
+| --mobility | false | Enable RandomWaypoint mobility |
+| --speed | 1.5 | Mobility speed (m/s) |
+| --simTime | 100 | Simulation duration (seconds) |
+| --anim | false | Generate NetAnim XML |
+| --verbose | false | Print MQTT-SN messages |
+| --csv | auto | Output CSV filename |
+
+### cluster-aodv-nosink (Traditional WSN)
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| --numRegular | 180 | Number of sensor nodes |
+| --numCH | 20 | Number of cluster heads |
+| --simTime | 100 | Simulation duration |
+| --csv | auto | Output CSV filename |
+
+---
+
+## Project Structure
 
 ```
 ns3-miot-simulation/
-│
-├── README.md                  ← This file
-├── HOW_TO_RUN.md              ← Detailed run instructions
-├── analyze_results.py         ← Single phase analyzer (6 graphs)
-├── compare_phases.py          ← Phase comparison analyzer (8 graphs)
-│
-├── phase1/                    ← Phase 1: Baseline AODV
-│   ├── cluster-aodv-nosink.cc    200 nodes → 20 CH (no sink)
-│   └── cluster-aodv-sim.cc       200 nodes → 20 CH → 1 sink
-│
-├── phase3/                    ← Phase 3: Priority MQTT-SN
-│   └── mqtt-sn/
-│       ├── mqtt-sn-header.h       Packet format definition
-│       ├── mqtt-sn-header.cc      Serialization + priority levels
-│       ├── mqtt-sn-publisher.h    Sensor application
-│       ├── mqtt-sn-publisher.cc   CONNECT/PUBLISH/DISCONNECT + emergency
-│       ├── mqtt-sn-gateway.h      Gateway application
-│       ├── mqtt-sn-gateway.cc     Priority queue + per-topic stats
-│       └── cluster-aodv-mqtt.cc   Main simulation script
-│
-├── results/                   ← Simulation output CSVs
-│   ├── cluster-aodv-nosink-results.csv
-│   ├── mqtt-sn-results.csv
-│   └── mqtt-sn-priority-results.csv
-│
-└── graphs/                    ← Generated comparison graphs
-    ├── 01_pdr_comparison.png
-    ├── 02_delay_comparison.png
-    ├── ...
-    └── 08_summary_dashboard.png
+├── README.md
+├── HOW_TO_RUN.md
+├── phase1/                          # Traditional WSN (Scenario A)
+│   ├── cluster-aodv-nosink.cc
+│   └── cluster-aodv-sim.cc
+├── phase3/mqtt-sn/                  # Priority MQTT-SN (no broker)
+├── phase4-broker/mqtt-sn/           # Full pipeline (Scenario B)
+│   ├── mqtt-sn-header.h/cc            Packet format + priority
+│   ├── mqtt-sn-publisher.h/cc         Sensor app + emergency
+│   ├── mqtt-sn-gateway.h/cc           CH gateway + broker forwarding
+│   ├── mqtt-sn-broker.h/cc            Sink/broker application
+│   └── cluster-aodv-mqtt.cc           Main simulation
+├── results/                         # Phase comparison CSVs
+├── experiments/                     # All experiment CSVs
+├── graphs/                          # Generated analysis graphs
+│   ├── scalability/                   WSN vs MQTT-SN (7 graphs)
+│   ├── traffic/                       Traffic load (6 graphs)
+│   ├── mobility/                      Mobility (6 graphs)
+│   └── energy/                        Energy (4 graphs)
+├── diagrams/                        # UML diagrams (Mermaid)
+├── analyze_results.py               # Single phase analyzer
+├── compare_phases.py                # Phase comparison
+├── analyze_scalability.py           # WSN vs MQTT-SN
+├── analyze_traffic.py               # Traffic load
+├── analyze_mobility.py              # Mobility impact
+├── analyze_energy.py                # Energy consumption
+├── run-experiments.sh               # Scalability experiments
+├── run-traffic-experiments.sh       # Traffic experiments
+└── run-mobility-experiments.sh      # Mobility experiments
 ```
 
 ---
 
-## 🔧 Simulation Parameters
+## Key Findings
 
-| Parameter | Value |
-|-----------|-------|
-| Total Nodes | 200 (180 sensors + 20 CH) |
-| Area | 1000m × 1000m |
-| WiFi | IEEE 802.11b Ad-Hoc |
-| Propagation | LogDistance (exp=2.5) |
-| Tx Power | 20 dBm (~250-300m range) |
-| Routing | AODV (tuned for 200 nodes) |
-| Application | MQTT-SN over UDP |
-| MQTT Port | 1883 |
-| Simulation Time | 100 seconds |
-| Emergency Probability | 0.5% per publish |
-
-### AODV Tuning
-
-| Parameter | Default | Configured | Reason |
-|-----------|---------|------------|--------|
-| HelloInterval | 1s | 2s | Reduce overhead (200→100 Hello/sec) |
-| ActiveRouteTimeout | 3s | 15s | Longer routes for static nodes |
-| RreqRetries | 2 | 5 | More retries for large network |
-| NetDiameter | 35 | 20 | Match network hop count |
+1. MQTT-SN reduces traffic by 88% compared to constant-rate WSN using heterogeneous sensor intervals
+2. Priority queue ensures critical ECG data is processed first before temperature readings
+3. Broker bottleneck: Adding a central sink drops PDR due to 20 CHs forwarding simultaneously
+4. Mobility degrades performance: PDR drops from 71.5% (static) to 56.3% (3 m/s) as AODV routes break
+5. Higher ECG ratio increases traffic load: PDR drops from 74.8% (20 ECG) to 65.4% (140 ECG)
+6. Energy consumption is uniform at about 72% across all node types in 100s simulation
 
 ---
 
-## 📡 MQTT-SN Protocol
+## Roadmap
 
-### Message Types
-
-| Type | Code | Usage |
-|------|------|-------|
-| CONNECT | 0x04 | Sensor registers with gateway |
-| CONNACK | 0x05 | Gateway confirms connection |
-| PUBLISH | 0x0C | Sensor sends data |
-| PUBACK | 0x0D | Gateway acknowledges (QoS>0) |
-| DISCONNECT | 0x18 | Sensor disconnects |
-
-### Priority System
-
-| Level | QoS | Sensors | Behavior |
-|-------|-----|---------|----------|
-| CRITICAL (3) | - | Emergency alerts | Immediate processing |
-| HIGH (2) | 2 | ECG | Must deliver, PUBACK required |
-| MEDIUM (1) | 1 | Heart Rate | Important, PUBACK required |
-| LOW (0) | 0 | Temperature | Best effort, no PUBACK |
-
----
-
-## 🗺️ Roadmap
-
-- [x] Phase 1: Cluster-based AODV simulation
+- [x] Phase 1: Cluster-based AODV (Traditional WSN)
 - [x] Phase 2: MQTT-SN protocol integration
 - [x] Phase 3: Priority-aware MQTT-SN with emergency detection
-- [ ] Phase 3.2: Mobility model (moving patients)
-- [ ] Phase 3.3: Different node count comparison (50/100/150/200)
-- [ ] Phase 4: Security analysis (replay attack, spoofing, anomaly detection)
-- [ ] Phase 5: Academic publication (IEEE/Elsevier)
+- [x] Phase 4: Broker/Sink node (full pipeline)
+- [x] Experiment: Scalability (50/100/150/200 nodes)
+- [x] Experiment: Traffic load (Low/Medium/High ECG)
+- [x] Experiment: Mobility (Static/0.5/1.5/3.0 m/s)
+- [x] Experiment: Energy consumption model
+- [ ] Security analysis (replay attack, spoofing)
+- [ ] Alternative routing comparison (OLSR, DSDV)
+- [ ] Academic publication (IEEE/Elsevier)
 
 ---
 
-## 👤 Author
+## Author
 
 **Amro Baseet**
 - Sakarya University of Applied Sciences
-- Computer Engineering — M.Sc.
-- Supervisor: Assoc. Prof. Dr. İsmail Bütün
-- GitHub: [amirbaseet](https://github.com/amirbaseet)
+- Computer Engineering, M.Sc.
+- Supervisor: Assoc. Prof. Dr. Ismail Butun
+- Funded by TUBITAK BIDEB
 
----
-
-## 📚 References
+## References
 
 1. C. Perkins et al., "AODV Routing," RFC 3561, 2003
 2. A. Stanford-Clark, "MQTT-SN Protocol," IBM, 2013
-3. ns-3 Network Simulator — https://www.nsnam.org/
+3. ns-3 Network Simulator, https://www.nsnam.org/
 4. OASIS, "MQTT Version 5.0," 2019
