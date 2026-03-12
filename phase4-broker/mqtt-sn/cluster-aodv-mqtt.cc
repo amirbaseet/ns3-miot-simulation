@@ -21,6 +21,8 @@
 #include "ns3/aodv-module.h"
 #include "ns3/flow-monitor-module.h"
 #include "ns3/netanim-module.h"
+#include "ns3/energy-module.h"
+#include "ns3/wifi-radio-energy-model-helper.h"
 
 #include <cmath>
 #include <vector>
@@ -425,6 +427,43 @@ int main (int argc, char *argv[])
   AssignClusters (sens, chs, nCH);
   InstallMqtt (sens, chs, sink, ifaces, nSensors, nCH, useBroker, nECGcmd, nHRcmd);
 
+  // ---- Energy Model ----
+  // Sensors: small battery (2.0 J initial)
+  // CHs: larger battery (5.0 J initial)
+  // WiFi radio energy: Tx=1.14W, Rx=0.94W, Idle=0.82W, Sleep=0.10W
+  BasicEnergySourceHelper sensEnergyHelper;
+  sensEnergyHelper.Set ("BasicEnergySourceInitialEnergyJ", DoubleValue (2.0));
+  sensEnergyHelper.Set ("BasicEnergySupplyVoltageV", DoubleValue (3.3));
+  EnergySourceContainer sensSources = sensEnergyHelper.Install (sens);
+
+  BasicEnergySourceHelper chEnergyHelper;
+  chEnergyHelper.Set ("BasicEnergySourceInitialEnergyJ", DoubleValue (5.0));
+  chEnergyHelper.Set ("BasicEnergySupplyVoltageV", DoubleValue (3.3));
+  EnergySourceContainer chSources = chEnergyHelper.Install (chs);
+
+  WifiRadioEnergyModelHelper radioEnergyHelper;
+  radioEnergyHelper.Set ("TxCurrentA", DoubleValue (0.346));  // ~1.14W at 3.3V
+  radioEnergyHelper.Set ("RxCurrentA", DoubleValue (0.285));  // ~0.94W
+  radioEnergyHelper.Set ("IdleCurrentA", DoubleValue (0.248)); // ~0.82W
+  radioEnergyHelper.Set ("SleepCurrentA", DoubleValue (0.030)); // ~0.10W
+
+  // Install on sensor WiFi devices
+  for (uint32_t i = 0; i < nSensors; i++)
+    {
+      NetDeviceContainer sensDevs;
+      sensDevs.Add (dev.Get (i));
+      radioEnergyHelper.Install (sensDevs, sensSources.Get (i));
+    }
+  // Install on CH WiFi devices
+  for (uint32_t i = 0; i < nCH; i++)
+    {
+      NetDeviceContainer chDevs;
+      chDevs.Add (dev.Get (nSensors + i));
+      radioEnergyHelper.Install (chDevs, chSources.Get (i));
+    }
+
+  std::cout << "  Energy: Sensors=" << 2.0 << "J, CHs=" << 5.0 << "J\n\n";
+
   FlowMonitorHelper fh;
   Ptr<FlowMonitor> fm = fh.InstallAll ();
 
@@ -457,6 +496,85 @@ int main (int argc, char *argv[])
   Simulator::Run ();
 
   PrintResults (fm, fh, chs, sink, nCH, useBroker, csvName);
+
+  // ---- Energy Report ----
+  std::cout << "  ============================================\n"
+            << "  ENERGY REPORT\n"
+            << "  ============================================\n";
+
+  double totalSensInit = nSensors * 2.0;
+  double totalCHInit = nCH * 5.0;
+  double totalSensRemain = 0, totalCHRemain = 0;
+  uint32_t deadSensors = 0, deadCHs = 0;
+
+  // Sensor energy
+  double minSensE = 999, maxSensE = 0, sumSensE = 0;
+  for (uint32_t i = 0; i < nSensors; i++)
+    {
+      double remain = sensSources.Get (i)->GetRemainingEnergy ();
+      totalSensRemain += remain;
+      sumSensE += remain;
+      if (remain < minSensE) minSensE = remain;
+      if (remain > maxSensE) maxSensE = remain;
+      if (remain <= 0.0) deadSensors++;
+    }
+  double avgSensE = nSensors > 0 ? sumSensE / nSensors : 0;
+  double sensConsumed = totalSensInit - totalSensRemain;
+
+  // CH energy
+  double minCHE = 999, maxCHE = 0, sumCHE = 0;
+  for (uint32_t i = 0; i < nCH; i++)
+    {
+      double remain = chSources.Get (i)->GetRemainingEnergy ();
+      totalCHRemain += remain;
+      sumCHE += remain;
+      if (remain < minCHE) minCHE = remain;
+      if (remain > maxCHE) maxCHE = remain;
+      if (remain <= 0.0) deadCHs++;
+    }
+  double avgCHE = nCH > 0 ? sumCHE / nCH : 0;
+  double chConsumed = totalCHInit - totalCHRemain;
+
+  std::cout << std::fixed << std::setprecision (4)
+            << "  Sensor Energy:\n"
+            << "    Initial: " << totalSensInit << " J (" << nSensors << " x 2.0 J)\n"
+            << "    Remaining: " << totalSensRemain << " J\n"
+            << "    Consumed: " << sensConsumed << " J ("
+            << std::setprecision (1) << (sensConsumed/totalSensInit*100) << "%)\n"
+            << std::setprecision (4)
+            << "    Per sensor: avg=" << avgSensE << "J  min=" << minSensE << "J  max=" << maxSensE << "J\n"
+            << "    Dead sensors (0 energy): " << deadSensors << "\n"
+            << "  CH Energy:\n"
+            << "    Initial: " << totalCHInit << " J (" << nCH << " x 5.0 J)\n"
+            << "    Remaining: " << totalCHRemain << " J\n"
+            << "    Consumed: " << chConsumed << " J ("
+            << std::setprecision (1) << (chConsumed/totalCHInit*100) << "%)\n"
+            << std::setprecision (4)
+            << "    Per CH: avg=" << avgCHE << "J  min=" << minCHE << "J  max=" << maxCHE << "J\n"
+            << "    Dead CHs (0 energy): " << deadCHs << "\n"
+            << "  ============================================\n\n";
+
+  // Save energy CSV
+  std::string energyCsv = csvName + ".energy.csv";
+  std::ofstream ecsv (energyCsv);
+  ecsv << "NodeID,Type,InitialEnergy_J,RemainingEnergy_J,ConsumedEnergy_J,ConsumedPct\n";
+  for (uint32_t i = 0; i < nSensors; i++)
+    {
+      double rem = sensSources.Get (i)->GetRemainingEnergy ();
+      double cons = 2.0 - rem;
+      std::string stype = (i < nSensors/3) ? "ECG" : (i < 2*nSensors/3) ? "HR" : "Temp";
+      ecsv << i << "," << stype << ",2.0," << std::fixed << std::setprecision (4)
+           << rem << "," << cons << "," << std::setprecision (2) << (cons/2.0*100) << "\n";
+    }
+  for (uint32_t i = 0; i < nCH; i++)
+    {
+      double rem = chSources.Get (i)->GetRemainingEnergy ();
+      double cons = 5.0 - rem;
+      ecsv << (nSensors + i) << ",CH,5.0," << std::fixed << std::setprecision (4)
+           << rem << "," << cons << "," << std::setprecision (2) << (cons/5.0*100) << "\n";
+    }
+  ecsv.close ();
+  std::cout << "  Energy CSV: " << energyCsv << "\n\n";
 
   Simulator::Destroy ();
   if (anim) delete anim;
