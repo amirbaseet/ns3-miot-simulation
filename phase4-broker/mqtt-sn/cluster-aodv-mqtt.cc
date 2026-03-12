@@ -80,36 +80,75 @@ Ipv4InterfaceContainer InstallStack (NodeContainer &all, NetDeviceContainer &dev
 }
 
 void PositionNodes (NodeContainer &sens, NodeContainer &chs, NodeContainer &sink,
-                    uint32_t nCH)
+                    uint32_t nCH, bool mobility, double speed)
 {
-  MobilityHelper m; m.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
-
-  // CH grid: auto calculate rows/cols
+  // CHs: static grid (always fixed)
+  MobilityHelper chMob;
+  chMob.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
   uint32_t cols = (uint32_t)std::ceil (std::sqrt ((double)nCH * AREA / AREA));
   if (cols < 1) cols = 1;
   uint32_t rows = (nCH + cols - 1) / cols;
-
   Ptr<ListPositionAllocator> cp = CreateObject<ListPositionAllocator> ();
   double cW = AREA / cols, cH = AREA / rows;
   for (uint32_t i = 0; i < nCH; i++)
     cp->Add (Vector ((i%cols+0.5)*cW, (i/cols+0.5)*cH, 0));
-  m.SetPositionAllocator (cp); m.Install (chs);
+  chMob.SetPositionAllocator (cp); chMob.Install (chs);
 
-  // Sensors: random
+  // Sensors: static or mobile
   uint32_t nSens = sens.GetN ();
-  Ptr<ListPositionAllocator> sp = CreateObject<ListPositionAllocator> ();
-  Ptr<UniformRandomVariable> rx = CreateObject<UniformRandomVariable> ();
-  rx->SetAttribute ("Min", DoubleValue (0)); rx->SetAttribute ("Max", DoubleValue (AREA));
-  Ptr<UniformRandomVariable> ry = CreateObject<UniformRandomVariable> ();
-  ry->SetAttribute ("Min", DoubleValue (0)); ry->SetAttribute ("Max", DoubleValue (AREA));
-  for (uint32_t i = 0; i < nSens; i++)
-    sp->Add (Vector (rx->GetValue (), ry->GetValue (), 0));
-  m.SetPositionAllocator (sp); m.Install (sens);
+  if (mobility)
+    {
+      // RandomWaypoint: sensors walk randomly at given speed
+      MobilityHelper sensMob;
 
-  // Sink: center
+      // Create position allocator for waypoints
+      Ptr<RandomRectanglePositionAllocator> wpAlloc =
+        CreateObject<RandomRectanglePositionAllocator> ();
+      Ptr<UniformRandomVariable> xVar = CreateObject<UniformRandomVariable> ();
+      xVar->SetAttribute ("Min", DoubleValue (0.0));
+      xVar->SetAttribute ("Max", DoubleValue (AREA));
+      Ptr<UniformRandomVariable> yVar = CreateObject<UniformRandomVariable> ();
+      yVar->SetAttribute ("Min", DoubleValue (0.0));
+      yVar->SetAttribute ("Max", DoubleValue (AREA));
+      wpAlloc->SetX (xVar);
+      wpAlloc->SetY (yVar);
+
+      // Initial position allocator (same area)
+      sensMob.SetPositionAllocator (
+        "ns3::RandomRectanglePositionAllocator",
+        "X", StringValue ("ns3::UniformRandomVariable[Min=0|Max=" + std::to_string ((int)AREA) + "]"),
+        "Y", StringValue ("ns3::UniformRandomVariable[Min=0|Max=" + std::to_string ((int)AREA) + "]"));
+
+      std::string speedStr = "ns3::ConstantRandomVariable[Constant=" + std::to_string (speed) + "]";
+      sensMob.SetMobilityModel ("ns3::RandomWaypointMobilityModel",
+        "Speed", StringValue (speedStr),
+        "Pause", StringValue ("ns3::ConstantRandomVariable[Constant=2.0]"),
+        "PositionAllocator", PointerValue (wpAlloc));
+      sensMob.Install (sens);
+      std::cout << "  Mobility: RandomWaypoint (speed=" << speed << " m/s, pause=2s)\n";
+    }
+  else
+    {
+      // Static sensors
+      MobilityHelper sensMob;
+      sensMob.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
+      Ptr<ListPositionAllocator> sp = CreateObject<ListPositionAllocator> ();
+      Ptr<UniformRandomVariable> rx = CreateObject<UniformRandomVariable> ();
+      rx->SetAttribute ("Min", DoubleValue (0)); rx->SetAttribute ("Max", DoubleValue (AREA));
+      Ptr<UniformRandomVariable> ry = CreateObject<UniformRandomVariable> ();
+      ry->SetAttribute ("Min", DoubleValue (0)); ry->SetAttribute ("Max", DoubleValue (AREA));
+      for (uint32_t i = 0; i < nSens; i++)
+        sp->Add (Vector (rx->GetValue (), ry->GetValue (), 0));
+      sensMob.SetPositionAllocator (sp); sensMob.Install (sens);
+      std::cout << "  Mobility: Static\n";
+    }
+
+  // Sink: center (always fixed)
+  MobilityHelper sinkMob;
+  sinkMob.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
   Ptr<ListPositionAllocator> skp = CreateObject<ListPositionAllocator> ();
   skp->Add (Vector (AREA/2.0, AREA/2.0, 0));
-  m.SetPositionAllocator (skp); m.Install (sink);
+  sinkMob.SetPositionAllocator (skp); sinkMob.Install (sink);
 }
 
 void AssignClusters (NodeContainer &sens, NodeContainer &chs, uint32_t nCH)
@@ -288,6 +327,8 @@ int main (int argc, char *argv[])
   uint32_t nHRcmd   = 0;   // 0 = auto (nSensors/3)
   double   simTime  = SIM_T;
   bool     useBroker = true;
+  bool     enableMobility = false;
+  double   speed    = 1.5;  // m/s (walking speed)
   bool     enableAnim = false;
   bool     verbose  = false;
   std::string csvName = "";
@@ -299,6 +340,8 @@ int main (int argc, char *argv[])
   cmd.AddValue ("nHR", "Number of HR sensors (0=auto)", nHRcmd);
   cmd.AddValue ("simTime", "Simulation time", simTime);
   cmd.AddValue ("broker", "Enable broker/sink", useBroker);
+  cmd.AddValue ("mobility", "Enable sensor mobility", enableMobility);
+  cmd.AddValue ("speed", "Mobility speed in m/s", speed);
   cmd.AddValue ("anim", "Enable NetAnim", enableAnim);
   cmd.AddValue ("verbose", "Verbose logging", verbose);
   cmd.AddValue ("csv", "Output CSV filename", csvName);
@@ -347,9 +390,17 @@ int main (int argc, char *argv[])
   Ipv4InterfaceContainer ifaces = InstallStack (all, dev);
 
   if (useBroker)
-    PositionNodes (sens, chs, sink, nCH);
+    PositionNodes (sens, chs, sink, nCH, enableMobility, speed);
   else
     {
+      // Position without sink — create dummy sink container for function
+      NodeContainer dummySink;
+      dummySink.Create (1);
+      MobilityHelper dm; dm.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
+      Ptr<ListPositionAllocator> dp = CreateObject<ListPositionAllocator> ();
+      dp->Add (Vector (0, 0, 0));
+      dm.SetPositionAllocator (dp); dm.Install (dummySink);
+
       // Position without sink
       MobilityHelper m; m.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
       uint32_t cols = (uint32_t)std::ceil (std::sqrt ((double)nCH));
