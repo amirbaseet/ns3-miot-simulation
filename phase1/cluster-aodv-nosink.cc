@@ -34,6 +34,7 @@ static const double   SIM_TIME   = 100.0;
 static const uint32_t PKT_SIZE   = 512;
 static const std::string DATA_RATE = "4kbps";
 static const uint16_t APP_PORT   = 9;
+static const uint16_t SINK_PORT  = 10;
 static const double   START_MIN  = 5.0;
 static const double   START_MAX  = 20.0;
 static const double   STOP_TIME  = 95.0;
@@ -41,6 +42,96 @@ static const double   STOP_TIME  = 95.0;
 // Dynamic (sized at runtime)
 std::vector<uint32_t> clusterAssign;
 std::vector<uint32_t> clusterSizes;
+
+// ============================================================
+// UdpForwarder: Receives packets and forwards them to sink
+// This is REAL forwarding — CH only sends to sink what it receives
+// ============================================================
+class UdpForwarder : public Application
+{
+public:
+  static TypeId GetTypeId (void)
+  {
+    static TypeId tid = TypeId ("ns3::UdpForwarder")
+      .SetParent<Application> ()
+      .AddConstructor<UdpForwarder> ();
+    return tid;
+  }
+
+  UdpForwarder () : m_rxSocket (nullptr), m_txSocket (nullptr),
+    m_rxPort (0), m_rxCount (0), m_fwdCount (0), m_fwdEnabled (false) {}
+
+  virtual ~UdpForwarder () {}
+
+  void Setup (uint16_t rxPort, Ipv4Address sinkAddr, uint16_t sinkPort)
+  {
+    m_rxPort = rxPort;
+    m_sinkAddr = sinkAddr;
+    m_sinkPort = sinkPort;
+    m_fwdEnabled = true;
+  }
+
+  void SetupNoForward (uint16_t rxPort)
+  {
+    m_rxPort = rxPort;
+    m_fwdEnabled = false;
+  }
+
+  uint32_t GetRxCount () const { return m_rxCount; }
+  uint32_t GetFwdCount () const { return m_fwdCount; }
+
+private:
+  virtual void StartApplication (void)
+  {
+    // Receive socket
+    m_rxSocket = Socket::CreateSocket (GetNode (), UdpSocketFactory::GetTypeId ());
+    m_rxSocket->Bind (InetSocketAddress (Ipv4Address::GetAny (), m_rxPort));
+    m_rxSocket->SetRecvCallback (MakeCallback (&UdpForwarder::HandleRead, this));
+
+    // Forward socket (if enabled)
+    if (m_fwdEnabled)
+      {
+        m_txSocket = Socket::CreateSocket (GetNode (), UdpSocketFactory::GetTypeId ());
+        m_txSocket->Bind ();
+      }
+  }
+
+  virtual void StopApplication (void)
+  {
+    if (m_rxSocket) { m_rxSocket->Close (); }
+    if (m_txSocket) { m_txSocket->Close (); }
+  }
+
+  void HandleRead (Ptr<Socket> socket)
+  {
+    Ptr<Packet> packet;
+    Address from;
+    while ((packet = socket->RecvFrom (from)))
+      {
+        m_rxCount++;
+
+        // Forward to sink (real forwarding — same packet)
+        if (m_fwdEnabled && m_txSocket)
+          {
+            Ptr<Packet> fwdPkt = Create<Packet> (packet->GetSize ());
+            m_txSocket->SendTo (fwdPkt, 0,
+              InetSocketAddress (m_sinkAddr, m_sinkPort));
+            m_fwdCount++;
+          }
+      }
+  }
+
+  Ptr<Socket>  m_rxSocket;
+  Ptr<Socket>  m_txSocket;
+  uint16_t     m_rxPort;
+  Ipv4Address  m_sinkAddr;
+  uint16_t     m_sinkPort;
+  uint32_t     m_rxCount;
+  uint32_t     m_fwdCount;
+  bool         m_fwdEnabled;
+};
+
+NS_OBJECT_ENSURE_REGISTERED (UdpForwarder);
 
 static double CalcDist (const Vector &a, const Vector &b)
 { return std::sqrt ((a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y)); }
@@ -80,7 +171,8 @@ InstallStack (NodeContainer &all, NetDeviceContainer &dev)
   return addr.Assign (dev);
 }
 
-void PositionNodes (NodeContainer &sens, NodeContainer &chs, uint32_t nCH)
+void PositionNodes (NodeContainer &sens, NodeContainer &chs, NodeContainer &sinkNode,
+                    uint32_t nCH)
 {
   MobilityHelper m; m.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
 
@@ -103,6 +195,11 @@ void PositionNodes (NodeContainer &sens, NodeContainer &chs, uint32_t nCH)
   for (uint32_t i = 0; i < nSens; i++)
     sp->Add (Vector (rx->GetValue (), ry->GetValue (), 0));
   m.SetPositionAllocator (sp); m.Install (sens);
+
+  // Sink at center
+  Ptr<ListPositionAllocator> skp = CreateObject<ListPositionAllocator> ();
+  skp->Add (Vector (AREA/2.0, AREA/2.0, 0));
+  m.SetPositionAllocator (skp); m.Install (sinkNode);
 }
 
 void AssignClusters (NodeContainer &sens, NodeContainer &chs, uint32_t nCH)
@@ -132,12 +229,17 @@ void AssignClusters (NodeContainer &sens, NodeContainer &chs, uint32_t nCH)
 }
 
 void InstallTraffic (NodeContainer &sens, NodeContainer &chs,
-                     Ipv4InterfaceContainer &ifaces, uint32_t nSens)
+                     NodeContainer &sinkNode, Ipv4InterfaceContainer &ifaces,
+                     uint32_t nSens, bool useSink)
 {
   Ptr<UniformRandomVariable> rng = CreateObject<UniformRandomVariable> ();
   rng->SetAttribute ("Min", DoubleValue (START_MIN));
   rng->SetAttribute ("Max", DoubleValue (START_MAX));
 
+  uint32_t nCH = chs.GetN ();
+  uint32_t sinkIfIdx = nSens + nCH;
+
+  // Sensor → CH traffic (OnOff UDP)
   for (uint32_t n = 0; n < nSens; n++)
     {
       uint32_t chIf = nSens + clusterAssign[n];
@@ -152,14 +254,34 @@ void InstallTraffic (NodeContainer &sens, NodeContainer &chs,
       app.Stop (Seconds (STOP_TIME));
     }
 
-  PacketSinkHelper sink ("ns3::UdpSocketFactory",
-    InetSocketAddress (Ipv4Address::GetAny (), APP_PORT));
-  uint32_t nCH = chs.GetN ();
+  // CH: UdpForwarder (receive from sensors, optionally forward to sink)
   for (uint32_t c = 0; c < nCH; c++)
-    sink.Install (chs.Get (c)).Start (Seconds (0.0));
+    {
+      Ptr<UdpForwarder> fwd = CreateObject<UdpForwarder> ();
+      if (useSink)
+        fwd->Setup (APP_PORT, ifaces.GetAddress (sinkIfIdx), SINK_PORT);
+      else
+        fwd->SetupNoForward (APP_PORT);
+      chs.Get (c)->AddApplication (fwd);
+      fwd->SetStartTime (Seconds (0.0));
+      fwd->SetStopTime (Seconds (SIM_TIME));
+    }
 
-  std::cout << "  Traffic: " << nSens << " nodes -> " << nCH
-            << " CHs (UDP " << DATA_RATE << ", " << PKT_SIZE << "B)\n\n";
+  // Sink: PacketSink (receive from CHs)
+  if (useSink)
+    {
+      PacketSinkHelper sinkHelper ("ns3::UdpSocketFactory",
+        InetSocketAddress (Ipv4Address::GetAny (), SINK_PORT));
+      sinkHelper.Install (sinkNode.Get (0)).Start (Seconds (0.0));
+    }
+
+  if (useSink)
+    std::cout << "  Traffic: " << nSens << " sensors -> " << nCH
+              << " CHs (forward) -> 1 Sink\n"
+              << "  Mode: REAL forwarding (CH forwards received packets)\n\n";
+  else
+    std::cout << "  Traffic: " << nSens << " sensors -> " << nCH
+              << " CHs (receive only)\n\n";
 }
 
 void PrintResults (Ptr<FlowMonitor> fm, FlowMonitorHelper &fh,
@@ -217,6 +339,7 @@ int main (int argc, char *argv[])
   uint32_t numRegular = 180;
   uint32_t numCH      = 20;
   double   simTime    = SIM_TIME;
+  bool     useSink    = false;
   bool     enableAnim = false;
   bool     verbose    = false;
   std::string csvName = "";
@@ -225,6 +348,7 @@ int main (int argc, char *argv[])
   cmd.AddValue ("numRegular", "Number of regular sensor nodes", numRegular);
   cmd.AddValue ("numCH", "Number of cluster heads", numCH);
   cmd.AddValue ("simTime", "Simulation time (seconds)", simTime);
+  cmd.AddValue ("useSink", "Enable sink/broker node", useSink);
   cmd.AddValue ("anim", "Enable NetAnim output", enableAnim);
   cmd.AddValue ("verbose", "Enable verbose logging", verbose);
   cmd.AddValue ("csv", "Output CSV filename", csvName);
@@ -233,38 +357,42 @@ int main (int argc, char *argv[])
   if (verbose)
     LogComponentEnable ("ClusterAodvNoSink", LOG_LEVEL_INFO);
 
-  // Auto CSV name
   if (csvName.empty ())
     {
       std::ostringstream oss;
-      oss << "wsn-" << numRegular << "nodes-results.csv";
+      oss << "wsn-" << numRegular << "nodes";
+      if (useSink) oss << "-sink";
+      oss << "-results.csv";
       csvName = oss.str ();
     }
 
   SeedManager::SetSeed (42);
   SeedManager::SetRun (1);
 
+  uint32_t totalNodes = numRegular + numCH + 1; // +1 sink always created
+
   std::cout << "\n============================================================\n"
     << "  Traditional WSN (AODV + UDP)\n"
     << "  Sensors: " << numRegular << " | CHs: " << numCH
-    << " | Total: " << (numRegular + numCH) << "\n"
+    << " | Sink: " << (useSink ? "yes" : "no")
+    << " | Total: " << totalNodes << "\n"
     << "  Area: " << AREA << "x" << AREA << "m | AODV | " << simTime << "s\n"
     << "  CSV: " << csvName << "\n"
     << "============================================================\n\n";
 
-  // Build using COMMAND LINE values (not constants!)
-  NodeContainer sens, chs, all;
+  NodeContainer sens, chs, sinkNode, all;
   sens.Create (numRegular);
   chs.Create (numCH);
-  all.Add (sens); all.Add (chs);
+  sinkNode.Create (1);
+  all.Add (sens); all.Add (chs); all.Add (sinkNode);
 
   YansWifiPhyHelper phy;
   NetDeviceContainer dev = ConfigWifi (all, phy);
   Ipv4InterfaceContainer ifaces = InstallStack (all, dev);
 
-  PositionNodes (sens, chs, numCH);
+  PositionNodes (sens, chs, sinkNode, numCH);
   AssignClusters (sens, chs, numCH);
-  InstallTraffic (sens, chs, ifaces, numRegular);
+  InstallTraffic (sens, chs, sinkNode, ifaces, numRegular, useSink);
 
   FlowMonitorHelper fh;
   Ptr<FlowMonitor> fm = fh.InstallAll ();
@@ -274,6 +402,25 @@ int main (int argc, char *argv[])
   Simulator::Run ();
 
   PrintResults (fm, fh, csvName);
+
+  // Print CH forwarding stats
+  if (useSink)
+    {
+      std::cout << "  Per-CH Forwarding Stats:\n";
+      uint32_t totalRx = 0, totalFwd = 0;
+      for (uint32_t c = 0; c < numCH; c++)
+        {
+          Ptr<UdpForwarder> fwd = DynamicCast<UdpForwarder> (chs.Get (c)->GetApplication (0));
+          if (fwd)
+            {
+              std::cout << "    CH" << (numRegular + c) << " | Rx:" << fwd->GetRxCount ()
+                        << " Fwd:" << fwd->GetFwdCount () << "\n";
+              totalRx += fwd->GetRxCount ();
+              totalFwd += fwd->GetFwdCount ();
+            }
+        }
+      std::cout << "  Total: Rx=" << totalRx << " Fwd=" << totalFwd << "\n\n";
+    }
 
   Simulator::Destroy ();
   std::cout << "[DONE]\n\n";

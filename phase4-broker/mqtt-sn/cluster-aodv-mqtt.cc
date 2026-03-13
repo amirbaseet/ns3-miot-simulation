@@ -366,7 +366,7 @@ int main (int argc, char *argv[])
       csvName = oss.str ();
     }
 
-  uint32_t totalNodes = nSensors + nCH + (useBroker ? 1 : 0);
+  uint32_t totalNodes = nSensors + nCH + 1; // +1 for sink (always created)
 
   SeedManager::SetSeed (42); SeedManager::SetRun (1);
 
@@ -383,46 +383,14 @@ int main (int argc, char *argv[])
   NodeContainer sens, chs, sink, all;
   sens.Create (nSensors);
   chs.Create (nCH);
-  if (useBroker) sink.Create (1);
-  all.Add (sens); all.Add (chs);
-  if (useBroker) all.Add (sink);
+  sink.Create (1);  // Always create sink (needed for positioning)
+  all.Add (sens); all.Add (chs); all.Add (sink);
 
   YansWifiPhyHelper phy;
   NetDeviceContainer dev = ConfigWifi (all, phy);
   Ipv4InterfaceContainer ifaces = InstallStack (all, dev);
 
-  if (useBroker)
-    PositionNodes (sens, chs, sink, nCH, enableMobility, speed);
-  else
-    {
-      // Position without sink — create dummy sink container for function
-      NodeContainer dummySink;
-      dummySink.Create (1);
-      MobilityHelper dm; dm.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
-      Ptr<ListPositionAllocator> dp = CreateObject<ListPositionAllocator> ();
-      dp->Add (Vector (0, 0, 0));
-      dm.SetPositionAllocator (dp); dm.Install (dummySink);
-
-      // Position without sink
-      MobilityHelper m; m.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
-      uint32_t cols = (uint32_t)std::ceil (std::sqrt ((double)nCH));
-      if (cols < 1) cols = 1;
-      uint32_t rows = (nCH + cols - 1) / cols;
-      Ptr<ListPositionAllocator> cp = CreateObject<ListPositionAllocator> ();
-      double cW = AREA/cols, cH = AREA/rows;
-      for (uint32_t i = 0; i < nCH; i++)
-        cp->Add (Vector ((i%cols+0.5)*cW, (i/cols+0.5)*cH, 0));
-      m.SetPositionAllocator (cp); m.Install (chs);
-
-      Ptr<ListPositionAllocator> sp = CreateObject<ListPositionAllocator> ();
-      Ptr<UniformRandomVariable> rx = CreateObject<UniformRandomVariable> ();
-      rx->SetAttribute ("Min", DoubleValue (0)); rx->SetAttribute ("Max", DoubleValue (AREA));
-      Ptr<UniformRandomVariable> ry = CreateObject<UniformRandomVariable> ();
-      ry->SetAttribute ("Min", DoubleValue (0)); ry->SetAttribute ("Max", DoubleValue (AREA));
-      for (uint32_t i = 0; i < nSensors; i++)
-        sp->Add (Vector (rx->GetValue (), ry->GetValue (), 0));
-      m.SetPositionAllocator (sp); m.Install (sens);
-    }
+  PositionNodes (sens, chs, sink, nCH, enableMobility, speed);
 
   AssignClusters (sens, chs, nCH);
   InstallMqtt (sens, chs, sink, ifaces, nSensors, nCH, useBroker, nECGcmd, nHRcmd);
