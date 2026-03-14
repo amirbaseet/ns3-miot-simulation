@@ -327,10 +327,11 @@ int main (int argc, char *argv[])
   uint32_t nCH      = 20;
   uint32_t nECGcmd  = 0;   // 0 = auto (nSensors/3)
   uint32_t nHRcmd   = 0;   // 0 = auto (nSensors/3)
-  double   simTime  = SIM_T;
+  uint32_t runNum   = 1;   // For multiple seeds
+  double   simTime  = 300.0;  // Increased from 100s
   bool     useBroker = true;
   bool     enableMobility = false;
-  double   speed    = 1.5;  // m/s (walking speed)
+  double   speed    = 1.5;
   bool     enableAnim = false;
   bool     verbose  = false;
   std::string csvName = "";
@@ -340,6 +341,7 @@ int main (int argc, char *argv[])
   cmd.AddValue ("nCH", "Number of cluster heads", nCH);
   cmd.AddValue ("nECG", "Number of ECG sensors (0=auto)", nECGcmd);
   cmd.AddValue ("nHR", "Number of HR sensors (0=auto)", nHRcmd);
+  cmd.AddValue ("run", "Run number for seed variation", runNum);
   cmd.AddValue ("simTime", "Simulation time", simTime);
   cmd.AddValue ("broker", "Enable broker/sink", useBroker);
   cmd.AddValue ("mobility", "Enable sensor mobility", enableMobility);
@@ -368,7 +370,7 @@ int main (int argc, char *argv[])
 
   uint32_t totalNodes = nSensors + nCH + 1; // +1 for sink (always created)
 
-  SeedManager::SetSeed (42); SeedManager::SetRun (1);
+  SeedManager::SetSeed (42); SeedManager::SetRun (runNum);
 
   std::cout << "\n============================================================\n"
     << "  MQTT-SN MIoT Simulation\n"

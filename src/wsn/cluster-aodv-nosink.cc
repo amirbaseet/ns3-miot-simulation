@@ -30,7 +30,7 @@ using namespace ns3;
 NS_LOG_COMPONENT_DEFINE ("ClusterAodvNoSink");
 
 static const double   AREA       = 1000.0;
-static const double   SIM_TIME   = 100.0;
+static const double   SIM_TIME   = 300.0;
 static const uint32_t PKT_SIZE   = 512;
 static const std::string DATA_RATE = "4kbps";
 static const uint16_t APP_PORT   = 9;
@@ -230,7 +230,7 @@ void AssignClusters (NodeContainer &sens, NodeContainer &chs, uint32_t nCH)
 
 void InstallTraffic (NodeContainer &sens, NodeContainer &chs,
                      NodeContainer &sinkNode, Ipv4InterfaceContainer &ifaces,
-                     uint32_t nSens, bool useSink)
+                     uint32_t nSens, bool useSink, bool hetero)
 {
   Ptr<UniformRandomVariable> rng = CreateObject<UniformRandomVariable> ();
   rng->SetAttribute ("Min", DoubleValue (START_MIN));
@@ -238,15 +238,35 @@ void InstallTraffic (NodeContainer &sens, NodeContainer &chs,
 
   uint32_t nCH = chs.GetN ();
   uint32_t sinkIfIdx = nSens + nCH;
+  uint32_t nECG = nSens / 3;
+  uint32_t nHR  = nSens / 3;
 
-  // Sensor → CH traffic (OnOff UDP)
+  // Sensor -> CH traffic (OnOff UDP)
   for (uint32_t n = 0; n < nSens; n++)
     {
       uint32_t chIf = nSens + clusterAssign[n];
+
+      std::string rate;
+      uint32_t pktSize;
+
+      if (hetero)
+        {
+          // Match MQTT-SN traffic profile: ECG=4kbps/128B, HR=0.5kbps/64B, Temp=0.05kbps/32B
+          if (n < nECG) { rate = "4kbps"; pktSize = 128; }
+          else if (n < nECG + nHR) { rate = "512bps"; pktSize = 64; }
+          else { rate = "51bps"; pktSize = 32; }
+        }
+      else
+        {
+          // Original constant rate
+          rate = DATA_RATE;
+          pktSize = PKT_SIZE;
+        }
+
       OnOffHelper onoff ("ns3::UdpSocketFactory",
         InetSocketAddress (ifaces.GetAddress (chIf), APP_PORT));
-      onoff.SetAttribute ("DataRate", StringValue (DATA_RATE));
-      onoff.SetAttribute ("PacketSize", UintegerValue (PKT_SIZE));
+      onoff.SetAttribute ("DataRate", StringValue (rate));
+      onoff.SetAttribute ("PacketSize", UintegerValue (pktSize));
       onoff.SetAttribute ("OnTime", StringValue ("ns3::ConstantRandomVariable[Constant=1]"));
       onoff.SetAttribute ("OffTime", StringValue ("ns3::ConstantRandomVariable[Constant=0]"));
       ApplicationContainer app = onoff.Install (sens.Get (n));
@@ -254,7 +274,7 @@ void InstallTraffic (NodeContainer &sens, NodeContainer &chs,
       app.Stop (Seconds (STOP_TIME));
     }
 
-  // CH: UdpForwarder (receive from sensors, optionally forward to sink)
+  // CH: UdpForwarder
   for (uint32_t c = 0; c < nCH; c++)
     {
       Ptr<UdpForwarder> fwd = CreateObject<UdpForwarder> ();
@@ -267,7 +287,7 @@ void InstallTraffic (NodeContainer &sens, NodeContainer &chs,
       fwd->SetStopTime (Seconds (SIM_TIME));
     }
 
-  // Sink: PacketSink (receive from CHs)
+  // Sink
   if (useSink)
     {
       PacketSinkHelper sinkHelper ("ns3::UdpSocketFactory",
@@ -275,13 +295,16 @@ void InstallTraffic (NodeContainer &sens, NodeContainer &chs,
       sinkHelper.Install (sinkNode.Get (0)).Start (Seconds (0.0));
     }
 
-  if (useSink)
-    std::cout << "  Traffic: " << nSens << " sensors -> " << nCH
-              << " CHs (forward) -> 1 Sink\n"
-              << "  Mode: REAL forwarding (CH forwards received packets)\n\n";
+  if (hetero)
+    std::cout << "  Traffic: HETEROGENEOUS (" << nECG << " ECG@4kbps + "
+              << nHR << " HR@512bps + " << (nSens-nECG-nHR) << " Temp@51bps)\n";
   else
-    std::cout << "  Traffic: " << nSens << " sensors -> " << nCH
-              << " CHs (receive only)\n\n";
+    std::cout << "  Traffic: CONSTANT (" << nSens << " x " << DATA_RATE << ", " << PKT_SIZE << "B)\n";
+
+  if (useSink)
+    std::cout << "  Flow: Sensors -> " << nCH << " CHs (forward) -> 1 Sink\n\n";
+  else
+    std::cout << "  Flow: Sensors -> " << nCH << " CHs (receive only)\n\n";
 }
 
 void PrintResults (Ptr<FlowMonitor> fm, FlowMonitorHelper &fh,
@@ -338,8 +361,10 @@ int main (int argc, char *argv[])
 {
   uint32_t numRegular = 180;
   uint32_t numCH      = 20;
-  double   simTime    = SIM_TIME;
+  uint32_t runNum     = 1;
+  double   simTime    = 300.0;
   bool     useSink    = false;
+  bool     hetero     = false;  // Heterogeneous traffic (match MQTT-SN load)
   bool     enableAnim = false;
   bool     verbose    = false;
   std::string csvName = "";
@@ -347,8 +372,10 @@ int main (int argc, char *argv[])
   CommandLine cmd (__FILE__);
   cmd.AddValue ("numRegular", "Number of regular sensor nodes", numRegular);
   cmd.AddValue ("numCH", "Number of cluster heads", numCH);
+  cmd.AddValue ("run", "Run number for seed variation", runNum);
   cmd.AddValue ("simTime", "Simulation time (seconds)", simTime);
   cmd.AddValue ("useSink", "Enable sink/broker node", useSink);
+  cmd.AddValue ("hetero", "Heterogeneous traffic (match MQTT-SN rates)", hetero);
   cmd.AddValue ("anim", "Enable NetAnim output", enableAnim);
   cmd.AddValue ("verbose", "Enable verbose logging", verbose);
   cmd.AddValue ("csv", "Output CSV filename", csvName);
@@ -367,7 +394,7 @@ int main (int argc, char *argv[])
     }
 
   SeedManager::SetSeed (42);
-  SeedManager::SetRun (1);
+  SeedManager::SetRun (runNum);
 
   uint32_t totalNodes = numRegular + numCH + 1; // +1 sink always created
 
@@ -392,7 +419,7 @@ int main (int argc, char *argv[])
 
   PositionNodes (sens, chs, sinkNode, numCH);
   AssignClusters (sens, chs, numCH);
-  InstallTraffic (sens, chs, sinkNode, ifaces, numRegular, useSink);
+  InstallTraffic (sens, chs, sinkNode, ifaces, numRegular, useSink, hetero);
 
   FlowMonitorHelper fh;
   Ptr<FlowMonitor> fm = fh.InstallAll ();

@@ -164,7 +164,9 @@ void MqttSnGateway::HandleRead (Ptr<Socket> socket)
 
 void MqttSnGateway::ProcessQueue (void)
 {
-  while (!m_pQueue.empty ())
+  // Process ONE packet at a time with 1ms delay between each
+  // This makes priority queue effect visible in delay measurements
+  if (!m_pQueue.empty ())
     {
       PriorityPacket pp = m_pQueue.top ();
       m_pQueue.pop ();
@@ -176,6 +178,10 @@ void MqttSnGateway::ProcessQueue (void)
       // Forward to broker (sink)
       if (m_hasBroker)
         ForwardToBroker (pp);
+
+      // Schedule next packet processing after 1ms
+      if (!m_pQueue.empty ())
+        Simulator::Schedule (MilliSeconds (1), &MqttSnGateway::ProcessQueue, this);
     }
 }
 
