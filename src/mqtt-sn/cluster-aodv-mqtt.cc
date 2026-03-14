@@ -87,7 +87,7 @@ void PositionNodes (NodeContainer &sens, NodeContainer &chs, NodeContainer &sink
   // CHs: static grid (always fixed)
   MobilityHelper chMob;
   chMob.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
-  uint32_t cols = (uint32_t)std::ceil (std::sqrt ((double)nCH * AREA / AREA));
+  uint32_t cols = (uint32_t)std::ceil (std::sqrt ((double)nCH));
   if (cols < 1) cols = 1;
   uint32_t rows = (nCH + cols - 1) / cols;
   Ptr<ListPositionAllocator> cp = CreateObject<ListPositionAllocator> ();
@@ -209,8 +209,8 @@ void InstallMqtt (NodeContainer &sens, NodeContainer &chs, NodeContainer &sink,
 
   // Publishers on sensors
   Ptr<UniformRandomVariable> rng = CreateObject<UniformRandomVariable> ();
-  rng->SetAttribute ("Min", DoubleValue (5.0));
-  rng->SetAttribute ("Max", DoubleValue (20.0));
+  rng->SetAttribute ("Min", DoubleValue (30.0));  // Warm-up: 0-30s for AODV
+  rng->SetAttribute ("Max", DoubleValue (45.0));  // All sensors start 30-45s
 
   uint32_t nECG = (nECGin > 0) ? nECGin : nSens / 3;
   uint32_t nHR  = (nHRin > 0)  ? nHRin  : nSens / 3;
@@ -239,7 +239,7 @@ void InstallMqtt (NodeContainer &sens, NodeContainer &chs, NodeContainer &sink,
       pub->EnableEmergencyDetection (EMERGENCY_PROB);
       sens.Get (n)->AddApplication (pub);
       pub->SetStartTime (Seconds (rng->GetValue ()));
-      pub->SetStopTime (Seconds (SIM_T - 2.0));
+      pub->SetStopTime (Seconds (SIM_T - 10.0));  // Stop 10s before end
     }
 
   std::cout << "  Sensors: " << nECG << " ECG + " << nHR << " HR + "

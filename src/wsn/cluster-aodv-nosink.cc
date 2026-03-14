@@ -35,9 +35,9 @@ static const uint32_t PKT_SIZE   = 512;
 static const std::string DATA_RATE = "4kbps";
 static const uint16_t APP_PORT   = 9;
 static const uint16_t SINK_PORT  = 10;
-static const double   START_MIN  = 5.0;
-static const double   START_MAX  = 20.0;
-static const double   STOP_TIME  = 95.0;
+static const double   START_MIN  = 30.0;   // Warm-up: 0-30s for AODV convergence
+static const double   START_MAX  = 45.0;   // All sensors start within 30-45s
+static const double   STOP_TIME  = 290.0;  // Stop 10s before end
 
 // Dynamic (sized at runtime)
 std::vector<uint32_t> clusterAssign;
@@ -113,7 +113,7 @@ private:
         // Forward to sink (real forwarding — same packet)
         if (m_fwdEnabled && m_txSocket)
           {
-            Ptr<Packet> fwdPkt = Create<Packet> (packet->GetSize ());
+            Ptr<Packet> fwdPkt = packet->Copy ();
             m_txSocket->SendTo (fwdPkt, 0,
               InetSocketAddress (m_sinkAddr, m_sinkPort));
             m_fwdCount++;
