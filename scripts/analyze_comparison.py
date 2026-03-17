@@ -26,7 +26,12 @@ C_MQTT = '#2E86C1'
 
 def load_csv(path):
     if os.path.exists(path):
-        return pd.read_csv(path)
+        try:
+            df = pd.read_csv(path)
+            if 'TxPackets' in df.columns:
+                return df
+        except Exception:
+            pass
     return None
 
 def calc_metrics(df):
