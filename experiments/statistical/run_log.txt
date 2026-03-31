@@ -1,0 +1,2056 @@
+BASLA: Mon Mar 30 12:51:51 +03 2026
+=== SET 2 TAMAMLA ===
+[Set2-WSN-200] r7 12:51
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 200 | CHs: 20 | Sink: yes | Total: 221
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp2_wsn_200_r7.csv
+============================================================
+
+  Clusters: min=4 max=16 avg=10.0
+  Traffic: CONSTANT (200 x 4kbps, 512B)
+  Flow: Sensors -> 20 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 3830 (dead: 411)
+  Tx: 1044203 | Rx: 610350
+  PDR: 58.45%
+  Avg Delay: 182.17 ms
+  Throughput: 1105.73 kbps
+  Output: experiments/statistical/exp2_wsn_200_r7.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH200 | Rx:1618 Fwd:1618
+    CH201 | Rx:1154 Fwd:1154
+    CH202 | Rx:2006 Fwd:2006
+    CH203 | Rx:1391 Fwd:1391
+    CH204 | Rx:1036 Fwd:1036
+    CH205 | Rx:1004 Fwd:1004
+    CH206 | Rx:720 Fwd:720
+    CH207 | Rx:1273 Fwd:1273
+    CH208 | Rx:366 Fwd:366
+    CH209 | Rx:1052 Fwd:1052
+    CH210 | Rx:1487 Fwd:1487
+    CH211 | Rx:1491 Fwd:1491
+    CH212 | Rx:281 Fwd:281
+    CH213 | Rx:1566 Fwd:1566
+    CH214 | Rx:1429 Fwd:1429
+    CH215 | Rx:2543 Fwd:2543
+    CH216 | Rx:422 Fwd:422
+    CH217 | Rx:2436 Fwd:2436
+    CH218 | Rx:1034 Fwd:1034
+    CH219 | Rx:2033 Fwd:2033
+  Total: Rx=26342 Fwd=26342
+
+[DONE]
+
+[Set2-WSN-200] r8 14:36
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 200 | CHs: 20 | Sink: yes | Total: 221
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp2_wsn_200_r8.csv
+============================================================
+
+  Clusters: min=4 max=16 avg=10.0
+  Traffic: CONSTANT (200 x 4kbps, 512B)
+  Flow: Sensors -> 20 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 3818 (dead: 454)
+  Tx: 1061828 | Rx: 606113
+  PDR: 57.08%
+  Avg Delay: 190.12 ms
+  Throughput: 1051.53 kbps
+  Output: experiments/statistical/exp2_wsn_200_r8.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH200 | Rx:2588 Fwd:2588
+    CH201 | Rx:1362 Fwd:1362
+    CH202 | Rx:488 Fwd:488
+    CH203 | Rx:477 Fwd:477
+    CH204 | Rx:1316 Fwd:1316
+    CH205 | Rx:550 Fwd:550
+    CH206 | Rx:1111 Fwd:1111
+    CH207 | Rx:576 Fwd:576
+    CH208 | Rx:867 Fwd:867
+    CH209 | Rx:865 Fwd:865
+    CH210 | Rx:1776 Fwd:1776
+    CH211 | Rx:616 Fwd:616
+    CH212 | Rx:424 Fwd:424
+    CH213 | Rx:1107 Fwd:1107
+    CH214 | Rx:1316 Fwd:1316
+    CH215 | Rx:1338 Fwd:1338
+    CH216 | Rx:694 Fwd:694
+    CH217 | Rx:1572 Fwd:1572
+    CH218 | Rx:1511 Fwd:1511
+    CH219 | Rx:1996 Fwd:1996
+  Total: Rx=22550 Fwd=22550
+
+[DONE]
+
+[Set2-WSN-200] r9 16:21
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 200 | CHs: 20 | Sink: yes | Total: 221
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp2_wsn_200_r9.csv
+============================================================
+
+  Clusters: min=5 max=19 avg=10.0
+  Traffic: CONSTANT (200 x 4kbps, 512B)
+  Flow: Sensors -> 20 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 3680 (dead: 302)
+  Tx: 1054265 | Rx: 641910
+  PDR: 60.89%
+  Avg Delay: 181.40 ms
+  Throughput: 1153.48 kbps
+  Output: experiments/statistical/exp2_wsn_200_r9.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH200 | Rx:1321 Fwd:1321
+    CH201 | Rx:1655 Fwd:1655
+    CH202 | Rx:965 Fwd:965
+    CH203 | Rx:923 Fwd:923
+    CH204 | Rx:2416 Fwd:2416
+    CH205 | Rx:965 Fwd:965
+    CH206 | Rx:428 Fwd:428
+    CH207 | Rx:2193 Fwd:2193
+    CH208 | Rx:1126 Fwd:1126
+    CH209 | Rx:657 Fwd:657
+    CH210 | Rx:2519 Fwd:2519
+    CH211 | Rx:443 Fwd:443
+    CH212 | Rx:265 Fwd:265
+    CH213 | Rx:1717 Fwd:1717
+    CH214 | Rx:1542 Fwd:1542
+    CH215 | Rx:1434 Fwd:1434
+    CH216 | Rx:1755 Fwd:1755
+    CH217 | Rx:1294 Fwd:1294
+    CH218 | Rx:1625 Fwd:1625
+    CH219 | Rx:1866 Fwd:1866
+  Total: Rx=27109 Fwd=27109
+
+[DONE]
+
+[Set2-WSN-200] r10 18:10
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 200 | CHs: 20 | Sink: yes | Total: 221
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp2_wsn_200_r10.csv
+============================================================
+
+  Clusters: min=5 max=17 avg=10.0
+  Traffic: CONSTANT (200 x 4kbps, 512B)
+  Flow: Sensors -> 20 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 3744 (dead: 495)
+  Tx: 1043999 | Rx: 580949
+  PDR: 55.65%
+  Avg Delay: 198.36 ms
+  Throughput: 1069.18 kbps
+  Output: experiments/statistical/exp2_wsn_200_r10.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH200 | Rx:2579 Fwd:2579
+    CH201 | Rx:1399 Fwd:1399
+    CH202 | Rx:386 Fwd:386
+    CH203 | Rx:982 Fwd:982
+    CH204 | Rx:2010 Fwd:2010
+    CH205 | Rx:1727 Fwd:1727
+    CH206 | Rx:1009 Fwd:1009
+    CH207 | Rx:646 Fwd:646
+    CH208 | Rx:1291 Fwd:1291
+    CH209 | Rx:1735 Fwd:1735
+    CH210 | Rx:1150 Fwd:1150
+    CH211 | Rx:650 Fwd:650
+    CH212 | Rx:938 Fwd:938
+    CH213 | Rx:1218 Fwd:1218
+    CH214 | Rx:1841 Fwd:1841
+    CH215 | Rx:1051 Fwd:1051
+    CH216 | Rx:1733 Fwd:1733
+    CH217 | Rx:1011 Fwd:1011
+    CH218 | Rx:1388 Fwd:1388
+    CH219 | Rx:1511 Fwd:1511
+  Total: Rx=26255 Fwd=26255
+
+[DONE]
+
+[Set2-MQTT-200] r6 19:55
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | Broker: yes | Total: 221
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp2_mqtt_200_r6.csv
+============================================================
+
+  Mobility: Static
+  Clusters: min=4 max=22 avg=10.0
+  Sensors: 66 ECG + 66 HR + 68 Temp
+  Broker: enabled
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+    CH200 | Rx:1653 Emerg:11 Fwd:1618 | Pri[H:1344 M:219 L:55] | Topics: ECG=1333 HeartRate=219 Temperature=55 EMERGENCY=11
+    CH201 | Rx:396 Emerg:1 Fwd:386 | Pri[H:282 M:88 L:16] | Topics: ECG=281 HeartRate=88 Temperature=16 EMERGENCY=1
+    CH202 | Rx:854 Emerg:4 Fwd:837 | Pri[H:588 M:239 L:10] | Topics: ECG=584 HeartRate=239 Temperature=10 EMERGENCY=4
+    CH203 | Rx:238 Emerg:3 Fwd:232 | Pri[H:182 M:38 L:12] | Topics: ECG=179 HeartRate=38 Temperature=12 EMERGENCY=3
+    CH204 | Rx:1225 Emerg:0 Fwd:1202 | Pri[H:946 M:235 L:21] | Topics: ECG=946 HeartRate=235 Temperature=21
+    CH205 | Rx:337 Emerg:0 Fwd:319 | Pri[H:152 M:110 L:57] | Topics: ECG=152 HeartRate=110 Temperature=57
+    CH206 | Rx:508 Emerg:2 Fwd:497 | Pri[H:377 M:114 L:6] | Topics: ECG=375 HeartRate=114 Temperature=6 EMERGENCY=2
+    CH207 | Rx:297 Emerg:2 Fwd:290 | Pri[H:222 M:49 L:19] | Topics: ECG=220 HeartRate=49 Temperature=19 EMERGENCY=2
+    CH208 | Rx:160 Emerg:3 Fwd:150 | Pri[H:81 M:47 L:22] | Topics: ECG=78 HeartRate=47 Temperature=22 EMERGENCY=3
+    CH209 | Rx:439 Emerg:2 Fwd:428 | Pri[H:293 M:117 L:18] | Topics: ECG=291 HeartRate=117 Temperature=18 EMERGENCY=2
+    CH210 | Rx:444 Emerg:1 Fwd:427 | Pri[H:225 M:152 L:50] | Topics: ECG=224 HeartRate=152 Temperature=50 EMERGENCY=1
+    CH211 | Rx:160 Emerg:0 Fwd:154 | Pri[H:37 M:107 L:10] | Topics: ECG=37 HeartRate=107 Temperature=10
+    CH212 | Rx:489 Emerg:2 Fwd:470 | Pri[H:229 M:211 L:30] | Topics: ECG=227 HeartRate=211 Temperature=30 EMERGENCY=2
+    CH213 | Rx:481 Emerg:6 Fwd:473 | Pri[H:459 M:3 L:11] | Topics: ECG=453 HeartRate=3 Temperature=11 EMERGENCY=6
+    CH214 | Rx:425 Emerg:0 Fwd:412 | Pri[H:224 M:155 L:33] | Topics: ECG=224 HeartRate=155 Temperature=33
+    CH215 | Rx:431 Emerg:2 Fwd:414 | Pri[H:251 M:124 L:39] | Topics: ECG=249 HeartRate=124 Temperature=39 EMERGENCY=2
+    CH216 | Rx:1043 Emerg:4 Fwd:1021 | Pri[H:863 M:114 L:44] | Topics: ECG=859 HeartRate=114 Temperature=44 EMERGENCY=4
+    CH217 | Rx:634 Emerg:1 Fwd:619 | Pri[H:454 M:141 L:24] | Topics: ECG=453 HeartRate=141 Temperature=24 EMERGENCY=1
+    CH218 | Rx:635 Emerg:4 Fwd:620 | Pri[H:516 M:92 L:12] | Topics: ECG=512 HeartRate=92 Temperature=12 EMERGENCY=4
+    CH219 | Rx:660 Emerg:2 Fwd:644 | Pri[H:555 M:64 L:25] | Topics: ECG=553 HeartRate=64 Temperature=25 EMERGENCY=2
+
+  ============================================
+  BROKER (SINK) STATISTICS
+  ============================================
+  Total Rx Packets  : 126
+  Total Rx Bytes    : 14060
+  From Gateways     : 126
+  Emergencies       : 0
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 78 packets
+    HeartRate (ID=20): 40 packets
+    Temperature (ID=30): 8 packets
+  Per-Priority Breakdown:
+    LOW (0): 8 packets
+    MEDIUM (1): 40 packets
+    HIGH (2): 78 packets
+  ============================================
+
+============================================================
+  RESULTS
+============================================================
+  Flows: 3837 (dead: 585)
+  Tx: 274360 | Rx: 161948
+  PDR: 59.03%
+  Avg Delay: 182.61 ms
+  Throughput: 689.19 kbps
+  Output: experiments/statistical/exp2_mqtt_200_r6.csv
+============================================================
+
+    CH200 | Rx:1653 Emerg:11 Fwd:1618 | Pri[H:1344 M:219 L:55] | Topics: ECG=1333 HeartRate=219 Temperature=55 EMERGENCY=11
+    CH201 | Rx:396 Emerg:1 Fwd:386 | Pri[H:282 M:88 L:16] | Topics: ECG=281 HeartRate=88 Temperature=16 EMERGENCY=1
+    CH202 | Rx:854 Emerg:4 Fwd:837 | Pri[H:588 M:239 L:10] | Topics: ECG=584 HeartRate=239 Temperature=10 EMERGENCY=4
+    CH203 | Rx:238 Emerg:3 Fwd:232 | Pri[H:182 M:38 L:12] | Topics: ECG=179 HeartRate=38 Temperature=12 EMERGENCY=3
+    CH204 | Rx:1225 Emerg:0 Fwd:1202 | Pri[H:946 M:235 L:21] | Topics: ECG=946 HeartRate=235 Temperature=21
+    CH205 | Rx:337 Emerg:0 Fwd:319 | Pri[H:152 M:110 L:57] | Topics: ECG=152 HeartRate=110 Temperature=57
+    CH206 | Rx:508 Emerg:2 Fwd:497 | Pri[H:377 M:114 L:6] | Topics: ECG=375 HeartRate=114 Temperature=6 EMERGENCY=2
+    CH207 | Rx:297 Emerg:2 Fwd:290 | Pri[H:222 M:49 L:19] | Topics: ECG=220 HeartRate=49 Temperature=19 EMERGENCY=2
+    CH208 | Rx:160 Emerg:3 Fwd:150 | Pri[H:81 M:47 L:22] | Topics: ECG=78 HeartRate=47 Temperature=22 EMERGENCY=3
+    CH209 | Rx:439 Emerg:2 Fwd:428 | Pri[H:293 M:117 L:18] | Topics: ECG=291 HeartRate=117 Temperature=18 EMERGENCY=2
+    CH210 | Rx:444 Emerg:1 Fwd:427 | Pri[H:225 M:152 L:50] | Topics: ECG=224 HeartRate=152 Temperature=50 EMERGENCY=1
+    CH211 | Rx:160 Emerg:0 Fwd:154 | Pri[H:37 M:107 L:10] | Topics: ECG=37 HeartRate=107 Temperature=10
+    CH212 | Rx:489 Emerg:2 Fwd:470 | Pri[H:229 M:211 L:30] | Topics: ECG=227 HeartRate=211 Temperature=30 EMERGENCY=2
+    CH213 | Rx:481 Emerg:6 Fwd:473 | Pri[H:459 M:3 L:11] | Topics: ECG=453 HeartRate=3 Temperature=11 EMERGENCY=6
+    CH214 | Rx:425 Emerg:0 Fwd:412 | Pri[H:224 M:155 L:33] | Topics: ECG=224 HeartRate=155 Temperature=33
+    CH215 | Rx:431 Emerg:2 Fwd:414 | Pri[H:251 M:124 L:39] | Topics: ECG=249 HeartRate=124 Temperature=39 EMERGENCY=2
+    CH216 | Rx:1043 Emerg:4 Fwd:1021 | Pri[H:863 M:114 L:44] | Topics: ECG=859 HeartRate=114 Temperature=44 EMERGENCY=4
+    CH217 | Rx:634 Emerg:1 Fwd:619 | Pri[H:454 M:141 L:24] | Topics: ECG=453 HeartRate=141 Temperature=24 EMERGENCY=1
+    CH218 | Rx:635 Emerg:4 Fwd:620 | Pri[H:516 M:92 L:12] | Topics: ECG=512 HeartRate=92 Temperature=12 EMERGENCY=4
+    CH219 | Rx:660 Emerg:2 Fwd:644 | Pri[H:555 M:64 L:25] | Topics: ECG=553 HeartRate=64 Temperature=25 EMERGENCY=2
+
+  ============================================
+  BROKER (SINK) STATISTICS
+  ============================================
+  Total Rx Packets  : 126
+  Total Rx Bytes    : 14060
+  From Gateways     : 126
+  Emergencies       : 0
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 78 packets
+    HeartRate (ID=20): 40 packets
+    Temperature (ID=30): 8 packets
+  Per-Priority Breakdown:
+    LOW (0): 8 packets
+    MEDIUM (1): 40 packets
+    HIGH (2): 78 packets
+  ============================================
+
+  Emergencies: 50 | Forwarded: 11213
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.3228 J
+    Consumed: 289.6772 J (72.4%)
+    Per sensor: avg=0.5516J  min=0.5405J  max=0.5640J
+    Dead sensors (0 energy): 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 27.9618 J
+    Consumed: 72.0382 J (72.0%)
+    Per CH: avg=1.3981J  min=1.3856J  max=1.4072J
+    Dead CHs (0 energy): 0
+  ============================================
+
+  Energy CSV: experiments/statistical/exp2_mqtt_200_r6.csv.energy.csv
+
+[DONE]
+
+[Set2-MQTT-200] r7 20:33
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | Broker: yes | Total: 221
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp2_mqtt_200_r7.csv
+============================================================
+
+  Mobility: Static
+  Clusters: min=6 max=14 avg=10.0
+  Sensors: 66 ECG + 66 HR + 68 Temp
+  Broker: enabled
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+    CH200 | Rx:686 Emerg:7 Fwd:667 | Pri[H:385 M:253 L:29] | Topics: ECG=378 HeartRate=253 Temperature=29 EMERGENCY=7
+    CH201 | Rx:629 Emerg:1 Fwd:609 | Pri[H:317 M:272 L:20] | Topics: ECG=316 HeartRate=272 Temperature=20 EMERGENCY=1
+    CH202 | Rx:632 Emerg:1 Fwd:622 | Pri[H:437 M:171 L:14] | Topics: ECG=436 HeartRate=171 Temperature=14 EMERGENCY=1
+    CH203 | Rx:502 Emerg:3 Fwd:489 | Pri[H:335 M:137 L:17] | Topics: ECG=332 HeartRate=137 Temperature=17 EMERGENCY=3
+    CH204 | Rx:600 Emerg:1 Fwd:586 | Pri[H:371 M:205 L:10] | Topics: ECG=370 HeartRate=205 Temperature=10 EMERGENCY=1
+    CH205 | Rx:766 Emerg:2 Fwd:751 | Pri[H:586 M:153 L:12] | Topics: ECG=584 HeartRate=153 Temperature=12 EMERGENCY=2
+    CH206 | Rx:457 Emerg:5 Fwd:444 | Pri[H:375 M:39 L:30] | Topics: ECG=370 HeartRate=39 Temperature=30 EMERGENCY=5
+    CH207 | Rx:650 Emerg:5 Fwd:634 | Pri[H:543 M:72 L:19] | Topics: ECG=538 HeartRate=72 Temperature=19 EMERGENCY=5
+    CH208 | Rx:737 Emerg:3 Fwd:720 | Pri[H:539 M:162 L:19] | Topics: ECG=536 HeartRate=162 Temperature=19 EMERGENCY=3
+    CH209 | Rx:329 Emerg:3 Fwd:320 | Pri[H:241 M:57 L:22] | Topics: ECG=238 HeartRate=57 Temperature=22 EMERGENCY=3
+    CH210 | Rx:362 Emerg:0 Fwd:349 | Pri[H:210 M:96 L:43] | Topics: ECG=210 HeartRate=96 Temperature=43
+    CH211 | Rx:422 Emerg:1 Fwd:405 | Pri[H:290 M:70 L:45] | Topics: ECG=289 HeartRate=70 Temperature=45 EMERGENCY=1
+    CH212 | Rx:244 Emerg:3 Fwd:224 | Pri[H:77 M:95 L:52] | Topics: ECG=74 HeartRate=95 Temperature=52 EMERGENCY=3
+    CH213 | Rx:292 Emerg:3 Fwd:276 | Pri[H:184 M:58 L:34] | Topics: ECG=181 HeartRate=58 Temperature=34 EMERGENCY=3
+    CH214 | Rx:615 Emerg:0 Fwd:596 | Pri[H:446 M:120 L:30] | Topics: ECG=446 HeartRate=120 Temperature=30
+    CH215 | Rx:669 Emerg:4 Fwd:652 | Pri[H:488 M:138 L:26] | Topics: ECG=484 HeartRate=138 Temperature=26 EMERGENCY=4
+    CH216 | Rx:581 Emerg:2 Fwd:564 | Pri[H:474 M:86 L:4] | Topics: ECG=472 HeartRate=86 Temperature=4 EMERGENCY=2
+    CH217 | Rx:713 Emerg:3 Fwd:696 | Pri[H:564 M:109 L:23] | Topics: ECG=561 HeartRate=109 Temperature=23 EMERGENCY=3
+    CH218 | Rx:563 Emerg:1 Fwd:547 | Pri[H:466 M:54 L:27] | Topics: ECG=465 HeartRate=54 Temperature=27 EMERGENCY=1
+    CH219 | Rx:1093 Emerg:4 Fwd:1072 | Pri[H:951 M:100 L:21] | Topics: ECG=947 HeartRate=100 Temperature=21 EMERGENCY=4
+
+  ============================================
+  BROKER (SINK) STATISTICS
+  ============================================
+  Total Rx Packets  : 130
+  Total Rx Bytes    : 16084
+  From Gateways     : 130
+  Emergencies       : 1
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 101 packets
+    HeartRate (ID=20): 26 packets
+    Temperature (ID=30): 2 packets
+    EMERGENCY (ID=99): 1 packets
+  Per-Priority Breakdown:
+    LOW (0): 2 packets
+    MEDIUM (1): 26 packets
+    HIGH (2): 101 packets
+    CRITICAL (3): 1 packets
+  ============================================
+
+============================================================
+  RESULTS
+============================================================
+  Flows: 3983 (dead: 764)
+  Tx: 263589 | Rx: 147617
+  PDR: 56.00%
+  Avg Delay: 196.73 ms
+  Throughput: 636.27 kbps
+  Output: experiments/statistical/exp2_mqtt_200_r7.csv
+============================================================
+
+    CH200 | Rx:686 Emerg:7 Fwd:667 | Pri[H:385 M:253 L:29] | Topics: ECG=378 HeartRate=253 Temperature=29 EMERGENCY=7
+    CH201 | Rx:629 Emerg:1 Fwd:609 | Pri[H:317 M:272 L:20] | Topics: ECG=316 HeartRate=272 Temperature=20 EMERGENCY=1
+    CH202 | Rx:632 Emerg:1 Fwd:622 | Pri[H:437 M:171 L:14] | Topics: ECG=436 HeartRate=171 Temperature=14 EMERGENCY=1
+    CH203 | Rx:502 Emerg:3 Fwd:489 | Pri[H:335 M:137 L:17] | Topics: ECG=332 HeartRate=137 Temperature=17 EMERGENCY=3
+    CH204 | Rx:600 Emerg:1 Fwd:586 | Pri[H:371 M:205 L:10] | Topics: ECG=370 HeartRate=205 Temperature=10 EMERGENCY=1
+    CH205 | Rx:766 Emerg:2 Fwd:751 | Pri[H:586 M:153 L:12] | Topics: ECG=584 HeartRate=153 Temperature=12 EMERGENCY=2
+    CH206 | Rx:457 Emerg:5 Fwd:444 | Pri[H:375 M:39 L:30] | Topics: ECG=370 HeartRate=39 Temperature=30 EMERGENCY=5
+    CH207 | Rx:650 Emerg:5 Fwd:634 | Pri[H:543 M:72 L:19] | Topics: ECG=538 HeartRate=72 Temperature=19 EMERGENCY=5
+    CH208 | Rx:737 Emerg:3 Fwd:720 | Pri[H:539 M:162 L:19] | Topics: ECG=536 HeartRate=162 Temperature=19 EMERGENCY=3
+    CH209 | Rx:329 Emerg:3 Fwd:320 | Pri[H:241 M:57 L:22] | Topics: ECG=238 HeartRate=57 Temperature=22 EMERGENCY=3
+    CH210 | Rx:362 Emerg:0 Fwd:349 | Pri[H:210 M:96 L:43] | Topics: ECG=210 HeartRate=96 Temperature=43
+    CH211 | Rx:422 Emerg:1 Fwd:405 | Pri[H:290 M:70 L:45] | Topics: ECG=289 HeartRate=70 Temperature=45 EMERGENCY=1
+    CH212 | Rx:244 Emerg:3 Fwd:224 | Pri[H:77 M:95 L:52] | Topics: ECG=74 HeartRate=95 Temperature=52 EMERGENCY=3
+    CH213 | Rx:292 Emerg:3 Fwd:276 | Pri[H:184 M:58 L:34] | Topics: ECG=181 HeartRate=58 Temperature=34 EMERGENCY=3
+    CH214 | Rx:615 Emerg:0 Fwd:596 | Pri[H:446 M:120 L:30] | Topics: ECG=446 HeartRate=120 Temperature=30
+    CH215 | Rx:669 Emerg:4 Fwd:652 | Pri[H:488 M:138 L:26] | Topics: ECG=484 HeartRate=138 Temperature=26 EMERGENCY=4
+    CH216 | Rx:581 Emerg:2 Fwd:564 | Pri[H:474 M:86 L:4] | Topics: ECG=472 HeartRate=86 Temperature=4 EMERGENCY=2
+    CH217 | Rx:713 Emerg:3 Fwd:696 | Pri[H:564 M:109 L:23] | Topics: ECG=561 HeartRate=109 Temperature=23 EMERGENCY=3
+    CH218 | Rx:563 Emerg:1 Fwd:547 | Pri[H:466 M:54 L:27] | Topics: ECG=465 HeartRate=54 Temperature=27 EMERGENCY=1
+    CH219 | Rx:1093 Emerg:4 Fwd:1072 | Pri[H:951 M:100 L:21] | Topics: ECG=947 HeartRate=100 Temperature=21 EMERGENCY=4
+
+  ============================================
+  BROKER (SINK) STATISTICS
+  ============================================
+  Total Rx Packets  : 130
+  Total Rx Bytes    : 16084
+  From Gateways     : 130
+  Emergencies       : 1
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 101 packets
+    HeartRate (ID=20): 26 packets
+    Temperature (ID=30): 2 packets
+    EMERGENCY (ID=99): 1 packets
+  Per-Priority Breakdown:
+    LOW (0): 2 packets
+    MEDIUM (1): 26 packets
+    HIGH (2): 101 packets
+    CRITICAL (3): 1 packets
+  ============================================
+
+  Emergencies: 52 | Forwarded: 11223
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.4985 J
+    Consumed: 289.5015 J (72.4%)
+    Per sensor: avg=0.5525J  min=0.5406J  max=0.5645J
+    Dead sensors (0 energy): 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 27.9390 J
+    Consumed: 72.0610 J (72.1%)
+    Per CH: avg=1.3970J  min=1.3883J  max=1.4093J
+    Dead CHs (0 energy): 0
+  ============================================
+
+  Energy CSV: experiments/statistical/exp2_mqtt_200_r7.csv.energy.csv
+
+[DONE]
+
+[Set2-MQTT-200] r8 21:09
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | Broker: yes | Total: 221
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp2_mqtt_200_r8.csv
+============================================================
+
+  Mobility: Static
+  Clusters: min=5 max=15 avg=10.0
+  Sensors: 66 ECG + 66 HR + 68 Temp
+  Broker: enabled
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+    CH200 | Rx:1027 Emerg:8 Fwd:1003 | Pri[H:799 M:169 L:35] | Topics: ECG=791 HeartRate=169 Temperature=35 EMERGENCY=8
+    CH201 | Rx:822 Emerg:7 Fwd:807 | Pri[H:705 M:95 L:7] | Topics: ECG=698 HeartRate=95 Temperature=7 EMERGENCY=7
+    CH202 | Rx:697 Emerg:1 Fwd:689 | Pri[H:683 M:6 L:0] | Topics: ECG=682 HeartRate=6 EMERGENCY=1
+    CH203 | Rx:402 Emerg:0 Fwd:387 | Pri[H:198 M:139 L:50] | Topics: ECG=198 HeartRate=139 Temperature=50
+    CH204 | Rx:438 Emerg:1 Fwd:425 | Pri[H:216 M:198 L:11] | Topics: ECG=215 HeartRate=198 Temperature=11 EMERGENCY=1
+    CH205 | Rx:923 Emerg:2 Fwd:901 | Pri[H:775 M:86 L:40] | Topics: ECG=773 HeartRate=86 Temperature=40 EMERGENCY=2
+    CH206 | Rx:97 Emerg:1 Fwd:89 | Pri[H:18 M:48 L:23] | Topics: ECG=17 HeartRate=48 Temperature=23 EMERGENCY=1
+    CH207 | Rx:607 Emerg:3 Fwd:591 | Pri[H:471 M:92 L:28] | Topics: ECG=468 HeartRate=92 Temperature=28 EMERGENCY=3
+    CH208 | Rx:505 Emerg:1 Fwd:492 | Pri[H:408 M:61 L:23] | Topics: ECG=407 HeartRate=61 Temperature=23 EMERGENCY=1
+    CH209 | Rx:307 Emerg:1 Fwd:288 | Pri[H:173 M:46 L:69] | Topics: ECG=172 HeartRate=46 Temperature=69 EMERGENCY=1
+    CH210 | Rx:573 Emerg:0 Fwd:554 | Pri[H:289 M:258 L:7] | Topics: ECG=289 HeartRate=258 Temperature=7
+    CH211 | Rx:288 Emerg:2 Fwd:278 | Pri[H:244 M:10 L:24] | Topics: ECG=242 HeartRate=10 Temperature=24 EMERGENCY=2
+    CH212 | Rx:303 Emerg:2 Fwd:290 | Pri[H:258 M:0 L:32] | Topics: ECG=256 Temperature=32 EMERGENCY=2
+    CH213 | Rx:521 Emerg:5 Fwd:506 | Pri[H:318 M:166 L:22] | Topics: ECG=313 HeartRate=166 Temperature=22 EMERGENCY=5
+    CH214 | Rx:650 Emerg:2 Fwd:627 | Pri[H:394 M:213 L:20] | Topics: ECG=392 HeartRate=213 Temperature=20 EMERGENCY=2
+    CH215 | Rx:624 Emerg:3 Fwd:607 | Pri[H:405 M:181 L:21] | Topics: ECG=402 HeartRate=181 Temperature=21 EMERGENCY=3
+    CH216 | Rx:557 Emerg:6 Fwd:540 | Pri[H:398 M:109 L:33] | Topics: ECG=392 HeartRate=109 Temperature=33 EMERGENCY=6
+    CH217 | Rx:438 Emerg:1 Fwd:422 | Pri[H:248 M:158 L:16] | Topics: ECG=247 HeartRate=158 Temperature=16 EMERGENCY=1
+    CH218 | Rx:542 Emerg:3 Fwd:521 | Pri[H:203 M:292 L:26] | Topics: ECG=200 HeartRate=292 Temperature=26 EMERGENCY=3
+    CH219 | Rx:548 Emerg:4 Fwd:538 | Pri[H:513 M:16 L:9] | Topics: ECG=509 HeartRate=16 Temperature=9 EMERGENCY=4
+
+  ============================================
+  BROKER (SINK) STATISTICS
+  ============================================
+  Total Rx Packets  : 83
+  Total Rx Bytes    : 9662
+  From Gateways     : 83
+  Emergencies       : 1
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 59 packets
+    HeartRate (ID=20): 13 packets
+    Temperature (ID=30): 10 packets
+    EMERGENCY (ID=99): 1 packets
+  Per-Priority Breakdown:
+    LOW (0): 10 packets
+    MEDIUM (1): 13 packets
+    HIGH (2): 59 packets
+    CRITICAL (3): 1 packets
+  ============================================
+
+============================================================
+  RESULTS
+============================================================
+  Flows: 3976 (dead: 837)
+  Tx: 286283 | Rx: 158417
+  PDR: 55.34%
+  Avg Delay: 188.95 ms
+  Throughput: 670.70 kbps
+  Output: experiments/statistical/exp2_mqtt_200_r8.csv
+============================================================
+
+    CH200 | Rx:1027 Emerg:8 Fwd:1003 | Pri[H:799 M:169 L:35] | Topics: ECG=791 HeartRate=169 Temperature=35 EMERGENCY=8
+    CH201 | Rx:822 Emerg:7 Fwd:807 | Pri[H:705 M:95 L:7] | Topics: ECG=698 HeartRate=95 Temperature=7 EMERGENCY=7
+    CH202 | Rx:697 Emerg:1 Fwd:689 | Pri[H:683 M:6 L:0] | Topics: ECG=682 HeartRate=6 EMERGENCY=1
+    CH203 | Rx:402 Emerg:0 Fwd:387 | Pri[H:198 M:139 L:50] | Topics: ECG=198 HeartRate=139 Temperature=50
+    CH204 | Rx:438 Emerg:1 Fwd:425 | Pri[H:216 M:198 L:11] | Topics: ECG=215 HeartRate=198 Temperature=11 EMERGENCY=1
+    CH205 | Rx:923 Emerg:2 Fwd:901 | Pri[H:775 M:86 L:40] | Topics: ECG=773 HeartRate=86 Temperature=40 EMERGENCY=2
+    CH206 | Rx:97 Emerg:1 Fwd:89 | Pri[H:18 M:48 L:23] | Topics: ECG=17 HeartRate=48 Temperature=23 EMERGENCY=1
+    CH207 | Rx:607 Emerg:3 Fwd:591 | Pri[H:471 M:92 L:28] | Topics: ECG=468 HeartRate=92 Temperature=28 EMERGENCY=3
+    CH208 | Rx:505 Emerg:1 Fwd:492 | Pri[H:408 M:61 L:23] | Topics: ECG=407 HeartRate=61 Temperature=23 EMERGENCY=1
+    CH209 | Rx:307 Emerg:1 Fwd:288 | Pri[H:173 M:46 L:69] | Topics: ECG=172 HeartRate=46 Temperature=69 EMERGENCY=1
+    CH210 | Rx:573 Emerg:0 Fwd:554 | Pri[H:289 M:258 L:7] | Topics: ECG=289 HeartRate=258 Temperature=7
+    CH211 | Rx:288 Emerg:2 Fwd:278 | Pri[H:244 M:10 L:24] | Topics: ECG=242 HeartRate=10 Temperature=24 EMERGENCY=2
+    CH212 | Rx:303 Emerg:2 Fwd:290 | Pri[H:258 M:0 L:32] | Topics: ECG=256 Temperature=32 EMERGENCY=2
+    CH213 | Rx:521 Emerg:5 Fwd:506 | Pri[H:318 M:166 L:22] | Topics: ECG=313 HeartRate=166 Temperature=22 EMERGENCY=5
+    CH214 | Rx:650 Emerg:2 Fwd:627 | Pri[H:394 M:213 L:20] | Topics: ECG=392 HeartRate=213 Temperature=20 EMERGENCY=2
+    CH215 | Rx:624 Emerg:3 Fwd:607 | Pri[H:405 M:181 L:21] | Topics: ECG=402 HeartRate=181 Temperature=21 EMERGENCY=3
+    CH216 | Rx:557 Emerg:6 Fwd:540 | Pri[H:398 M:109 L:33] | Topics: ECG=392 HeartRate=109 Temperature=33 EMERGENCY=6
+    CH217 | Rx:438 Emerg:1 Fwd:422 | Pri[H:248 M:158 L:16] | Topics: ECG=247 HeartRate=158 Temperature=16 EMERGENCY=1
+    CH218 | Rx:542 Emerg:3 Fwd:521 | Pri[H:203 M:292 L:26] | Topics: ECG=200 HeartRate=292 Temperature=26 EMERGENCY=3
+    CH219 | Rx:548 Emerg:4 Fwd:538 | Pri[H:513 M:16 L:9] | Topics: ECG=509 HeartRate=16 Temperature=9 EMERGENCY=4
+
+  ============================================
+  BROKER (SINK) STATISTICS
+  ============================================
+  Total Rx Packets  : 83
+  Total Rx Bytes    : 9662
+  From Gateways     : 83
+  Emergencies       : 1
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 59 packets
+    HeartRate (ID=20): 13 packets
+    Temperature (ID=30): 10 packets
+    EMERGENCY (ID=99): 1 packets
+  Per-Priority Breakdown:
+    LOW (0): 10 packets
+    MEDIUM (1): 13 packets
+    HIGH (2): 59 packets
+    CRITICAL (3): 1 packets
+  ============================================
+
+  Emergencies: 53 | Forwarded: 10555
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.6459 J
+    Consumed: 289.3541 J (72.3%)
+    Per sensor: avg=0.5532J  min=0.5410J  max=0.5642J
+    Dead sensors (0 energy): 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 27.9486 J
+    Consumed: 72.0514 J (72.1%)
+    Per CH: avg=1.3974J  min=1.3881J  max=1.4087J
+    Dead CHs (0 energy): 0
+  ============================================
+
+  Energy CSV: experiments/statistical/exp2_mqtt_200_r8.csv.energy.csv
+
+[DONE]
+
+[Set2-MQTT-200] r9 21:46
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | Broker: yes | Total: 221
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp2_mqtt_200_r9.csv
+============================================================
+
+  Mobility: Static
+  Clusters: min=6 max=16 avg=10.0
+  Sensors: 66 ECG + 66 HR + 68 Temp
+  Broker: enabled
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+    CH200 | Rx:583 Emerg:0 Fwd:567 | Pri[H:370 M:165 L:32] | Topics: ECG=370 HeartRate=165 Temperature=32
+    CH201 | Rx:302 Emerg:0 Fwd:293 | Pri[H:259 M:9 L:25] | Topics: ECG=259 HeartRate=9 Temperature=25
+    CH202 | Rx:582 Emerg:3 Fwd:567 | Pri[H:385 M:171 L:11] | Topics: ECG=382 HeartRate=171 Temperature=11 EMERGENCY=3
+    CH203 | Rx:826 Emerg:2 Fwd:804 | Pri[H:648 M:115 L:41] | Topics: ECG=646 HeartRate=115 Temperature=41 EMERGENCY=2
+    CH204 | Rx:140 Emerg:0 Fwd:128 | Pri[H:0 M:96 L:32] | Topics: HeartRate=96 Temperature=32
+    CH205 | Rx:550 Emerg:0 Fwd:531 | Pri[H:393 M:103 L:35] | Topics: ECG=393 HeartRate=103 Temperature=35
+    CH206 | Rx:233 Emerg:1 Fwd:222 | Pri[H:1 M:207 L:14] | Topics: HeartRate=207 Temperature=14 EMERGENCY=1
+    CH207 | Rx:110 Emerg:0 Fwd:105 | Pri[H:8 M:84 L:13] | Topics: ECG=8 HeartRate=84 Temperature=13
+    CH208 | Rx:493 Emerg:2 Fwd:482 | Pri[H:445 M:10 L:27] | Topics: ECG=443 HeartRate=10 Temperature=27 EMERGENCY=2
+    CH209 | Rx:612 Emerg:5 Fwd:596 | Pri[H:458 M:97 L:41] | Topics: ECG=453 HeartRate=97 Temperature=41 EMERGENCY=5
+    CH210 | Rx:396 Emerg:3 Fwd:385 | Pri[H:355 M:8 L:22] | Topics: ECG=352 HeartRate=8 Temperature=22 EMERGENCY=3
+    CH211 | Rx:731 Emerg:5 Fwd:722 | Pri[H:638 M:66 L:18] | Topics: ECG=633 HeartRate=66 Temperature=18 EMERGENCY=5
+    CH212 | Rx:351 Emerg:1 Fwd:336 | Pri[H:191 M:93 L:52] | Topics: ECG=190 HeartRate=93 Temperature=52 EMERGENCY=1
+    CH213 | Rx:224 Emerg:1 Fwd:216 | Pri[H:146 M:49 L:21] | Topics: ECG=145 HeartRate=49 Temperature=21 EMERGENCY=1
+    CH214 | Rx:650 Emerg:6 Fwd:634 | Pri[H:509 M:94 L:31] | Topics: ECG=503 HeartRate=94 Temperature=31 EMERGENCY=6
+    CH215 | Rx:1713 Emerg:14 Fwd:1682 | Pri[H:1495 M:155 L:32] | Topics: ECG=1481 HeartRate=155 Temperature=32 EMERGENCY=14
+    CH216 | Rx:550 Emerg:1 Fwd:536 | Pri[H:445 M:70 L:21] | Topics: ECG=444 HeartRate=70 Temperature=21 EMERGENCY=1
+    CH217 | Rx:589 Emerg:4 Fwd:575 | Pri[H:515 M:38 L:22] | Topics: ECG=511 HeartRate=38 Temperature=22 EMERGENCY=4
+    CH218 | Rx:903 Emerg:6 Fwd:883 | Pri[H:780 M:79 L:24] | Topics: ECG=774 HeartRate=79 Temperature=24 EMERGENCY=6
+    CH219 | Rx:720 Emerg:4 Fwd:705 | Pri[H:507 M:185 L:13] | Topics: ECG=503 HeartRate=185 Temperature=13 EMERGENCY=4
+
+  ============================================
+  BROKER (SINK) STATISTICS
+  ============================================
+  Total Rx Packets  : 73
+  Total Rx Bytes    : 8314
+  From Gateways     : 73
+  Emergencies       : 0
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 49 packets
+    HeartRate (ID=20): 17 packets
+    Temperature (ID=30): 7 packets
+  Per-Priority Breakdown:
+    LOW (0): 7 packets
+    MEDIUM (1): 17 packets
+    HIGH (2): 49 packets
+  ============================================
+
+============================================================
+  RESULTS
+============================================================
+  Flows: 3834 (dead: 764)
+  Tx: 280927 | Rx: 162458
+  PDR: 57.83%
+  Avg Delay: 189.84 ms
+  Throughput: 691.70 kbps
+  Output: experiments/statistical/exp2_mqtt_200_r9.csv
+============================================================
+
+    CH200 | Rx:583 Emerg:0 Fwd:567 | Pri[H:370 M:165 L:32] | Topics: ECG=370 HeartRate=165 Temperature=32
+    CH201 | Rx:302 Emerg:0 Fwd:293 | Pri[H:259 M:9 L:25] | Topics: ECG=259 HeartRate=9 Temperature=25
+    CH202 | Rx:582 Emerg:3 Fwd:567 | Pri[H:385 M:171 L:11] | Topics: ECG=382 HeartRate=171 Temperature=11 EMERGENCY=3
+    CH203 | Rx:826 Emerg:2 Fwd:804 | Pri[H:648 M:115 L:41] | Topics: ECG=646 HeartRate=115 Temperature=41 EMERGENCY=2
+    CH204 | Rx:140 Emerg:0 Fwd:128 | Pri[H:0 M:96 L:32] | Topics: HeartRate=96 Temperature=32
+    CH205 | Rx:550 Emerg:0 Fwd:531 | Pri[H:393 M:103 L:35] | Topics: ECG=393 HeartRate=103 Temperature=35
+    CH206 | Rx:233 Emerg:1 Fwd:222 | Pri[H:1 M:207 L:14] | Topics: HeartRate=207 Temperature=14 EMERGENCY=1
+    CH207 | Rx:110 Emerg:0 Fwd:105 | Pri[H:8 M:84 L:13] | Topics: ECG=8 HeartRate=84 Temperature=13
+    CH208 | Rx:493 Emerg:2 Fwd:482 | Pri[H:445 M:10 L:27] | Topics: ECG=443 HeartRate=10 Temperature=27 EMERGENCY=2
+    CH209 | Rx:612 Emerg:5 Fwd:596 | Pri[H:458 M:97 L:41] | Topics: ECG=453 HeartRate=97 Temperature=41 EMERGENCY=5
+    CH210 | Rx:396 Emerg:3 Fwd:385 | Pri[H:355 M:8 L:22] | Topics: ECG=352 HeartRate=8 Temperature=22 EMERGENCY=3
+    CH211 | Rx:731 Emerg:5 Fwd:722 | Pri[H:638 M:66 L:18] | Topics: ECG=633 HeartRate=66 Temperature=18 EMERGENCY=5
+    CH212 | Rx:351 Emerg:1 Fwd:336 | Pri[H:191 M:93 L:52] | Topics: ECG=190 HeartRate=93 Temperature=52 EMERGENCY=1
+    CH213 | Rx:224 Emerg:1 Fwd:216 | Pri[H:146 M:49 L:21] | Topics: ECG=145 HeartRate=49 Temperature=21 EMERGENCY=1
+    CH214 | Rx:650 Emerg:6 Fwd:634 | Pri[H:509 M:94 L:31] | Topics: ECG=503 HeartRate=94 Temperature=31 EMERGENCY=6
+    CH215 | Rx:1713 Emerg:14 Fwd:1682 | Pri[H:1495 M:155 L:32] | Topics: ECG=1481 HeartRate=155 Temperature=32 EMERGENCY=14
+    CH216 | Rx:550 Emerg:1 Fwd:536 | Pri[H:445 M:70 L:21] | Topics: ECG=444 HeartRate=70 Temperature=21 EMERGENCY=1
+    CH217 | Rx:589 Emerg:4 Fwd:575 | Pri[H:515 M:38 L:22] | Topics: ECG=511 HeartRate=38 Temperature=22 EMERGENCY=4
+    CH218 | Rx:903 Emerg:6 Fwd:883 | Pri[H:780 M:79 L:24] | Topics: ECG=774 HeartRate=79 Temperature=24 EMERGENCY=6
+    CH219 | Rx:720 Emerg:4 Fwd:705 | Pri[H:507 M:185 L:13] | Topics: ECG=503 HeartRate=185 Temperature=13 EMERGENCY=4
+
+  ============================================
+  BROKER (SINK) STATISTICS
+  ============================================
+  Total Rx Packets  : 73
+  Total Rx Bytes    : 8314
+  From Gateways     : 73
+  Emergencies       : 0
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 49 packets
+    HeartRate (ID=20): 17 packets
+    Temperature (ID=30): 7 packets
+  Per-Priority Breakdown:
+    LOW (0): 7 packets
+    MEDIUM (1): 17 packets
+    HIGH (2): 49 packets
+  ============================================
+
+  Emergencies: 58 | Forwarded: 10969
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.5505 J
+    Consumed: 289.4495 J (72.4%)
+    Per sensor: avg=0.5528J  min=0.5404J  max=0.5650J
+    Dead sensors (0 energy): 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 27.9673 J
+    Consumed: 72.0327 J (72.0%)
+    Per CH: avg=1.3984J  min=1.3879J  max=1.4097J
+    Dead CHs (0 energy): 0
+  ============================================
+
+  Energy CSV: experiments/statistical/exp2_mqtt_200_r9.csv.energy.csv
+
+[DONE]
+
+[Set2-MQTT-200] r10 22:22
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | Broker: yes | Total: 221
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp2_mqtt_200_r10.csv
+============================================================
+
+  Mobility: Static
+  Clusters: min=6 max=15 avg=10.0
+  Sensors: 66 ECG + 66 HR + 68 Temp
+  Broker: enabled
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+    CH200 | Rx:503 Emerg:5 Fwd:492 | Pri[H:418 M:54 L:20] | Topics: ECG=413 HeartRate=54 Temperature=20 EMERGENCY=5
+    CH201 | Rx:561 Emerg:2 Fwd:549 | Pri[H:398 M:143 L:8] | Topics: ECG=396 HeartRate=143 Temperature=8 EMERGENCY=2
+    CH202 | Rx:867 Emerg:9 Fwd:844 | Pri[H:609 M:234 L:1] | Topics: ECG=600 HeartRate=234 Temperature=1 EMERGENCY=9
+    CH203 | Rx:344 Emerg:2 Fwd:328 | Pri[H:176 M:116 L:36] | Topics: ECG=174 HeartRate=116 Temperature=36 EMERGENCY=2
+    CH204 | Rx:719 Emerg:2 Fwd:699 | Pri[H:562 M:82 L:55] | Topics: ECG=560 HeartRate=82 Temperature=55 EMERGENCY=2
+    CH205 | Rx:338 Emerg:1 Fwd:327 | Pri[H:275 M:0 L:52] | Topics: ECG=274 Temperature=52 EMERGENCY=1
+    CH206 | Rx:417 Emerg:1 Fwd:404 | Pri[H:234 M:150 L:20] | Topics: ECG=233 HeartRate=150 Temperature=20 EMERGENCY=1
+    CH207 | Rx:99 Emerg:0 Fwd:93 | Pri[H:0 M:85 L:8] | Topics: HeartRate=85 Temperature=8
+    CH208 | Rx:306 Emerg:3 Fwd:296 | Pri[H:210 M:52 L:34] | Topics: ECG=207 HeartRate=52 Temperature=34 EMERGENCY=3
+    CH209 | Rx:435 Emerg:0 Fwd:420 | Pri[H:197 M:197 L:26] | Topics: ECG=197 HeartRate=197 Temperature=26
+    CH210 | Rx:719 Emerg:3 Fwd:702 | Pri[H:508 M:168 L:26] | Topics: ECG=505 HeartRate=168 Temperature=26 EMERGENCY=3
+    CH211 | Rx:199 Emerg:0 Fwd:192 | Pri[H:117 M:60 L:15] | Topics: ECG=117 HeartRate=60 Temperature=15
+    CH212 | Rx:495 Emerg:0 Fwd:481 | Pri[H:418 M:31 L:32] | Topics: ECG=418 HeartRate=31 Temperature=32
+    CH213 | Rx:385 Emerg:5 Fwd:371 | Pri[H:191 M:164 L:16] | Topics: ECG=186 HeartRate=164 Temperature=16 EMERGENCY=5
+    CH214 | Rx:647 Emerg:1 Fwd:635 | Pri[H:567 M:38 L:30] | Topics: ECG=566 HeartRate=38 Temperature=30 EMERGENCY=1
+    CH215 | Rx:778 Emerg:2 Fwd:757 | Pri[H:529 M:183 L:45] | Topics: ECG=527 HeartRate=183 Temperature=45 EMERGENCY=2
+    CH216 | Rx:943 Emerg:0 Fwd:928 | Pri[H:861 M:50 L:17] | Topics: ECG=861 HeartRate=50 Temperature=17
+    CH217 | Rx:758 Emerg:7 Fwd:740 | Pri[H:531 M:185 L:24] | Topics: ECG=524 HeartRate=185 Temperature=24 EMERGENCY=7
+    CH218 | Rx:640 Emerg:1 Fwd:630 | Pri[H:610 M:0 L:20] | Topics: ECG=609 Temperature=20 EMERGENCY=1
+    CH219 | Rx:556 Emerg:6 Fwd:543 | Pri[H:362 M:162 L:19] | Topics: ECG=356 HeartRate=162 Temperature=19 EMERGENCY=6
+
+  ============================================
+  BROKER (SINK) STATISTICS
+  ============================================
+  Total Rx Packets  : 65
+  Total Rx Bytes    : 7242
+  From Gateways     : 65
+  Emergencies       : 0
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 41 packets
+    HeartRate (ID=20): 18 packets
+    Temperature (ID=30): 6 packets
+  Per-Priority Breakdown:
+    LOW (0): 6 packets
+    MEDIUM (1): 18 packets
+    HIGH (2): 41 packets
+  ============================================
+
+============================================================
+  RESULTS
+============================================================
+  Flows: 3891 (dead: 763)
+  Tx: 286333 | Rx: 163686
+  PDR: 57.17%
+  Avg Delay: 181.65 ms
+  Throughput: 689.13 kbps
+  Output: experiments/statistical/exp2_mqtt_200_r10.csv
+============================================================
+
+    CH200 | Rx:503 Emerg:5 Fwd:492 | Pri[H:418 M:54 L:20] | Topics: ECG=413 HeartRate=54 Temperature=20 EMERGENCY=5
+    CH201 | Rx:561 Emerg:2 Fwd:549 | Pri[H:398 M:143 L:8] | Topics: ECG=396 HeartRate=143 Temperature=8 EMERGENCY=2
+    CH202 | Rx:867 Emerg:9 Fwd:844 | Pri[H:609 M:234 L:1] | Topics: ECG=600 HeartRate=234 Temperature=1 EMERGENCY=9
+    CH203 | Rx:344 Emerg:2 Fwd:328 | Pri[H:176 M:116 L:36] | Topics: ECG=174 HeartRate=116 Temperature=36 EMERGENCY=2
+    CH204 | Rx:719 Emerg:2 Fwd:699 | Pri[H:562 M:82 L:55] | Topics: ECG=560 HeartRate=82 Temperature=55 EMERGENCY=2
+    CH205 | Rx:338 Emerg:1 Fwd:327 | Pri[H:275 M:0 L:52] | Topics: ECG=274 Temperature=52 EMERGENCY=1
+    CH206 | Rx:417 Emerg:1 Fwd:404 | Pri[H:234 M:150 L:20] | Topics: ECG=233 HeartRate=150 Temperature=20 EMERGENCY=1
+    CH207 | Rx:99 Emerg:0 Fwd:93 | Pri[H:0 M:85 L:8] | Topics: HeartRate=85 Temperature=8
+    CH208 | Rx:306 Emerg:3 Fwd:296 | Pri[H:210 M:52 L:34] | Topics: ECG=207 HeartRate=52 Temperature=34 EMERGENCY=3
+    CH209 | Rx:435 Emerg:0 Fwd:420 | Pri[H:197 M:197 L:26] | Topics: ECG=197 HeartRate=197 Temperature=26
+    CH210 | Rx:719 Emerg:3 Fwd:702 | Pri[H:508 M:168 L:26] | Topics: ECG=505 HeartRate=168 Temperature=26 EMERGENCY=3
+    CH211 | Rx:199 Emerg:0 Fwd:192 | Pri[H:117 M:60 L:15] | Topics: ECG=117 HeartRate=60 Temperature=15
+    CH212 | Rx:495 Emerg:0 Fwd:481 | Pri[H:418 M:31 L:32] | Topics: ECG=418 HeartRate=31 Temperature=32
+    CH213 | Rx:385 Emerg:5 Fwd:371 | Pri[H:191 M:164 L:16] | Topics: ECG=186 HeartRate=164 Temperature=16 EMERGENCY=5
+    CH214 | Rx:647 Emerg:1 Fwd:635 | Pri[H:567 M:38 L:30] | Topics: ECG=566 HeartRate=38 Temperature=30 EMERGENCY=1
+    CH215 | Rx:778 Emerg:2 Fwd:757 | Pri[H:529 M:183 L:45] | Topics: ECG=527 HeartRate=183 Temperature=45 EMERGENCY=2
+    CH216 | Rx:943 Emerg:0 Fwd:928 | Pri[H:861 M:50 L:17] | Topics: ECG=861 HeartRate=50 Temperature=17
+    CH217 | Rx:758 Emerg:7 Fwd:740 | Pri[H:531 M:185 L:24] | Topics: ECG=524 HeartRate=185 Temperature=24 EMERGENCY=7
+    CH218 | Rx:640 Emerg:1 Fwd:630 | Pri[H:610 M:0 L:20] | Topics: ECG=609 Temperature=20 EMERGENCY=1
+    CH219 | Rx:556 Emerg:6 Fwd:543 | Pri[H:362 M:162 L:19] | Topics: ECG=356 HeartRate=162 Temperature=19 EMERGENCY=6
+
+  ============================================
+  BROKER (SINK) STATISTICS
+  ============================================
+  Total Rx Packets  : 65
+  Total Rx Bytes    : 7242
+  From Gateways     : 65
+  Emergencies       : 0
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 41 packets
+    HeartRate (ID=20): 18 packets
+    Temperature (ID=30): 6 packets
+  Per-Priority Breakdown:
+    LOW (0): 6 packets
+    MEDIUM (1): 18 packets
+    HIGH (2): 41 packets
+  ============================================
+
+  Emergencies: 50 | Forwarded: 10431
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.5520 J
+    Consumed: 289.4480 J (72.4%)
+    Per sensor: avg=0.5528J  min=0.5408J  max=0.5643J
+    Dead sensors (0 energy): 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 27.9764 J
+    Consumed: 72.0236 J (72.0%)
+    Per CH: avg=1.3988J  min=1.3887J  max=1.4058J
+    Dead CHs (0 energy): 0
+  ============================================
+
+  Energy CSV: experiments/statistical/exp2_mqtt_200_r10.csv.energy.csv
+
+[DONE]
+
+=== SET 3: HETERO WSN ===
+[Set3] N=50 r1 22:59
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 50 | CHs: 5 | Sink: no | Total: 56
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_50_r1.csv
+============================================================
+
+  Clusters: min=7 max=16 avg=10.0
+  Traffic: HETEROGENEOUS (16 ECG@4kbps + 16 HR@512bps + 18 Temp@51bps)
+  Flow: Sensors -> 5 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 132 (dead: 13)
+  Tx: 20840 | Rx: 16547
+  PDR: 79.40%
+  Avg Delay: 1.43 ms
+  Throughput: 60.99 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_50_r1.csv
+============================================================
+
+[DONE]
+
+[Set3] N=50 r2 23:00
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 50 | CHs: 5 | Sink: no | Total: 56
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_50_r2.csv
+============================================================
+
+  Clusters: min=6 max=15 avg=10.0
+  Traffic: HETEROGENEOUS (16 ECG@4kbps + 16 HR@512bps + 18 Temp@51bps)
+  Flow: Sensors -> 5 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 163 (dead: 3)
+  Tx: 21039 | Rx: 19009
+  PDR: 90.35%
+  Avg Delay: 2.02 ms
+  Throughput: 69.31 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_50_r2.csv
+============================================================
+
+[DONE]
+
+[Set3] N=50 r3 23:00
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 50 | CHs: 5 | Sink: no | Total: 56
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_50_r3.csv
+============================================================
+
+  Clusters: min=4 max=21 avg=10.0
+  Traffic: HETEROGENEOUS (16 ECG@4kbps + 16 HR@512bps + 18 Temp@51bps)
+  Flow: Sensors -> 5 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 198 (dead: 7)
+  Tx: 21130 | Rx: 17383
+  PDR: 82.27%
+  Avg Delay: 3.22 ms
+  Throughput: 63.46 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_50_r3.csv
+============================================================
+
+[DONE]
+
+[Set3] N=50 r4 23:01
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 50 | CHs: 5 | Sink: no | Total: 56
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_50_r4.csv
+============================================================
+
+  Clusters: min=6 max=17 avg=10.0
+  Traffic: HETEROGENEOUS (16 ECG@4kbps + 16 HR@512bps + 18 Temp@51bps)
+  Flow: Sensors -> 5 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 134 (dead: 7)
+  Tx: 20871 | Rx: 19759
+  PDR: 94.67%
+  Avg Delay: 1.81 ms
+  Throughput: 73.03 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_50_r4.csv
+============================================================
+
+[DONE]
+
+[Set3] N=50 r5 23:01
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 50 | CHs: 5 | Sink: no | Total: 56
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_50_r5.csv
+============================================================
+
+  Clusters: min=5 max=13 avg=10.0
+  Traffic: HETEROGENEOUS (16 ECG@4kbps + 16 HR@512bps + 18 Temp@51bps)
+  Flow: Sensors -> 5 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 182 (dead: 16)
+  Tx: 21107 | Rx: 16462
+  PDR: 77.99%
+  Avg Delay: 2.12 ms
+  Throughput: 60.83 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_50_r5.csv
+============================================================
+
+[DONE]
+
+[Set3] N=50 r6 23:02
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 50 | CHs: 5 | Sink: no | Total: 56
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_50_r6.csv
+============================================================
+
+  Clusters: min=6 max=17 avg=10.0
+  Traffic: HETEROGENEOUS (16 ECG@4kbps + 16 HR@512bps + 18 Temp@51bps)
+  Flow: Sensors -> 5 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 146 (dead: 19)
+  Tx: 21043 | Rx: 12939
+  PDR: 61.49%
+  Avg Delay: 2.35 ms
+  Throughput: 47.82 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_50_r6.csv
+============================================================
+
+[DONE]
+
+[Set3] N=50 r7 23:02
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 50 | CHs: 5 | Sink: no | Total: 56
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_50_r7.csv
+============================================================
+
+  Clusters: min=4 max=18 avg=10.0
+  Traffic: HETEROGENEOUS (16 ECG@4kbps + 16 HR@512bps + 18 Temp@51bps)
+  Flow: Sensors -> 5 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 187 (dead: 7)
+  Tx: 20877 | Rx: 20368
+  PDR: 97.56%
+  Avg Delay: 2.28 ms
+  Throughput: 75.44 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_50_r7.csv
+============================================================
+
+[DONE]
+
+[Set3] N=50 r8 23:03
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 50 | CHs: 5 | Sink: no | Total: 56
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_50_r8.csv
+============================================================
+
+  Clusters: min=6 max=15 avg=10.0
+  Traffic: HETEROGENEOUS (16 ECG@4kbps + 16 HR@512bps + 18 Temp@51bps)
+  Flow: Sensors -> 5 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 188 (dead: 7)
+  Tx: 21157 | Rx: 19573
+  PDR: 92.51%
+  Avg Delay: 2.25 ms
+  Throughput: 72.03 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_50_r8.csv
+============================================================
+
+[DONE]
+
+[Set3] N=50 r9 23:03
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 50 | CHs: 5 | Sink: no | Total: 56
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_50_r9.csv
+============================================================
+
+  Clusters: min=4 max=22 avg=10.0
+  Traffic: HETEROGENEOUS (16 ECG@4kbps + 16 HR@512bps + 18 Temp@51bps)
+  Flow: Sensors -> 5 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 118 (dead: 16)
+  Tx: 20987 | Rx: 14975
+  PDR: 71.35%
+  Avg Delay: 1.60 ms
+  Throughput: 54.74 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_50_r9.csv
+============================================================
+
+[DONE]
+
+[Set3] N=50 r10 23:04
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 50 | CHs: 5 | Sink: no | Total: 56
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_50_r10.csv
+============================================================
+
+  Clusters: min=5 max=17 avg=10.0
+  Traffic: HETEROGENEOUS (16 ECG@4kbps + 16 HR@512bps + 18 Temp@51bps)
+  Flow: Sensors -> 5 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 211 (dead: 4)
+  Tx: 21229 | Rx: 20205
+  PDR: 95.18%
+  Avg Delay: 4.35 ms
+  Throughput: 73.55 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_50_r10.csv
+============================================================
+
+[DONE]
+
+[Set3] N=100 r1 23:05
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 100 | CHs: 10 | Sink: no | Total: 111
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_100_r1.csv
+============================================================
+
+  Clusters: min=5 max=19 avg=10.0
+  Traffic: HETEROGENEOUS (33 ECG@4kbps + 33 HR@512bps + 34 Temp@51bps)
+  Flow: Sensors -> 10 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 533 (dead: 33)
+  Tx: 43793 | Rx: 43713
+  PDR: 99.82%
+  Avg Delay: 1.88 ms
+  Throughput: 160.26 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_100_r1.csv
+============================================================
+
+[DONE]
+
+[Set3] N=100 r2 23:07
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 100 | CHs: 10 | Sink: no | Total: 111
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_100_r2.csv
+============================================================
+
+  Clusters: min=4 max=15 avg=10.0
+  Traffic: HETEROGENEOUS (33 ECG@4kbps + 33 HR@512bps + 34 Temp@51bps)
+  Flow: Sensors -> 10 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 445 (dead: 23)
+  Tx: 43192 | Rx: 42179
+  PDR: 97.65%
+  Avg Delay: 2.12 ms
+  Throughput: 155.61 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_100_r2.csv
+============================================================
+
+[DONE]
+
+[Set3] N=100 r3 23:08
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 100 | CHs: 10 | Sink: no | Total: 111
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_100_r3.csv
+============================================================
+
+  Clusters: min=4 max=15 avg=10.0
+  Traffic: HETEROGENEOUS (33 ECG@4kbps + 33 HR@512bps + 34 Temp@51bps)
+  Flow: Sensors -> 10 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 573 (dead: 27)
+  Tx: 44005 | Rx: 43552
+  PDR: 98.97%
+  Avg Delay: 3.20 ms
+  Throughput: 159.23 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_100_r3.csv
+============================================================
+
+[DONE]
+
+[Set3] N=100 r4 23:10
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 100 | CHs: 10 | Sink: no | Total: 111
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_100_r4.csv
+============================================================
+
+  Clusters: min=6 max=18 avg=10.0
+  Traffic: HETEROGENEOUS (33 ECG@4kbps + 33 HR@512bps + 34 Temp@51bps)
+  Flow: Sensors -> 10 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 647 (dead: 24)
+  Tx: 44670 | Rx: 44146
+  PDR: 98.83%
+  Avg Delay: 3.43 ms
+  Throughput: 158.92 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_100_r4.csv
+============================================================
+
+[DONE]
+
+[Set3] N=100 r5 23:12
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 100 | CHs: 10 | Sink: no | Total: 111
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_100_r5.csv
+============================================================
+
+  Clusters: min=2 max=17 avg=10.0
+  Traffic: HETEROGENEOUS (33 ECG@4kbps + 33 HR@512bps + 34 Temp@51bps)
+  Flow: Sensors -> 10 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 562 (dead: 22)
+  Tx: 43845 | Rx: 43757
+  PDR: 99.80%
+  Avg Delay: 2.91 ms
+  Throughput: 159.26 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_100_r5.csv
+============================================================
+
+[DONE]
+
+[Set3] N=100 r6 23:14
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 100 | CHs: 10 | Sink: no | Total: 111
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_100_r6.csv
+============================================================
+
+  Clusters: min=4 max=19 avg=10.0
+  Traffic: HETEROGENEOUS (33 ECG@4kbps + 33 HR@512bps + 34 Temp@51bps)
+  Flow: Sensors -> 10 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 493 (dead: 21)
+  Tx: 43530 | Rx: 42494
+  PDR: 97.62%
+  Avg Delay: 2.40 ms
+  Throughput: 155.98 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_100_r6.csv
+============================================================
+
+[DONE]
+
+[Set3] N=100 r7 23:16
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 100 | CHs: 10 | Sink: no | Total: 111
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_100_r7.csv
+============================================================
+
+  Clusters: min=7 max=15 avg=10.0
+  Traffic: HETEROGENEOUS (33 ECG@4kbps + 33 HR@512bps + 34 Temp@51bps)
+  Flow: Sensors -> 10 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 535 (dead: 13)
+  Tx: 43737 | Rx: 43439
+  PDR: 99.32%
+  Avg Delay: 2.53 ms
+  Throughput: 158.89 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_100_r7.csv
+============================================================
+
+[DONE]
+
+[Set3] N=100 r8 23:17
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 100 | CHs: 10 | Sink: no | Total: 111
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_100_r8.csv
+============================================================
+
+  Clusters: min=5 max=16 avg=10.0
+  Traffic: HETEROGENEOUS (33 ECG@4kbps + 33 HR@512bps + 34 Temp@51bps)
+  Flow: Sensors -> 10 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 635 (dead: 21)
+  Tx: 44541 | Rx: 44485
+  PDR: 99.87%
+  Avg Delay: 3.24 ms
+  Throughput: 161.11 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_100_r8.csv
+============================================================
+
+[DONE]
+
+[Set3] N=100 r9 23:19
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 100 | CHs: 10 | Sink: no | Total: 111
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_100_r9.csv
+============================================================
+
+  Clusters: min=6 max=15 avg=10.0
+  Traffic: HETEROGENEOUS (33 ECG@4kbps + 33 HR@512bps + 34 Temp@51bps)
+  Flow: Sensors -> 10 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 827 (dead: 13)
+  Tx: 46592 | Rx: 45376
+  PDR: 97.39%
+  Avg Delay: 4.77 ms
+  Throughput: 158.73 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_100_r9.csv
+============================================================
+
+[DONE]
+
+[Set3] N=100 r10 23:21
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 100 | CHs: 10 | Sink: no | Total: 111
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_100_r10.csv
+============================================================
+
+  Clusters: min=4 max=22 avg=10.0
+  Traffic: HETEROGENEOUS (33 ECG@4kbps + 33 HR@512bps + 34 Temp@51bps)
+  Flow: Sensors -> 10 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 615 (dead: 9)
+  Tx: 44131 | Rx: 43984
+  PDR: 99.67%
+  Avg Delay: 3.40 ms
+  Throughput: 159.72 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_100_r10.csv
+============================================================
+
+[DONE]
+
+[Set3] N=150 r1 23:23
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 150 | CHs: 15 | Sink: no | Total: 166
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_150_r1.csv
+============================================================
+
+  Clusters: min=6 max=18 avg=10.0
+  Traffic: HETEROGENEOUS (50 ECG@4kbps + 50 HR@512bps + 50 Temp@51bps)
+  Flow: Sensors -> 15 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 1868 (dead: 55)
+  Tx: 74640 | Rx: 73779
+  PDR: 98.85%
+  Avg Delay: 9.52 ms
+  Throughput: 250.70 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_150_r1.csv
+============================================================
+
+[DONE]
+
+[Set3] N=150 r2 23:27
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 150 | CHs: 15 | Sink: no | Total: 166
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_150_r2.csv
+============================================================
+
+  Clusters: min=4 max=16 avg=10.0
+  Traffic: HETEROGENEOUS (50 ECG@4kbps + 50 HR@512bps + 50 Temp@51bps)
+  Flow: Sensors -> 15 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 1413 (dead: 83)
+  Tx: 68881 | Rx: 67517
+  PDR: 98.02%
+  Avg Delay: 6.13 ms
+  Throughput: 241.28 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_150_r2.csv
+============================================================
+
+[DONE]
+
+[Set3] N=150 r3 23:30
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 150 | CHs: 15 | Sink: no | Total: 166
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_150_r3.csv
+============================================================
+
+  Clusters: min=5 max=17 avg=10.0
+  Traffic: HETEROGENEOUS (50 ECG@4kbps + 50 HR@512bps + 50 Temp@51bps)
+  Flow: Sensors -> 15 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 1458 (dead: 86)
+  Tx: 69347 | Rx: 68870
+  PDR: 99.31%
+  Avg Delay: 5.91 ms
+  Throughput: 244.84 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_150_r3.csv
+============================================================
+
+[DONE]
+
+[Set3] N=150 r4 23:33
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 150 | CHs: 15 | Sink: no | Total: 166
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_150_r4.csv
+============================================================
+
+  Clusters: min=4 max=15 avg=10.0
+  Traffic: HETEROGENEOUS (50 ECG@4kbps + 50 HR@512bps + 50 Temp@51bps)
+  Flow: Sensors -> 15 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 1364 (dead: 66)
+  Tx: 68689 | Rx: 68370
+  PDR: 99.54%
+  Avg Delay: 5.08 ms
+  Throughput: 244.46 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_150_r4.csv
+============================================================
+
+[DONE]
+
+[Set3] N=150 r5 23:37
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 150 | CHs: 15 | Sink: no | Total: 166
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_150_r5.csv
+============================================================
+
+  Clusters: min=4 max=16 avg=10.0
+  Traffic: HETEROGENEOUS (50 ECG@4kbps + 50 HR@512bps + 50 Temp@51bps)
+  Flow: Sensors -> 15 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 1853 (dead: 82)
+  Tx: 73564 | Rx: 72730
+  PDR: 98.87%
+  Avg Delay: 9.78 ms
+  Throughput: 249.47 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_150_r5.csv
+============================================================
+
+[DONE]
+
+[Set3] N=150 r6 23:41
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 150 | CHs: 15 | Sink: no | Total: 166
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_150_r6.csv
+============================================================
+
+  Clusters: min=2 max=25 avg=10.0
+  Traffic: HETEROGENEOUS (50 ECG@4kbps + 50 HR@512bps + 50 Temp@51bps)
+  Flow: Sensors -> 15 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 1510 (dead: 50)
+  Tx: 70548 | Rx: 69741
+  PDR: 98.86%
+  Avg Delay: 5.72 ms
+  Throughput: 245.27 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_150_r6.csv
+============================================================
+
+[DONE]
+
+[Set3] N=150 r7 23:44
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 150 | CHs: 15 | Sink: no | Total: 166
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_150_r7.csv
+============================================================
+
+  Clusters: min=3 max=17 avg=10.0
+  Traffic: HETEROGENEOUS (50 ECG@4kbps + 50 HR@512bps + 50 Temp@51bps)
+  Flow: Sensors -> 15 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 1605 (dead: 79)
+  Tx: 70214 | Rx: 69531
+  PDR: 99.03%
+  Avg Delay: 6.05 ms
+  Throughput: 245.76 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_150_r7.csv
+============================================================
+
+[DONE]
+
+[Set3] N=150 r8 23:48
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 150 | CHs: 15 | Sink: no | Total: 166
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_150_r8.csv
+============================================================
+
+  Clusters: min=5 max=16 avg=10.0
+  Traffic: HETEROGENEOUS (50 ECG@4kbps + 50 HR@512bps + 50 Temp@51bps)
+  Flow: Sensors -> 15 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 1777 (dead: 56)
+  Tx: 74278 | Rx: 73485
+  PDR: 98.93%
+  Avg Delay: 9.06 ms
+  Throughput: 250.81 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_150_r8.csv
+============================================================
+
+[DONE]
+
+[Set3] N=150 r9 23:52
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 150 | CHs: 15 | Sink: no | Total: 166
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_150_r9.csv
+============================================================
+
+  Clusters: min=2 max=22 avg=10.0
+  Traffic: HETEROGENEOUS (50 ECG@4kbps + 50 HR@512bps + 50 Temp@51bps)
+  Flow: Sensors -> 15 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 1994 (dead: 53)
+  Tx: 79690 | Rx: 78416
+  PDR: 98.40%
+  Avg Delay: 12.41 ms
+  Throughput: 255.99 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_150_r9.csv
+============================================================
+
+[DONE]
+
+[Set3] N=150 r10 23:56
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 150 | CHs: 15 | Sink: no | Total: 166
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_150_r10.csv
+============================================================
+
+  Clusters: min=4 max=20 avg=10.0
+  Traffic: HETEROGENEOUS (50 ECG@4kbps + 50 HR@512bps + 50 Temp@51bps)
+  Flow: Sensors -> 15 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 760 (dead: 42)
+  Tx: 65761 | Rx: 65542
+  PDR: 99.67%
+  Avg Delay: 2.72 ms
+  Throughput: 241.70 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_150_r10.csv
+============================================================
+
+[DONE]
+
+[Set3] N=200 r1 23:59
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 200 | CHs: 20 | Sink: no | Total: 221
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_200_r1.csv
+============================================================
+
+  Clusters: min=4 max=18 avg=10.0
+  Traffic: HETEROGENEOUS (66 ECG@4kbps + 66 HR@512bps + 68 Temp@51bps)
+  Flow: Sensors -> 20 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 3228 (dead: 96)
+  Tx: 102712 | Rx: 101188
+  PDR: 98.52%
+  Avg Delay: 15.44 ms
+  Throughput: 336.49 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_200_r1.csv
+============================================================
+
+[DONE]
+
+[Set3] N=200 r2 00:06
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 200 | CHs: 20 | Sink: no | Total: 221
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_200_r2.csv
+============================================================
+
+  Clusters: min=5 max=14 avg=10.0
+  Traffic: HETEROGENEOUS (66 ECG@4kbps + 66 HR@512bps + 68 Temp@51bps)
+  Flow: Sensors -> 20 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 2514 (dead: 121)
+  Tx: 93383 | Rx: 92546
+  PDR: 99.10%
+  Avg Delay: 9.08 ms
+  Throughput: 324.81 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_200_r2.csv
+============================================================
+
+[DONE]
+
+[Set3] N=200 r3 00:12
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 200 | CHs: 20 | Sink: no | Total: 221
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_200_r3.csv
+============================================================
+
+  Clusters: min=4 max=16 avg=10.0
+  Traffic: HETEROGENEOUS (66 ECG@4kbps + 66 HR@512bps + 68 Temp@51bps)
+  Flow: Sensors -> 20 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 3207 (dead: 106)
+  Tx: 103003 | Rx: 101044
+  PDR: 98.10%
+  Avg Delay: 13.75 ms
+  Throughput: 334.90 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_200_r3.csv
+============================================================
+
+[DONE]
+
+[Set3] N=200 r4 00:18
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 200 | CHs: 20 | Sink: no | Total: 221
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_200_r4.csv
+============================================================
+
+  Clusters: min=2 max=15 avg=10.0
+  Traffic: HETEROGENEOUS (66 ECG@4kbps + 66 HR@512bps + 68 Temp@51bps)
+  Flow: Sensors -> 20 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 3689 (dead: 242)
+  Tx: 117157 | Rx: 109589
+  PDR: 93.54%
+  Avg Delay: 25.51 ms
+  Throughput: 345.83 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_200_r4.csv
+============================================================
+
+[DONE]
+
+[Set3] N=200 r5 00:28
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 200 | CHs: 20 | Sink: no | Total: 221
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_200_r5.csv
+============================================================
+
+  Clusters: min=7 max=17 avg=10.0
+  Traffic: HETEROGENEOUS (66 ECG@4kbps + 66 HR@512bps + 68 Temp@51bps)
+  Flow: Sensors -> 20 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 3432 (dead: 94)
+  Tx: 121338 | Rx: 115172
+  PDR: 94.92%
+  Avg Delay: 24.74 ms
+  Throughput: 351.82 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_200_r5.csv
+============================================================
+
+[DONE]
+
+[Set3] N=200 r6 00:37
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 200 | CHs: 20 | Sink: no | Total: 221
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_200_r6.csv
+============================================================
+
+  Clusters: min=3 max=17 avg=10.0
+  Traffic: HETEROGENEOUS (66 ECG@4kbps + 66 HR@512bps + 68 Temp@51bps)
+  Flow: Sensors -> 20 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 3661 (dead: 87)
+  Tx: 192182 | Rx: 158396
+  PDR: 82.42%
+  Avg Delay: 54.65 ms
+  Throughput: 401.47 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_200_r6.csv
+============================================================
+
+[DONE]
+
+[Set3] N=200 r7 00:55
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 200 | CHs: 20 | Sink: no | Total: 221
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_200_r7.csv
+============================================================
+
+  Clusters: min=4 max=16 avg=10.0
+  Traffic: HETEROGENEOUS (66 ECG@4kbps + 66 HR@512bps + 68 Temp@51bps)
+  Flow: Sensors -> 20 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 3498 (dead: 91)
+  Tx: 110926 | Rx: 108646
+  PDR: 97.94%
+  Avg Delay: 16.36 ms
+  Throughput: 344.83 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_200_r7.csv
+============================================================
+
+[DONE]
+
+[Set3] N=200 r8 01:03
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 200 | CHs: 20 | Sink: no | Total: 221
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_200_r8.csv
+============================================================
+
+  Clusters: min=4 max=16 avg=10.0
+  Traffic: HETEROGENEOUS (66 ECG@4kbps + 66 HR@512bps + 68 Temp@51bps)
+  Flow: Sensors -> 20 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 3530 (dead: 112)
+  Tx: 122756 | Rx: 112090
+  PDR: 91.31%
+  Avg Delay: 26.68 ms
+  Throughput: 343.94 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_200_r8.csv
+============================================================
+
+[DONE]
+
+[Set3] N=200 r9 01:13
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 200 | CHs: 20 | Sink: no | Total: 221
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_200_r9.csv
+============================================================
+
+  Clusters: min=5 max=19 avg=10.0
+  Traffic: HETEROGENEOUS (66 ECG@4kbps + 66 HR@512bps + 68 Temp@51bps)
+  Flow: Sensors -> 20 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 2986 (dead: 136)
+  Tx: 99954 | Rx: 98322
+  PDR: 98.37%
+  Avg Delay: 12.59 ms
+  Throughput: 331.52 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_200_r9.csv
+============================================================
+
+[DONE]
+
+[Set3] N=200 r10 01:19
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 200 | CHs: 20 | Sink: no | Total: 221
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3_wsn_hetero_200_r10.csv
+============================================================
+
+  Clusters: min=5 max=17 avg=10.0
+  Traffic: HETEROGENEOUS (66 ECG@4kbps + 66 HR@512bps + 68 Temp@51bps)
+  Flow: Sensors -> 20 CHs (receive only)
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 3641 (dead: 61)
+  Tx: 160244 | Rx: 140610
+  PDR: 87.75%
+  Avg Delay: 42.88 ms
+  Throughput: 380.22 kbps
+  Output: experiments/statistical/exp3_wsn_hetero_200_r10.csv
+============================================================
+
+[DONE]
+
+=== BITTI: Tue Mar 31 01:33:54 +03 2026 ===
+54
+[?2004h(aigpu) [01;32mtest1@ailab1[00m:[01;34m~/networkSimulation/ns-3-dev[00m$ 
+[?2004l[?2004h(aigpu) [01;32mtest1@ailab1[00m:[01;34m~/networkSimulation/ns-3-dev[00m$ ls experiments/statistical/*.csv | wc -l[11Pecho "=== BITTI: $(date) ==="for N in 50 100 150 200; do   CH=$((N / 10));    for R in $(seq 1 10); do     echo "[Set3] N=$N r$R $(date +%H:%M)"; ./ns3 run "cluster-aodv-nosink --numRegular=$N --numCH=$CH --useSink=false --hetero=true --run=$R --simTime=300 --csv=experiments/statistical/exp3_wsn_hetero_${N}_r${R}.csv" 2>/dev/null;    done;  doneMMM(aigpu) [01;32mtest1@ailab1[00m:[01;34m~/networkSimulation/ns-3-dev[00m$ [37Pecho "=== SET 3: HETERO WSN ==="
+[K
+[K
+[KMMM[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cfor R in 6 7 8 9 10; do   echo "[Set2-MQTT-200] r$R $(date +%H:%M)"; ./ns3 run "cluster-aodv-mqtt --nSensors=200 --nCH=20 --broker=true --run=$R --simTime=300 --anim=false --csv=experiments/statistical/exp2_mqtt_200_r${R}.csv" 2>/dev/null;  doneMM[C[C[C[C7 8 9 10; do   echo "[Set2-WSN-200] r$R $(date +%H:%M)"; ./ns3 run "cluster-aodv-nosink --numRegular=200 --numCH=20 --useSink=true --run=$R --simTime=300 --csv=experiments/statistic[10Pal/exp2_wsn[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[CMM(aigpu) [01;32mtest1@ailab1[00m:[01;34m~/networkSimulation/ns-3-dev[00m$ [C[C[C[C[C[C[C[C[C6 7 8 9 10; do   echo "[Set2-MQTT-200] r$R $(date +%H:%M)"; ./ns3 run "cluster-aodv-mqtt --nSensors=200 --nCH=20 --broker=true --run=$R --simTime=300 --anim=false --csv=experiments/[10@statistical/exp2_mqtt[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[CMM[37Pecho "=== SET 3: HETERO WSN ==="
+[K
+[KMM[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cfor N in 50 100 150 200; do   CH=$((N / 10));    for R in $(seq 1 10); do     echo "[Set3] N=$N r$R $(date +%H:%M)"; ./ns3 run "cluster-aodv-nosink --numRegular=$N --numCH=$CH --useSink=false --hetero=true --run=$R --simTime=300 --csv=experiments/statistical/exp3_wsn_hetero_${N}_r${R}.csv" 2>/dev/null;    done;  doneMMM(aigpu) [01;32mtest1@ailab1[00m:[01;34m~/networkSimulation/ns-3-dev[00m$ [40Pecho "=== BITTI: $(date) ==="
+[K
+[K
+[KMMM[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cls experiments/statistical/*.csv | wc -l[Kls experiments/statistical/*.csv | wc -l[11Pecho "=== BITTI: $(date) ==="for N in 50 100 150 200; do   CH=$((N / 10));    for R in $(seq 1 10); do     echo "[Set3] N=$N r$R $(date +%H:%M)"; ./ns3 run "cluster-aodv-nosink --numRegular=$N --numCH=$CH --useSink=false --hetero=true --run=$R --simTime=300 --csv=experiments/statistical/exp3_wsn_hetero_${N}_r${R}.csv" 2>/dev/null;    done;  doneMMM(aigpu) [01;32mtest1@ailab1[00m:[01;34m~/networkSimulation/ns-3-dev[00m$ [37Pecho "=== SET 3: HETERO WSN ==="
+[K
+[K
+[KMMM[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cfor R in 6 7 8 9 10; do   echo "[Set2-MQTT-200] r$R $(date +%H:%M)"; ./ns3 run "cluster-aodv-mqtt --nSensors=200 --nCH=20 --broker=true --run=$R --simTime=300 --anim=false --csv=experiments/statistical/exp2_mqtt_200_r${R}.csv" 2>/dev/null;  doneMM[C[C[C[C7 8 9 10; do   echo "[Set2-WSN-200] r$R $(date +%H:%M)"; ./ns3 run "cluster-aodv-nosink --numRegular=200 --numCH=20 --useSink=true --run=$R --simTime=300 --csv=experiments/statistic[10Pal/exp2_wsn[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[CMM(aigpu) [01;32mtest1@ailab1[00m:[01;34m~/networkSimulation/ns-3-dev[00m$ [41Pecho "=== SET 2 TAMAMLA ==="
+[K
+[KMM[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[7PBASLA: $(date)"xec > >(tee experiments/statistical/run_log.txt) 2>&1[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[14Prm -f experiments/statistical/test_*.csv[9Pcd ~/networkSimulation/ns-3-devls[Ktmux attach -t ns3buildls[Kcd ~/networkSimulation/ns-3-devrm -f experiments/statistical/test_*.csvexec > >(tee experiments/statistical/run_log.txt) 2>&1[33Pcho "BASLA: $(date)"=== SET 2 TAMAMLA ==="for R in 7 8 9 10; do   echo "[Set2-WSN-200] r$R $(date +%H:%M)"; ./ns3 run "cluster-aodv-nosink --numRegular=200 --numCH=20 --useSink=true --run=$R --simTime=300 --csv=experiments/statistical/exp2_wsn_200_r${R}.csv" 2>/dev/null;  doneMM(aigpu) [01;32mtest1@ailab1[00m:[01;34m~/networkSimulation/ns-3-dev[00m$ [C[C[C[C[C[C[C[C[C6 7 8 9 10; do   echo "[Set2-MQTT-200] r$R $(date +%H:%M)"; ./ns3 run "cluster-aodv-mqtt --nSensors=200 --nCH=20 --broker=true --run=$R --simTime=300 --anim=false --csv=experiments/[10@statistical/exp2_mqtt[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[CMM[37Pecho "=== SET 3: HETERO WSN ==="
+[K
+[KMM[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cfor N in 50 100 150 200; do   CH=$((N / 10));    for R in $(seq 1 10); do     echo "[Set3] N=$N r$R $(date +%H:%M)"; ./ns3 run "cluster-aodv-nosink --numRegular=$N --numCH=$CH --useSink=false --hetero=true --run=$R --simTime=300 --csv=experiments/statistical/exp3_wsn_hetero_${N}_r${R}.csv" 2>/dev/null;    done;  doneMMM(aigpu) [01;32mtest1@ailab1[00m:[01;34m~/networkSimulation/ns-3-dev[00m$ [40Pecho "=== BITTI: $(date) ==="
+[K
+[K
+[KMMM[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cls experiments/statistical/*.csv | wc -l[K
