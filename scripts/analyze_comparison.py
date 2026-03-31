@@ -78,6 +78,30 @@ def load_all():
                         'Throughput_mean': np.mean([r['Throughput'] for r in runs]),
                     }
                     print(f"[OK] {key}: {len(runs)} tohum")
+
+    # Set 3: Hetero WSN (esit yuk)
+    for n in NODES:
+        key = f"exp3_wsn_hetero_{n}"
+        runs = []
+        for r in range(1, MAX_SEEDS + 1):
+            path = f"experiments/statistical/{key}_r{r}.csv"
+            df = load_csv(path)
+            if df is not None:
+                m = calc_metrics(df)
+                if m: runs.append(m)
+        if len(runs) > 0:
+            results[key] = {
+                'n_runs': len(runs),
+                'PDR_mean': np.mean([r['PDR'] for r in runs]),
+                'PDR_std': np.std([r['PDR'] for r in runs], ddof=1) if len(runs) > 1 else 0,
+                'Delay_mean': np.mean([r['Delay'] for r in runs]),
+                'Delay_std': np.std([r['Delay'] for r in runs], ddof=1) if len(runs) > 1 else 0,
+                'Dead_mean': np.mean([r['Dead'] for r in runs]),
+                'Dead_std': np.std([r['Dead'] for r in runs], ddof=1) if len(runs) > 1 else 0,
+                'Throughput_mean': np.mean([r['Throughput'] for r in runs]),
+            }
+            print(f"[OK] {key}: {len(runs)} tohum")
+
     return results
 
 # ============================================================
@@ -141,10 +165,11 @@ def plot_dashboard(data):
     fig, axes = plt.subplots(2, 2, figsize=(16, 12))
     fig.suptitle('KAA ile MQTT-SN Istatistiksel Karsilastirma Panosu', fontsize=16, fontweight='bold')
     scen = [
-        ('exp1_wsn', 'KAA Araci Yok', C_WSN, 'o-'),
-        ('exp1_mqtt', 'MQTT-SN Araci Yok', C_MQTT, 's-'),
-        ('exp2_wsn', 'KAA Araci Var', C_WSN_L, 'o--'),
-        ('exp2_mqtt', 'MQTT-SN Araci Var', C_MQTT_L, 's--'),
+        ('exp1_wsn', 'KAA Sabit A.Yok', C_WSN, 'o-'),
+        ('exp1_mqtt', 'MQTT-SN A.Yok', C_MQTT, 's-'),
+        ('exp3_wsn_hetero', 'KAA Hetero A.Yok', '#27AE60', '^-'),
+        ('exp2_wsn', 'KAA Sabit A.Var', C_WSN_L, 'o--'),
+        ('exp2_mqtt', 'MQTT-SN A.Var', C_MQTT_L, 's--'),
     ]
     panels = [
         (axes[0,0], 'PDR', 'PDR (%)', 'Paket Teslim Orani'),
@@ -168,7 +193,7 @@ def plot_dashboard(data):
 # OZET TABLO
 # ============================================================
 def plot_table(data):
-    fig, ax = plt.subplots(figsize=(16, 9)); ax.axis('off')
+    fig, ax = plt.subplots(figsize=(18, 11)); ax.axis('off')
     hd = ['Kume','Dugum','Tohum','KAA PDR','MQTT PDR','KAA Gecikme','MQTT Gecikme','Kazanan']
     rows = []
     for s in [1,2]:
@@ -182,14 +207,24 @@ def plot_table(data):
             md = f"{m.get('Delay_mean',0):.1f}+/-{m.get('Delay_std',0):.1f}ms"
             win = "MQTT-SN" if m.get('PDR_mean',0) > w.get('PDR_mean',0)+1 else "KAA" if w.get('PDR_mean',0)>m.get('PDR_mean',0)+1 else "~Esit"
             rows.append([sn,str(n),str(nr),wp,mp,wd,md,win])
+    # Set 3: Hetero WSN vs MQTT-SN
+    for n in NODES:
+        h = data.get(f"exp3_wsn_hetero_{n}",{}); m = data.get(f"exp1_mqtt_{n}",{})
+        nr = h.get('n_runs',0)
+        hp = f"{h.get('PDR_mean',0):.1f}+/-{h.get('PDR_std',0):.1f}%"
+        mp = f"{m.get('PDR_mean',0):.1f}+/-{m.get('PDR_std',0):.1f}%"
+        hd2 = f"{h.get('Delay_mean',0):.1f}+/-{h.get('Delay_std',0):.1f}ms"
+        md = f"{m.get('Delay_mean',0):.1f}+/-{m.get('Delay_std',0):.1f}ms"
+        win = "MQTT-SN" if m.get('PDR_mean',0) > h.get('PDR_mean',0)+1 else "KAA Het." if h.get('PDR_mean',0)>m.get('PDR_mean',0)+1 else "~Esit"
+        rows.append(["Esit Yuk",str(n),str(nr),hp,mp,hd2,md,win])
     tb = ax.table(cellText=rows, colLabels=hd, loc='center', cellLoc='center')
-    tb.auto_set_font_size(False); tb.set_fontsize(9); tb.scale(1, 1.8)
+    tb.auto_set_font_size(False); tb.set_fontsize(8); tb.scale(1, 1.6)
     for j in range(len(hd)):
         tb[0,j].set_facecolor('#2C3E50'); tb[0,j].set_text_props(color='white', fontweight='bold')
     for i in range(1,len(rows)+1):
         if rows[i-1][-1]=="MQTT-SN":
             for j in range(len(hd)): tb[i,j].set_facecolor('#D6EAF8')
-        elif rows[i-1][-1]=="KAA":
+        elif "KAA" in rows[i-1][-1]:
             for j in range(len(hd)): tb[i,j].set_facecolor('#FADBD8')
     ax.set_title('Istatistiksel Ozet Tablosu (ort. +/- std)\nMavi=MQTT-SN ustun, Kirmizi=KAA ustun', fontsize=14, fontweight='bold', pad=20)
     plt.tight_layout()
@@ -236,6 +271,55 @@ def plot_broker_impact(data):
     print("[OK] 09_araci_etkisi.png")
 
 # ============================================================
+# ESIT YUK KARSILASTIRMA (Set 1 KAA vs Set 3 Hetero KAA vs Set 1 MQTT-SN)
+# ============================================================
+def plot_equal_load(data):
+    fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+    fig.suptitle('Esit Yuk Karsilastirmasi: KAA Sabit vs KAA Hetero vs MQTT-SN', fontsize=13, fontweight='bold')
+
+    C_HET = '#27AE60'  # green for hetero WSN
+
+    # PDR
+    ax = axes[0]
+    wsn_s = [data.get(f"exp1_wsn_{n}", {}).get('PDR_mean', 0) for n in NODES]
+    wsn_s_e = [data.get(f"exp1_wsn_{n}", {}).get('PDR_std', 0) for n in NODES]
+    wsn_h = [data.get(f"exp3_wsn_hetero_{n}", {}).get('PDR_mean', 0) for n in NODES]
+    wsn_h_e = [data.get(f"exp3_wsn_hetero_{n}", {}).get('PDR_std', 0) for n in NODES]
+    mqtt = [data.get(f"exp1_mqtt_{n}", {}).get('PDR_mean', 0) for n in NODES]
+    mqtt_e = [data.get(f"exp1_mqtt_{n}", {}).get('PDR_std', 0) for n in NODES]
+
+    ax.errorbar(NODES, wsn_s, yerr=wsn_s_e, fmt='o-', color=C_WSN, lw=2, ms=7, capsize=4, label='KAA Sabit (4kbps)')
+    ax.errorbar(NODES, wsn_h, yerr=wsn_h_e, fmt='^-', color=C_HET, lw=2, ms=7, capsize=4, label='KAA Hetero (esit yuk)')
+    ax.errorbar(NODES, mqtt, yerr=mqtt_e, fmt='s-', color=C_MQTT, lw=2, ms=7, capsize=4, label='MQTT-SN')
+    for i in range(len(NODES)):
+        ax.annotate(f'{wsn_s[i]:.1f}', (NODES[i], wsn_s[i]), textcoords="offset points", xytext=(-15,10), ha='center', fontsize=8, color=C_WSN)
+        ax.annotate(f'{wsn_h[i]:.1f}', (NODES[i], wsn_h[i]), textcoords="offset points", xytext=(0,-15), ha='center', fontsize=8, color=C_HET)
+        ax.annotate(f'{mqtt[i]:.1f}', (NODES[i], mqtt[i]), textcoords="offset points", xytext=(15,10), ha='center', fontsize=8, color=C_MQTT)
+    ax.set_xlabel('Dugum Sayisi'); ax.set_ylabel('PDR (%)')
+    ax.set_title('PDR: Esit Yuk Altinda', fontweight='bold')
+    ax.set_xticks(NODES); ax.legend(fontsize=8); ax.grid(alpha=0.3)
+
+    # Gecikme
+    ax = axes[1]
+    wsn_s_d = [data.get(f"exp1_wsn_{n}", {}).get('Delay_mean', 0) for n in NODES]
+    wsn_s_de = [data.get(f"exp1_wsn_{n}", {}).get('Delay_std', 0) for n in NODES]
+    wsn_h_d = [data.get(f"exp3_wsn_hetero_{n}", {}).get('Delay_mean', 0) for n in NODES]
+    wsn_h_de = [data.get(f"exp3_wsn_hetero_{n}", {}).get('Delay_std', 0) for n in NODES]
+    mqtt_d = [data.get(f"exp1_mqtt_{n}", {}).get('Delay_mean', 0) for n in NODES]
+    mqtt_de = [data.get(f"exp1_mqtt_{n}", {}).get('Delay_std', 0) for n in NODES]
+
+    ax.errorbar(NODES, wsn_s_d, yerr=wsn_s_de, fmt='o-', color=C_WSN, lw=2, ms=7, capsize=4, label='KAA Sabit')
+    ax.errorbar(NODES, wsn_h_d, yerr=wsn_h_de, fmt='^-', color=C_HET, lw=2, ms=7, capsize=4, label='KAA Hetero')
+    ax.errorbar(NODES, mqtt_d, yerr=mqtt_de, fmt='s-', color=C_MQTT, lw=2, ms=7, capsize=4, label='MQTT-SN')
+    ax.set_xlabel('Dugum Sayisi'); ax.set_ylabel('Gecikme (ms)')
+    ax.set_title('Gecikme: Esit Yuk Altinda', fontweight='bold')
+    ax.set_xticks(NODES); ax.legend(fontsize=8); ax.grid(alpha=0.3)
+
+    plt.tight_layout()
+    plt.savefig(os.path.join(OUTPUT_DIR, '12_esit_yuk_karsilastirma.png'), dpi=DPI, bbox_inches='tight'); plt.close()
+    print("[OK] 12_esit_yuk_karsilastirma.png")
+
+# ============================================================
 # SONUCLARI YAZDIR
 # ============================================================
 def print_results(data):
@@ -255,6 +339,19 @@ def print_results(data):
             wd = f"{w.get('Delay_mean',0):.1f}+/-{w.get('Delay_std',0):.1f}ms"
             md = f"{m.get('Delay_mean',0):.1f}+/-{m.get('Delay_std',0):.1f}ms"
             print(f"  {n:<8} {nr:<6} {wp:<20} {mp:<20} {wd:<20} {md:<20}")
+
+    print(f"\n  --- KUME 3: ESIT YUK (KAA Hetero vs MQTT-SN) ---")
+    print(f"  {'Dugum':<8} {'Tohum':<6} {'KAA Hetero PDR':<22} {'MQTT-SN PDR':<22} {'KAA Het. Gecikme':<22} {'MQTT-SN Gecikme':<22}")
+    print("  "+"-"*100)
+    for n in NODES:
+        h = data.get(f"exp3_wsn_hetero_{n}",{}); m = data.get(f"exp1_mqtt_{n}",{})
+        nr = h.get('n_runs',0)
+        hp = f"{h.get('PDR_mean',0):.1f}+/-{h.get('PDR_std',0):.1f}%"
+        mp = f"{m.get('PDR_mean',0):.1f}+/-{m.get('PDR_std',0):.1f}%"
+        hd = f"{h.get('Delay_mean',0):.1f}+/-{h.get('Delay_std',0):.1f}ms"
+        md = f"{m.get('Delay_mean',0):.1f}+/-{m.get('Delay_std',0):.1f}ms"
+        print(f"  {n:<8} {nr:<6} {hp:<22} {mp:<22} {hd:<22} {md:<22}")
+
     print("\n"+"="*100+"\n")
 
 # ============================================================
@@ -282,5 +379,6 @@ if __name__ == "__main__":
     plot_broker_impact(data)
     plot_dashboard(data)
     plot_table(data)
+    plot_equal_load(data)
 
     print_results(data)
