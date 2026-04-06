@@ -1,68 +1,129 @@
 
-[TIoT] KAA ile MQTT-SN Istatistiksel Karsilastirma Analizi
+[MIoT] WSN vs MQTT-SN Statistical Comparison Analysis
 
-[OK] exp1_wsn_50: 10 tohum
-[OK] exp1_wsn_100: 10 tohum
-[OK] exp1_wsn_150: 10 tohum
-[OK] exp1_wsn_200: 10 tohum
-[OK] exp1_mqtt_50: 10 tohum
-[OK] exp1_mqtt_100: 10 tohum
-[OK] exp1_mqtt_150: 10 tohum
-[OK] exp1_mqtt_200: 10 tohum
-[OK] exp2_wsn_50: 10 tohum
-[OK] exp2_wsn_100: 10 tohum
-[OK] exp2_wsn_150: 10 tohum
-[OK] exp2_wsn_200: 10 tohum
-[OK] exp2_mqtt_50: 10 tohum
-[OK] exp2_mqtt_100: 10 tohum
-[OK] exp2_mqtt_150: 10 tohum
-[OK] exp2_mqtt_200: 10 tohum
-[OK] exp3_wsn_hetero_50: 10 tohum
-[OK] exp3_wsn_hetero_100: 10 tohum
-[OK] exp3_wsn_hetero_150: 10 tohum
-[OK] exp3_wsn_hetero_200: 10 tohum
-[OK] 01_set1_pdr_cubuk.png
-[OK] 02_set1_gecikme_cubuk.png
-[OK] 03_set1_basarisiz_cubuk.png
-[OK] 04_set1_pdr_cizgi.png
-[OK] 04b_set1_gecikme_cizgi.png
-[OK] 05_set2_pdr_cubuk.png
-[OK] 06_set2_gecikme_cubuk.png
-[OK] 07_set2_basarisiz_cubuk.png
-[OK] 08_set2_pdr_cizgi.png
-[OK] 08b_set2_gecikme_cizgi.png
-[OK] 09_araci_etkisi.png
-[OK] 10_ana_pano.png
-[OK] 11_ozet_tablo.png
-[OK] 12_esit_yuk_karsilastirma.png
+[OK] exp1_wsn_50: 10 seeds
+[OK] exp1_wsn_100: 10 seeds
+[OK] exp1_wsn_150: 10 seeds
+[OK] exp1_wsn_200: 10 seeds
+[OK] exp1_mqtt_50: 10 seeds
+[OK] exp1_mqtt_100: 10 seeds
+[OK] exp1_mqtt_150: 10 seeds
+[OK] exp1_mqtt_200: 10 seeds
+[OK] exp2_wsn_50: 10 seeds
+[OK] exp2_wsn_100: 10 seeds
+[OK] exp2_wsn_150: 10 seeds
+[OK] exp2_wsn_200: 10 seeds
+[OK] exp2_mqtt_50: 10 seeds
+[OK] exp2_mqtt_100: 10 seeds
+[OK] exp2_mqtt_150: 10 seeds
+[OK] exp2_mqtt_200: 10 seeds
+[OK] exp3_wsn_hetero_50: 10 seeds
+[OK] exp3_wsn_hetero_100: 10 seeds
+[OK] exp3_wsn_hetero_150: 10 seeds
+[OK] exp3_wsn_hetero_200: 10 seeds
+[OK] exp3b_wsn_hetero_broker_50: 10 seeds
+[OK] exp3b_wsn_hetero_broker_100: 10 seeds
+[OK] exp3b_wsn_hetero_broker_150: 10 seeds
+[OK] exp3b_wsn_hetero_broker_200: 10 seeds
+[OK] 01_set1_pdr_bar_tr.png
+[OK] 01_set1_pdr_bar_en.png
+[OK] 02_set1_delay_bar_tr.png
+[OK] 02_set1_delay_bar_en.png
+[OK] 04_set1_pdr_line_tr.png
+[OK] 04_set1_pdr_line_en.png
+[OK] 04b_set1_delay_line_tr.png
+[OK] 04b_set1_delay_line_en.png
+[OK] 05_set2_pdr_bar_tr.png
+[OK] 05_set2_pdr_bar_en.png
+[OK] 06_set2_delay_bar_tr.png
+[OK] 06_set2_delay_bar_en.png
+[OK] 08_set2_pdr_line_tr.png
+[OK] 08_set2_pdr_line_en.png
+[OK] 08b_set2_delay_line_tr.png
+[OK] 08b_set2_delay_line_en.png
+[OK] 09_broker_impact_tr.png
+[OK] 09_broker_impact_en.png
+[OK] 10_dashboard_tr.png
+[OK] 10_dashboard_en.png
+[OK] 12_equal_load_tr.png
+[OK] 12_equal_load_en.png
+[OK] 13_equal_load_broker_tr.png
+[OK] 13_equal_load_broker_en.png
 
-====================================================================================================
-  KAA ile MQTT-SN ISTATISTIKSEL KARSILASTIRMA
-====================================================================================================
+========================================================================================================================
+  KAA ile MQTT-SN ISTATISTIKSEL KARSILASTIRMA (TURKCE)
+========================================================================================================================
 
   --- KUME 1: ARACI YOK ---
-  Dugum    Tohum  KAA PDR              MQTT PDR             KAA Gecikme          MQTT Gecikme        
-  ----------------------------------------------------------------------------------------------
-  50       10     84.1+/-11.3%         88.7+/-8.6%          53.7+/-18.8ms        29.4+/-9.2ms        
-  100      10     99.1+/-0.9%          99.0+/-0.9%          86.3+/-12.8ms        58.4+/-11.3ms       
-  150      10     98.3+/-0.7%          99.5+/-0.7%          111.2+/-11.5ms       64.1+/-18.3ms       
-  200      10     96.7+/-1.9%          99.5+/-0.4%          123.3+/-12.2ms       121.4+/-21.0ms      
+  Dugum    Tohum  KAA PDR              MQTT PDR             p(PDR)   KAA Gecikme          MQTT Gecikme         p(Del)  
+  --------------------------------------------------------------------------------------------------------------
+  50       10     84.1+/-11.3%         88.7+/-8.6%          0.3282   53.7+/-18.8ms        29.4+/-9.2ms         0.0028  
+  100      10     99.1+/-0.9%          99.0+/-0.9%          0.7950   86.3+/-12.8ms        58.4+/-11.3ms        0.0001  
+  150      10     98.3+/-0.7%          99.5+/-0.7%          0.0011   111.2+/-11.5ms       64.1+/-18.3ms        0.0000  
+  200      10     96.7+/-1.9%          99.5+/-0.4%          0.0011   123.3+/-12.2ms       121.4+/-21.0ms       0.8122  
 
   --- KUME 2: ARACI VAR ---
-  Dugum    Tohum  KAA PDR              MQTT PDR             KAA Gecikme          MQTT Gecikme        
-  ----------------------------------------------------------------------------------------------
-  50       10     84.6+/-11.2%         85.4+/-14.0%         53.0+/-9.9ms         40.8+/-15.5ms       
-  100      10     94.8+/-4.3%          90.0+/-7.7%          62.2+/-24.2ms        73.5+/-23.2ms       
-  150      10     82.2+/-2.7%          76.3+/-3.1%          124.7+/-21.8ms       151.5+/-27.1ms      
-  200      10     67.4+/-8.3%          63.4+/-6.8%          216.1+/-37.3ms       217.8+/-27.8ms      
+  Dugum    Tohum  KAA PDR              MQTT PDR             p(PDR)   KAA Gecikme          MQTT Gecikme         p(Del)  
+  --------------------------------------------------------------------------------------------------------------
+  50       10     84.6+/-11.2%         85.4+/-14.0%         0.8857   53.0+/-9.9ms         40.8+/-15.5ms        0.0546  
+  100      10     94.8+/-4.3%          90.0+/-7.7%          0.1089   62.2+/-24.2ms        73.5+/-23.2ms        0.2990  
+  150      10     82.2+/-2.7%          76.3+/-3.1%          0.0002   124.7+/-21.8ms       151.5+/-27.1ms       0.0260  
+  200      10     67.4+/-8.3%          63.4+/-6.8%          0.2601   216.1+/-37.3ms       217.8+/-27.8ms       0.9077  
 
-  --- KUME 3: ESIT YUK (KAA Hetero vs MQTT-SN) ---
-  Dugum    Tohum  KAA Hetero PDR         MQTT-SN PDR            KAA Het. Gecikme       MQTT-SN Gecikme       
-  ----------------------------------------------------------------------------------------------------
-  50       10     84.3+/-11.8%           88.7+/-8.6%            46.2+/-13.2ms          29.4+/-9.2ms          
-  100      10     98.9+/-1.0%            99.0+/-0.9%            82.3+/-12.0ms          58.4+/-11.3ms         
-  150      10     98.9+/-0.5%            99.5+/-0.7%            106.0+/-11.3ms         64.1+/-18.3ms         
-  200      10     94.2+/-5.6%            99.5+/-0.4%            126.4+/-12.7ms         121.4+/-21.0ms        
+  --- KUME 3: ESIT YUK, ARACI YOK (KAA Hetero vs MQTT-SN) ---
+  Dugum    Tohum  KAA Het. PDR           MQTT-SN PDR            p(PDR)   KAA Het. Gec.          MQTT-SN Gec.          
+  --------------------------------------------------------------------------------------------------------------
+  50       10     84.3+/-11.8%           88.7+/-8.6%            0.3581   46.2+/-13.2ms          29.4+/-9.2ms          
+  100      10     98.9+/-1.0%            99.0+/-0.9%            0.7876   82.3+/-12.0ms          58.4+/-11.3ms         
+  150      10     98.9+/-0.5%            99.5+/-0.7%            0.0523   106.0+/-11.3ms         64.1+/-18.3ms         
+  200      10     94.2+/-5.6%            99.5+/-0.4%            0.0149   126.4+/-12.7ms         121.4+/-21.0ms        
 
-====================================================================================================
+  --- KUME 3b: ESIT YUK, ARACI VAR (KAA Het.+Araci vs MQTT-SN+Araci) ---
+  Dugum    Tohum  KAA Het.+A PDR         MQTT+A PDR             p(PDR)   KAA Het.+A Gec.        MQTT+A Gec.           
+  --------------------------------------------------------------------------------------------------------------
+  50       10     84.0+/-11.6%           85.4+/-14.0%           0.8114   49.2+/-16.8ms          40.8+/-15.5ms         
+  100      10     93.7+/-5.2%            90.0+/-7.7%            0.2332   80.1+/-17.8ms          73.5+/-23.2ms         
+  150      10     80.4+/-2.9%            76.3+/-3.1%            0.0066   147.3+/-22.7ms         151.5+/-27.1ms        
+  200      10     72.4+/-2.0%            63.4+/-6.8%            0.0022   205.9+/-18.6ms         217.8+/-27.8ms        
+
+========================================================================================================================
+
+
+========================================================================================================================
+  WSN vs MQTT-SN STATISTICAL COMPARISON (ENGLISH)
+========================================================================================================================
+
+  --- SET 1: NO BROKER ---
+  Nodes    Seeds  WSN PDR              MQTT PDR             p(PDR)   WSN Delay            MQTT Delay           p(Del)  
+  --------------------------------------------------------------------------------------------------------------
+  50       10     84.1+/-11.3%         88.7+/-8.6%          0.3282   53.7+/-18.8ms        29.4+/-9.2ms         0.0028  
+  100      10     99.1+/-0.9%          99.0+/-0.9%          0.7950   86.3+/-12.8ms        58.4+/-11.3ms        0.0001  
+  150      10     98.3+/-0.7%          99.5+/-0.7%          0.0011   111.2+/-11.5ms       64.1+/-18.3ms        0.0000  
+  200      10     96.7+/-1.9%          99.5+/-0.4%          0.0011   123.3+/-12.2ms       121.4+/-21.0ms       0.8122  
+
+  --- SET 2: WITH BROKER ---
+  Nodes    Seeds  WSN PDR              MQTT PDR             p(PDR)   WSN Delay            MQTT Delay           p(Del)  
+  --------------------------------------------------------------------------------------------------------------
+  50       10     84.6+/-11.2%         85.4+/-14.0%         0.8857   53.0+/-9.9ms         40.8+/-15.5ms        0.0546  
+  100      10     94.8+/-4.3%          90.0+/-7.7%          0.1089   62.2+/-24.2ms        73.5+/-23.2ms        0.2990  
+  150      10     82.2+/-2.7%          76.3+/-3.1%          0.0002   124.7+/-21.8ms       151.5+/-27.1ms       0.0260  
+  200      10     67.4+/-8.3%          63.4+/-6.8%          0.2601   216.1+/-37.3ms       217.8+/-27.8ms       0.9077  
+
+  --- SET 3: EQUAL LOAD, NO BROKER (WSN Hetero vs MQTT-SN) ---
+  Nodes    Seeds  WSN Het. PDR           MQTT-SN PDR            p(PDR)   WSN Het. Delay         MQTT-SN Delay         
+  --------------------------------------------------------------------------------------------------------------
+  50       10     84.3+/-11.8%           88.7+/-8.6%            0.3581   46.2+/-13.2ms          29.4+/-9.2ms          
+  100      10     98.9+/-1.0%            99.0+/-0.9%            0.7876   82.3+/-12.0ms          58.4+/-11.3ms         
+  150      10     98.9+/-0.5%            99.5+/-0.7%            0.0523   106.0+/-11.3ms         64.1+/-18.3ms         
+  200      10     94.2+/-5.6%            99.5+/-0.4%            0.0149   126.4+/-12.7ms         121.4+/-21.0ms        
+
+  --- SET 3b: EQUAL LOAD, WITH BROKER (WSN Het.+Broker vs MQTT-SN+Broker) ---
+  Nodes    Seeds  WSN Het.+B PDR         MQTT+B PDR             p(PDR)   WSN Het.+B Del.        MQTT+B Del.           
+  --------------------------------------------------------------------------------------------------------------
+  50       10     84.0+/-11.6%           85.4+/-14.0%           0.8114   49.2+/-16.8ms          40.8+/-15.5ms         
+  100      10     93.7+/-5.2%            90.0+/-7.7%            0.2332   80.1+/-17.8ms          73.5+/-23.2ms         
+  150      10     80.4+/-2.9%            76.3+/-3.1%            0.0066   147.3+/-22.7ms         151.5+/-27.1ms        
+  200      10     72.4+/-2.0%            63.4+/-6.8%            0.0022   205.9+/-18.6ms         217.8+/-27.8ms        
+
+========================================================================================================================
 
