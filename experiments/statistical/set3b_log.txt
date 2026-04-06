@@ -1,3 +1,4 @@
+//session 1
 ┌──(kali㉿kali)-[~/ns-3-dev]
 └─$ echo "=== Basladi: $(date) ==="
 
