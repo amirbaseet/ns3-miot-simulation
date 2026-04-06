@@ -1,0 +1,68 @@
+
+[TIoT] KAA ile MQTT-SN Istatistiksel Karsilastirma Analizi
+
+[OK] exp1_wsn_50: 10 tohum
+[OK] exp1_wsn_100: 10 tohum
+[OK] exp1_wsn_150: 10 tohum
+[OK] exp1_wsn_200: 10 tohum
+[OK] exp1_mqtt_50: 10 tohum
+[OK] exp1_mqtt_100: 10 tohum
+[OK] exp1_mqtt_150: 10 tohum
+[OK] exp1_mqtt_200: 10 tohum
+[OK] exp2_wsn_50: 10 tohum
+[OK] exp2_wsn_100: 10 tohum
+[OK] exp2_wsn_150: 10 tohum
+[OK] exp2_wsn_200: 10 tohum
+[OK] exp2_mqtt_50: 10 tohum
+[OK] exp2_mqtt_100: 10 tohum
+[OK] exp2_mqtt_150: 10 tohum
+[OK] exp2_mqtt_200: 10 tohum
+[OK] exp3_wsn_hetero_50: 10 tohum
+[OK] exp3_wsn_hetero_100: 10 tohum
+[OK] exp3_wsn_hetero_150: 10 tohum
+[OK] exp3_wsn_hetero_200: 10 tohum
+[OK] 01_set1_pdr_cubuk.png
+[OK] 02_set1_gecikme_cubuk.png
+[OK] 03_set1_basarisiz_cubuk.png
+[OK] 04_set1_pdr_cizgi.png
+[OK] 04b_set1_gecikme_cizgi.png
+[OK] 05_set2_pdr_cubuk.png
+[OK] 06_set2_gecikme_cubuk.png
+[OK] 07_set2_basarisiz_cubuk.png
+[OK] 08_set2_pdr_cizgi.png
+[OK] 08b_set2_gecikme_cizgi.png
+[OK] 09_araci_etkisi.png
+[OK] 10_ana_pano.png
+[OK] 11_ozet_tablo.png
+[OK] 12_esit_yuk_karsilastirma.png
+
+====================================================================================================
+  KAA ile MQTT-SN ISTATISTIKSEL KARSILASTIRMA
+====================================================================================================
+
+  --- KUME 1: ARACI YOK ---
+  Dugum    Tohum  KAA PDR              MQTT PDR             KAA Gecikme          MQTT Gecikme        
+  ----------------------------------------------------------------------------------------------
+  50       10     84.1+/-11.3%         88.7+/-8.6%          53.7+/-18.8ms        29.4+/-9.2ms        
+  100      10     99.1+/-0.9%          99.0+/-0.9%          86.3+/-12.8ms        58.4+/-11.3ms       
+  150      10     98.3+/-0.7%          99.5+/-0.7%          111.2+/-11.5ms       64.1+/-18.3ms       
+  200      10     96.7+/-1.9%          99.5+/-0.4%          123.3+/-12.2ms       121.4+/-21.0ms      
+
+  --- KUME 2: ARACI VAR ---
+  Dugum    Tohum  KAA PDR              MQTT PDR             KAA Gecikme          MQTT Gecikme        
+  ----------------------------------------------------------------------------------------------
+  50       10     84.6+/-11.2%         85.4+/-14.0%         53.0+/-9.9ms         40.8+/-15.5ms       
+  100      10     94.8+/-4.3%          90.0+/-7.7%          62.2+/-24.2ms        73.5+/-23.2ms       
+  150      10     82.2+/-2.7%          76.3+/-3.1%          124.7+/-21.8ms       151.5+/-27.1ms      
+  200      10     67.4+/-8.3%          63.4+/-6.8%          216.1+/-37.3ms       217.8+/-27.8ms      
+
+  --- KUME 3: ESIT YUK (KAA Hetero vs MQTT-SN) ---
+  Dugum    Tohum  KAA Hetero PDR         MQTT-SN PDR            KAA Het. Gecikme       MQTT-SN Gecikme       
+  ----------------------------------------------------------------------------------------------------
+  50       10     84.3+/-11.8%           88.7+/-8.6%            46.2+/-13.2ms          29.4+/-9.2ms          
+  100      10     98.9+/-1.0%            99.0+/-0.9%            82.3+/-12.0ms          58.4+/-11.3ms         
+  150      10     98.9+/-0.5%            99.5+/-0.7%            106.0+/-11.3ms         64.1+/-18.3ms         
+  200      10     94.2+/-5.6%            99.5+/-0.4%            126.4+/-12.7ms         121.4+/-21.0ms        
+
+====================================================================================================
+

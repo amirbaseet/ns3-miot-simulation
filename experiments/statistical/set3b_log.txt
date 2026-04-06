@@ -1,3 +1,947 @@
+┌──(kali㉿kali)-[~/ns-3-dev]
+└─$ echo "=== Basladi: $(date) ==="
+
+
+for N in 50 100 150 200; do
+  CH=$((N / 10))
+  for R in $(seq 1 10); do
+    echo "[Set3b] N=$N r$R $(date +%H:%M)"
+    ./ns3 run "cluster-aodv-nosink --numRegular=$N --numCH=$CH --useSink=true --hetero=true --run=$R --simTime=300 --csv=experiments/statistical/exp3b_wsn_hetero_broker_${N}_r${R}.csv" 2>/dev/null
+  done
+done
+
+echo "=== BITTI: $(date) ==="
+ls experiments/statistical/exp3b_*.csv | wc -l
+
+
+=== Basladi: Sun Apr  5 01:18:06 AM EDT 2026 ===
+[Set3b] N=50 r1 01:18
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 50 | CHs: 5 | Sink: yes | Total: 56
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_50_r1.csv
+============================================================
+
+  Clusters: min=7 max=16 avg=10.0
+  Traffic: HETEROGENEOUS (16 ECG@4kbps + 16 HR@512bps + 18 Temp@51bps)
+  Flow: Sensors -> 5 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 144 (dead: 15)
+  Tx: 20988 | Rx: 16272
+  PDR: 77.53%
+  Avg Delay: 1.46 ms
+  Throughput: 59.35 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_50_r1.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH50 | Rx:2306 Fwd:2306
+    CH51 | Rx:3101 Fwd:3101
+    CH52 | Rx:1823 Fwd:1823
+    CH53 | Rx:2326 Fwd:2326
+    CH54 | Rx:6403 Fwd:6403
+  Total: Rx=15959 Fwd=15959
+
+[DONE]
+
+[Set3b] N=50 r2 01:18
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 50 | CHs: 5 | Sink: yes | Total: 56
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_50_r2.csv
+============================================================
+
+  Clusters: min=6 max=15 avg=10.0
+  Traffic: HETEROGENEOUS (16 ECG@4kbps + 16 HR@512bps + 18 Temp@51bps)
+  Flow: Sensors -> 5 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 175 (dead: 5)
+  Tx: 21175 | Rx: 19144
+  PDR: 90.41%
+  Avg Delay: 2.29 ms
+  Throughput: 69.48 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_50_r2.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH50 | Rx:4046 Fwd:4046
+    CH51 | Rx:2365 Fwd:2365
+    CH52 | Rx:2752 Fwd:2752
+    CH53 | Rx:5502 Fwd:5502
+    CH54 | Rx:4107 Fwd:4107
+  Total: Rx=18772 Fwd=18772
+
+[DONE]
+
+[Set3b] N=50 r3 01:18
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 50 | CHs: 5 | Sink: yes | Total: 56
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_50_r3.csv
+============================================================
+
+  Clusters: min=4 max=21 avg=10.0
+  Traffic: HETEROGENEOUS (16 ECG@4kbps + 16 HR@512bps + 18 Temp@51bps)
+  Flow: Sensors -> 5 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 183 (dead: 7)
+  Tx: 21154 | Rx: 17558
+  PDR: 83.00%
+  Avg Delay: 16.34 ms
+  Throughput: 63.93 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_50_r3.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH50 | Rx:2666 Fwd:2666
+    CH51 | Rx:761 Fwd:761
+    CH52 | Rx:1232 Fwd:1232
+    CH53 | Rx:4859 Fwd:4859
+    CH54 | Rx:7623 Fwd:7623
+  Total: Rx=17141 Fwd=17141
+
+[DONE]
+
+[Set3b] N=50 r4 01:19
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 50 | CHs: 5 | Sink: yes | Total: 56
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_50_r4.csv
+============================================================
+
+  Clusters: min=6 max=17 avg=10.0
+  Traffic: HETEROGENEOUS (16 ECG@4kbps + 16 HR@512bps + 18 Temp@51bps)
+  Flow: Sensors -> 5 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 142 (dead: 3)
+  Tx: 21011 | Rx: 19896
+  PDR: 94.69%
+  Avg Delay: 2.14 ms
+  Throughput: 73.21 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_50_r4.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH50 | Rx:4158 Fwd:4158
+    CH51 | Rx:2585 Fwd:2585
+    CH52 | Rx:4495 Fwd:4495
+    CH53 | Rx:1902 Fwd:1902
+    CH54 | Rx:6536 Fwd:6536
+  Total: Rx=19676 Fwd=19676
+
+[DONE]
+
+[Set3b] N=50 r5 01:19
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 50 | CHs: 5 | Sink: yes | Total: 56
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_50_r5.csv
+============================================================
+
+  Clusters: min=5 max=13 avg=10.0
+  Traffic: HETEROGENEOUS (16 ECG@4kbps + 16 HR@512bps + 18 Temp@51bps)
+  Flow: Sensors -> 5 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 176 (dead: 15)
+  Tx: 20939 | Rx: 16315
+  PDR: 77.92%
+  Avg Delay: 1.88 ms
+  Throughput: 60.67 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_50_r5.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH50 | Rx:1464 Fwd:1464
+    CH51 | Rx:6331 Fwd:6331
+    CH52 | Rx:2063 Fwd:2063
+    CH53 | Rx:4668 Fwd:4668
+    CH54 | Rx:1454 Fwd:1454
+  Total: Rx=15980 Fwd=15980
+
+[DONE]
+
+[Set3b] N=50 r6 01:20
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 50 | CHs: 5 | Sink: yes | Total: 56
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_50_r6.csv
+============================================================
+
+  Clusters: min=6 max=17 avg=10.0
+  Traffic: HETEROGENEOUS (16 ECG@4kbps + 16 HR@512bps + 18 Temp@51bps)
+  Flow: Sensors -> 5 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 141 (dead: 18)
+  Tx: 21104 | Rx: 13128
+  PDR: 62.21%
+  Avg Delay: 1.87 ms
+  Throughput: 48.18 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_50_r6.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH50 | Rx:4351 Fwd:4351
+    CH51 | Rx:1388 Fwd:1388
+    CH52 | Rx:1906 Fwd:1906
+    CH53 | Rx:2531 Fwd:2531
+    CH54 | Rx:2639 Fwd:2639
+  Total: Rx=12815 Fwd=12815
+
+[DONE]
+
+[Set3b] N=50 r7 01:20
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 50 | CHs: 5 | Sink: yes | Total: 56
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_50_r7.csv
+============================================================
+
+  Clusters: min=4 max=18 avg=10.0
+  Traffic: HETEROGENEOUS (16 ECG@4kbps + 16 HR@512bps + 18 Temp@51bps)
+  Flow: Sensors -> 5 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 162 (dead: 3)
+  Tx: 20775 | Rx: 20422
+  PDR: 98.30%
+  Avg Delay: 2.56 ms
+  Throughput: 75.68 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_50_r7.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH50 | Rx:2571 Fwd:2571
+    CH51 | Rx:2452 Fwd:2452
+    CH52 | Rx:5892 Fwd:5892
+    CH53 | Rx:3493 Fwd:3493
+    CH54 | Rx:5742 Fwd:5742
+  Total: Rx=20150 Fwd=20150
+
+[DONE]
+
+[Set3b] N=50 r8 01:20
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 50 | CHs: 5 | Sink: yes | Total: 56
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_50_r8.csv
+============================================================
+
+  Clusters: min=6 max=15 avg=10.0
+  Traffic: HETEROGENEOUS (16 ECG@4kbps + 16 HR@512bps + 18 Temp@51bps)
+  Flow: Sensors -> 5 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 173 (dead: 11)
+  Tx: 20985 | Rx: 19511
+  PDR: 92.98%
+  Avg Delay: 2.60 ms
+  Throughput: 72.06 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_50_r8.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH50 | Rx:3719 Fwd:3719
+    CH51 | Rx:2064 Fwd:2064
+    CH52 | Rx:4258 Fwd:4258
+    CH53 | Rx:2036 Fwd:2036
+    CH54 | Rx:7130 Fwd:7130
+  Total: Rx=19207 Fwd=19207
+
+[DONE]
+
+[Set3b] N=50 r9 01:21
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 50 | CHs: 5 | Sink: yes | Total: 56
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_50_r9.csv
+============================================================
+
+  Clusters: min=4 max=22 avg=10.0
+  Traffic: HETEROGENEOUS (16 ECG@4kbps + 16 HR@512bps + 18 Temp@51bps)
+  Flow: Sensors -> 5 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 124 (dead: 16)
+  Tx: 21013 | Rx: 14996
+  PDR: 71.37%
+  Avg Delay: 1.67 ms
+  Throughput: 54.76 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_50_r9.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH50 | Rx:2109 Fwd:2109
+    CH51 | Rx:2269 Fwd:2269
+    CH52 | Rx:3052 Fwd:3052
+    CH53 | Rx:2007 Fwd:2007
+    CH54 | Rx:5398 Fwd:5398
+  Total: Rx=14835 Fwd=14835
+
+[DONE]
+
+[Set3b] N=50 r10 01:21
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 50 | CHs: 5 | Sink: yes | Total: 56
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_50_r10.csv
+============================================================
+
+  Clusters: min=5 max=17 avg=10.0
+  Traffic: HETEROGENEOUS (16 ECG@4kbps + 16 HR@512bps + 18 Temp@51bps)
+  Flow: Sensors -> 5 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 231 (dead: 1)
+  Tx: 21582 | Rx: 19801
+  PDR: 91.75%
+  Avg Delay: 9.08 ms
+  Throughput: 70.93 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_50_r10.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH50 | Rx:3641 Fwd:3641
+    CH51 | Rx:3289 Fwd:3289
+    CH52 | Rx:3624 Fwd:3624
+    CH53 | Rx:2849 Fwd:2849
+    CH54 | Rx:5621 Fwd:5621
+  Total: Rx=19024 Fwd=19024
+
+[DONE]
+
+[Set3b] N=100 r1 01:22
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 100 | CHs: 10 | Sink: yes | Total: 111
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_100_r1.csv
+============================================================
+
+  Clusters: min=5 max=19 avg=10.0
+  Traffic: HETEROGENEOUS (33 ECG@4kbps + 33 HR@512bps + 34 Temp@51bps)
+  Flow: Sensors -> 10 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 677 (dead: 21)
+  Tx: 44728 | Rx: 44655
+  PDR: 99.84%
+  Avg Delay: 3.40 ms
+  Throughput: 161.43 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_100_r1.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH100 | Rx:4267 Fwd:4267
+    CH101 | Rx:2717 Fwd:2717
+    CH102 | Rx:4805 Fwd:4805
+    CH103 | Rx:3058 Fwd:3058
+    CH104 | Rx:3080 Fwd:3080
+    CH105 | Rx:4018 Fwd:4018
+    CH106 | Rx:3766 Fwd:3766
+    CH107 | Rx:5670 Fwd:5670
+    CH108 | Rx:5418 Fwd:5418
+    CH109 | Rx:5899 Fwd:5899
+  Total: Rx=42698 Fwd=42698
+
+[DONE]
+
+[Set3b] N=100 r2 01:23
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 100 | CHs: 10 | Sink: yes | Total: 111
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_100_r2.csv
+============================================================
+
+  Clusters: min=4 max=15 avg=10.0
+  Traffic: HETEROGENEOUS (33 ECG@4kbps + 33 HR@512bps + 34 Temp@51bps)
+  Flow: Sensors -> 10 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 1062 (dead: 10)
+  Tx: 132723 | Rx: 122448
+  PDR: 92.26%
+  Avg Delay: 44.75 ms
+  Throughput: 253.35 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_100_r2.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH100 | Rx:2916 Fwd:2916
+    CH101 | Rx:2233 Fwd:2233
+    CH102 | Rx:1814 Fwd:1814
+    CH103 | Rx:1065 Fwd:1065
+    CH104 | Rx:7513 Fwd:7513
+    CH105 | Rx:791 Fwd:791
+    CH106 | Rx:6625 Fwd:6625
+    CH107 | Rx:8633 Fwd:8633
+    CH108 | Rx:5459 Fwd:5459
+    CH109 | Rx:3732 Fwd:3732
+  Total: Rx=40781 Fwd=40781
+
+[DONE]
+
+[Set3b] N=100 r3 01:27
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 100 | CHs: 10 | Sink: yes | Total: 111
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_100_r3.csv
+============================================================
+
+  Clusters: min=4 max=15 avg=10.0
+  Traffic: HETEROGENEOUS (33 ECG@4kbps + 33 HR@512bps + 34 Temp@51bps)
+  Flow: Sensors -> 10 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+^X@sa^A
+
+
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 1013 (dead: 0)
+  Tx: 339804 | Rx: 287283
+  PDR: 84.54%
+  Avg Delay: 101.46 ms
+  Throughput: 448.87 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_100_r3.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH100 | Rx:2357 Fwd:2357
+    CH101 | Rx:4157 Fwd:4157
+    CH102 | Rx:7110 Fwd:7110
+    CH103 | Rx:1331 Fwd:1331
+    CH104 | Rx:3593 Fwd:3593
+    CH105 | Rx:4553 Fwd:4553
+    CH106 | Rx:2258 Fwd:2258
+    CH107 | Rx:1941 Fwd:1941
+    CH108 | Rx:3502 Fwd:3502
+    CH109 | Rx:6225 Fwd:6225
+  Total: Rx=37027 Fwd=37027
+
+[DONE]
+
+[Set3b] N=100 r4 01:34
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 100 | CHs: 10 | Sink: yes | Total: 111
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_100_r4.csv
+============================================================
+
+  Clusters: min=6 max=18 avg=10.0
+  Traffic: HETEROGENEOUS (33 ECG@4kbps + 33 HR@512bps + 34 Temp@51bps)
+  Flow: Sensors -> 10 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 927 (dead: 26)
+  Tx: 51592 | Rx: 50966
+  PDR: 98.79%
+  Avg Delay: 9.43 ms
+  Throughput: 168.60 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_100_r4.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH100 | Rx:5489 Fwd:5489
+    CH101 | Rx:2656 Fwd:2656
+    CH102 | Rx:2802 Fwd:2802
+    CH103 | Rx:5118 Fwd:5118
+    CH104 | Rx:4934 Fwd:4934
+    CH105 | Rx:4034 Fwd:4034
+    CH106 | Rx:2472 Fwd:2472
+    CH107 | Rx:7387 Fwd:7387
+    CH108 | Rx:3314 Fwd:3314
+    CH109 | Rx:4222 Fwd:4222
+  Total: Rx=42428 Fwd=42428
+
+[DONE]
+
+[Set3b] N=100 r5 01:36
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 100 | CHs: 10 | Sink: yes | Total: 111
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_100_r5.csv
+============================================================
+
+  Clusters: min=2 max=17 avg=10.0
+  Traffic: HETEROGENEOUS (33 ECG@4kbps + 33 HR@512bps + 34 Temp@51bps)
+  Flow: Sensors -> 10 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 886 (dead: 1)
+  Tx: 51319 | Rx: 50250
+  PDR: 97.92%
+  Avg Delay: 7.50 ms
+  Throughput: 165.19 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_100_r5.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH100 | Rx:3504 Fwd:3504
+    CH101 | Rx:3279 Fwd:3279
+    CH102 | Rx:4964 Fwd:4964
+    CH103 | Rx:2770 Fwd:2770
+    CH104 | Rx:6693 Fwd:6693
+    CH105 | Rx:3196 Fwd:3196
+    CH106 | Rx:3968 Fwd:3968
+    CH107 | Rx:5938 Fwd:5938
+    CH108 | Rx:98 Fwd:98
+    CH109 | Rx:7092 Fwd:7092
+  Total: Rx=41502 Fwd=41502
+
+[DONE]
+
+[Set3b] N=100 r6 01:39
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 100 | CHs: 10 | Sink: yes | Total: 111
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_100_r6.csv
+============================================================
+
+  Clusters: min=4 max=19 avg=10.0
+  Traffic: HETEROGENEOUS (33 ECG@4kbps + 33 HR@512bps + 34 Temp@51bps)
+  Flow: Sensors -> 10 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 922 (dead: 9)
+  Tx: 48936 | Rx: 47527
+  PDR: 97.12%
+  Avg Delay: 7.81 ms
+  Throughput: 161.48 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_100_r6.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH100 | Rx:1918 Fwd:1918
+    CH101 | Rx:4426 Fwd:4426
+    CH102 | Rx:4327 Fwd:4327
+    CH103 | Rx:4110 Fwd:4110
+    CH104 | Rx:2775 Fwd:2775
+    CH105 | Rx:4061 Fwd:4061
+    CH106 | Rx:6672 Fwd:6672
+    CH107 | Rx:6467 Fwd:6467
+    CH108 | Rx:401 Fwd:401
+    CH109 | Rx:6270 Fwd:6270
+  Total: Rx=41427 Fwd=41427
+
+[DONE]
+
+[Set3b] N=100 r7 01:40
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 100 | CHs: 10 | Sink: yes | Total: 111
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_100_r7.csv
+============================================================
+
+  Clusters: min=7 max=15 avg=10.0
+  Traffic: HETEROGENEOUS (33 ECG@4kbps + 33 HR@512bps + 34 Temp@51bps)
+  Flow: Sensors -> 10 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 943 (dead: 0)
+  Tx: 267887 | Rx: 244424
+  PDR: 91.24%
+  Avg Delay: 60.33 ms
+  Throughput: 402.52 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_100_r7.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH100 | Rx:761 Fwd:761
+    CH101 | Rx:5100 Fwd:5100
+    CH102 | Rx:2228 Fwd:2228
+    CH103 | Rx:4779 Fwd:4779
+    CH104 | Rx:2430 Fwd:2430
+    CH105 | Rx:4498 Fwd:4498
+    CH106 | Rx:4423 Fwd:4423
+    CH107 | Rx:5940 Fwd:5940
+    CH108 | Rx:4110 Fwd:4110
+    CH109 | Rx:5968 Fwd:5968
+  Total: Rx=40237 Fwd=40237
+
+[DONE]
+
+[Set3b] N=100 r8 01:46
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 100 | CHs: 10 | Sink: yes | Total: 111
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_100_r8.csv
+============================================================
+
+  Clusters: min=5 max=16 avg=10.0
+  Traffic: HETEROGENEOUS (33 ECG@4kbps + 33 HR@512bps + 34 Temp@51bps)
+  Flow: Sensors -> 10 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 932 (dead: 0)
+  Tx: 434541 | Rx: 390901
+  PDR: 89.96%
+  Avg Delay: 70.50 ms
+  Throughput: 579.17 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_100_r8.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH100 | Rx:2492 Fwd:2492
+    CH101 | Rx:3966 Fwd:3966
+    CH102 | Rx:4713 Fwd:4713
+    CH103 | Rx:3463 Fwd:3463
+    CH104 | Rx:5042 Fwd:5042
+    CH105 | Rx:3394 Fwd:3394
+    CH106 | Rx:2699 Fwd:2699
+    CH107 | Rx:3297 Fwd:3297
+    CH108 | Rx:5573 Fwd:5573
+    CH109 | Rx:3633 Fwd:3633
+  Total: Rx=38272 Fwd=38272
+
+[DONE]
+
+[Set3b] N=100 r9 01:55
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 100 | CHs: 10 | Sink: yes | Total: 111
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_100_r9.csv
+============================================================
+
+  Clusters: min=6 max=15 avg=10.0
+  Traffic: HETEROGENEOUS (33 ECG@4kbps + 33 HR@512bps + 34 Temp@51bps)
+  Flow: Sensors -> 10 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 1004 (dead: 0)
+  Tx: 517216 | Rx: 456266
+  PDR: 88.22%
+  Avg Delay: 80.76 ms
+  Throughput: 648.74 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_100_r9.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH100 | Rx:3436 Fwd:3436
+    CH101 | Rx:6285 Fwd:6285
+    CH102 | Rx:904 Fwd:904
+    CH103 | Rx:2969 Fwd:2969
+    CH104 | Rx:2644 Fwd:2644
+    CH105 | Rx:3331 Fwd:3331
+    CH106 | Rx:5417 Fwd:5417
+    CH107 | Rx:4741 Fwd:4741
+    CH108 | Rx:2445 Fwd:2445
+    CH109 | Rx:2409 Fwd:2409
+  Total: Rx=34581 Fwd=34581
+
+[DONE]
+
+[Set3b] N=100 r10 02:05
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 100 | CHs: 10 | Sink: yes | Total: 111
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_100_r10.csv
+============================================================
+
+  Clusters: min=4 max=22 avg=10.0
+  Traffic: HETEROGENEOUS (33 ECG@4kbps + 33 HR@512bps + 34 Temp@51bps)
+  Flow: Sensors -> 10 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 823 (dead: 5)
+  Tx: 47557 | Rx: 46139
+  PDR: 97.02%
+  Avg Delay: 6.25 ms
+  Throughput: 159.09 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_100_r10.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH100 | Rx:2275 Fwd:2275
+    CH101 | Rx:1083 Fwd:1083
+    CH102 | Rx:2830 Fwd:2830
+    CH103 | Rx:4703 Fwd:4703
+    CH104 | Rx:2365 Fwd:2365
+    CH105 | Rx:4081 Fwd:4081
+    CH106 | Rx:4053 Fwd:4053
+    CH107 | Rx:4464 Fwd:4464
+    CH108 | Rx:4593 Fwd:4593
+    CH109 | Rx:10747 Fwd:10747
+  Total: Rx=41194 Fwd=41194
+
+[DONE]
+
+[Set3b] N=150 r1 02:08
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 150 | CHs: 15 | Sink: yes | Total: 166
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_150_r1.csv
+============================================================
+
+  Clusters: min=6 max=18 avg=10.0
+  Traffic: HETEROGENEOUS (50 ECG@4kbps + 50 HR@512bps + 50 Temp@51bps)
+  Flow: Sensors -> 15 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 2149 (dead: 9)
+  Tx: 764690 | Rx: 613001
+  PDR: 80.16%
+  Avg Delay: 113.48 ms
+  Throughput: 897.24 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_150_r1.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH150 | Rx:3724 Fwd:3724
+    CH151 | Rx:3284 Fwd:3284
+    CH152 | Rx:2351 Fwd:2351
+    CH153 | Rx:3642 Fwd:3642
+    CH154 | Rx:3909 Fwd:3909
+    CH155 | Rx:5098 Fwd:5098
+    CH156 | Rx:4400 Fwd:4400
+    CH157 | Rx:2950 Fwd:2950
+    CH158 | Rx:4047 Fwd:4047
+    CH159 | Rx:4038 Fwd:4038
+    CH160 | Rx:2785 Fwd:2785
+    CH161 | Rx:3410 Fwd:3410
+    CH162 | Rx:1876 Fwd:1876
+    CH163 | Rx:4120 Fwd:4120
+    CH164 | Rx:5020 Fwd:5020
+  Total: Rx=54654 Fwd=54654
+
+[DONE]
+
+[Set3b] N=150 r2 02:30
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 150 | CHs: 15 | Sink: yes | Total: 166
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_150_r2.csv
+============================================================
+
+  Clusters: min=4 max=16 avg=10.0
+  Traffic: HETEROGENEOUS (50 ECG@4kbps + 50 HR@512bps + 50 Temp@51bps)
+  Flow: Sensors -> 15 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+============================================================
+  WSN RESULTS
+============================================================
+  Flows: 2136 (dead: 12)
+  Tx: 978315 | Rx: 765874
+  PDR: 78.29%
+  Avg Delay: 134.13 ms
+  Throughput: 1061.89 kbps
+  Output: experiments/statistical/exp3b_wsn_hetero_broker_150_r2.csv
+============================================================
+
+  Per-CH Forwarding Stats:
+    CH150 | Rx:1898 Fwd:1898
+    CH151 | Rx:5388 Fwd:5388
+    CH152 | Rx:6299 Fwd:6299
+    CH153 | Rx:3145 Fwd:3145
+    CH154 | Rx:588 Fwd:588
+    CH155 | Rx:1391 Fwd:1391
+    CH156 | Rx:5243 Fwd:5243
+    CH157 | Rx:4592 Fwd:4592
+    CH158 | Rx:2117 Fwd:2117
+    CH159 | Rx:1860 Fwd:1860
+    CH160 | Rx:1712 Fwd:1712
+    CH161 | Rx:4304 Fwd:4304
+    CH162 | Rx:842 Fwd:842
+    CH163 | Rx:1877 Fwd:1877
+    CH164 | Rx:4957 Fwd:4957
+  Total: Rx=46213 Fwd=46213
+
+[DONE]
+
+[Set3b] N=150 r3 02:58
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 150 | CHs: 15 | Sink: yes | Total: 166
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_150_r3.csv
+============================================================
+
+  Clusters: min=5 max=17 avg=10.0
+  Traffic: HETEROGENEOUS (50 ECG@4kbps + 50 HR@512bps + 50 Temp@51bps)
+  Flow: Sensors -> 15 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+    
+^CProcess was interrupted by the user
+[Set3b] N=150 r4 03:11
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  Traditional WSN (AODV + UDP)
+  Sensors: 150 | CHs: 15 | Sink: yes | Total: 166
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/statistical/exp3b_wsn_hetero_broker_150_r4.csv
+============================================================
+
+  Clusters: min=4 max=15 avg=10.0
+  Traffic: HETEROGENEOUS (50 ECG@4kbps + 50 HR@512bps + 50 Temp@51bps)
+  Flow: Sensors -> 15 CHs (forward) -> 1 Sink
+
+[RUN] 300.0s...
+^CProcess was interrupted by the user
+[Set3b] N=150 r5 03:11
+^C                                     
+
+//seecound session 
 
 ┌──(kali㉿kali)-[~/ns-3-dev]
 └─$ cd ~/ns-3-dev
