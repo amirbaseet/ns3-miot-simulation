@@ -148,7 +148,7 @@ void MqttSnPublisher::SendEmergency (void)
   h.SetTopicId (TOPIC_EMERGENCY);
   h.SetMsgId (m_msgCounter++);
   h.SetPayloadSize (m_payloadSize);
-  h.SetQos (PRIORITY_HIGH);
+  h.SetQos (PRIORITY_CRITICAL);
   h.SetEmergency (true);
   pkt->AddHeader (h);
 

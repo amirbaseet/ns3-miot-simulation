@@ -37,7 +37,6 @@ using namespace ns3;
 NS_LOG_COMPONENT_DEFINE ("ClusterAodvMqtt");
 
 static const double   AREA   = 1000.0;
-static const double   SIM_T  = 100.0;
 static const uint16_t MQTT_PORT   = 1883;
 static const uint16_t BROKER_PORT = 1884;
 static const double   EMERGENCY_PROB = 0.005;
@@ -192,7 +191,7 @@ void InstallMqtt (NodeContainer &sens, NodeContainer &chs, NodeContainer &sink,
       broker->Setup (BROKER_PORT);
       sink.Get (0)->AddApplication (broker);
       broker->SetStartTime (Seconds (0));
-      broker->SetStopTime (Seconds (SIM_T));
+      broker->SetStopTime (Seconds (simTime));
     }
 
   // Gateways on CHs
@@ -204,7 +203,7 @@ void InstallMqtt (NodeContainer &sens, NodeContainer &chs, NodeContainer &sink,
         gw->SetBroker (brokerAddr, BROKER_PORT);
       chs.Get (c)->AddApplication (gw);
       gw->SetStartTime (Seconds (0));
-      gw->SetStopTime (Seconds (SIM_T));
+      gw->SetStopTime (Seconds (simTime));
     }
 
   // Publishers on sensors
@@ -239,7 +238,7 @@ void InstallMqtt (NodeContainer &sens, NodeContainer &chs, NodeContainer &sink,
       pub->EnableEmergencyDetection (EMERGENCY_PROB);
       sens.Get (n)->AddApplication (pub);
       pub->SetStartTime (Seconds (rng->GetValue ()));
-      pub->SetStopTime (Seconds (SIM_T - 10.0));  // Stop 10s before end
+      pub->SetStopTime (Seconds (simTime - 10.0));  // Stop 10s before end
     }
 
   std::cout << "  Sensors: " << nECG << " ECG + " << nHR << " HR + "
@@ -290,7 +289,7 @@ void PrintResults (Ptr<FlowMonitor> fm, FlowMonitorHelper &fh,
     << "  Tx: " << tTx << " | Rx: " << tRx << "\n"
     << "  PDR: " << std::fixed << std::setprecision (2) << pdr << "%\n"
     << "  Avg Delay: " << avgD << " ms\n"
-    << "  Throughput: " << (tRxB*8.0/SIM_T/1000) << " kbps\n"
+    << "  Throughput: " << (tRxB*8.0/simTime/1000) << " kbps\n"
     << "  Output: " << csvName << "\n"
     << "============================================================\n\n";
 

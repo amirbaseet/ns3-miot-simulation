@@ -35,7 +35,8 @@ enum MqttSnTopicId : uint16_t
 // Priority Levels (mapped to QoS)
 enum MqttSnPriority : uint8_t
 {
-  PRIORITY_HIGH   = 2,   // ECG, Emergency — must deliver, retransmit if lost
+  PRIORITY_HIGH   = 2,   // ECG — must deliver, retransmit if lost
+  PRIORITY_CRITICAL = 3,  // Emergency — highest priority
   PRIORITY_MEDIUM = 1,   // Heart Rate — important but tolerates some loss
   PRIORITY_LOW    = 0    // Temperature — best effort
 };
