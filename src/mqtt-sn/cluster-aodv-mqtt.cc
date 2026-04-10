@@ -179,7 +179,7 @@ void AssignClusters (NodeContainer &sens, NodeContainer &chs, uint32_t nCH)
 
 void InstallMqtt (NodeContainer &sens, NodeContainer &chs, NodeContainer &sink,
                   Ipv4InterfaceContainer &ifaces, uint32_t nSens, uint32_t nCH,
-                  bool useBroker, uint32_t nECGin, uint32_t nHRin)
+                  bool useBroker, uint32_t nECGin, uint32_t nHRin, double simTime)
 {
   uint32_t sinkIfIdx = nSens + nCH;
   Ipv4Address brokerAddr = ifaces.GetAddress (sinkIfIdx);
@@ -248,7 +248,7 @@ void InstallMqtt (NodeContainer &sens, NodeContainer &chs, NodeContainer &sink,
 
 void PrintResults (Ptr<FlowMonitor> fm, FlowMonitorHelper &fh,
                    NodeContainer &chs, NodeContainer &sink,
-                   uint32_t nCH, bool useBroker, std::string csvName)
+                   uint32_t nCH, bool useBroker, std::string csvName, double simTime)
 {
   fm->CheckForLostPackets ();
   Ptr<Ipv4FlowClassifier> cls = DynamicCast<Ipv4FlowClassifier> (fh.GetClassifier ());
@@ -394,7 +394,7 @@ int main (int argc, char *argv[])
   PositionNodes (sens, chs, sink, nCH, enableMobility, speed);
 
   AssignClusters (sens, chs, nCH);
-  InstallMqtt (sens, chs, sink, ifaces, nSensors, nCH, useBroker, nECGcmd, nHRcmd);
+  InstallMqtt (sens, chs, sink, ifaces, nSensors, nCH, useBroker, nECGcmd, nHRcmd, simTime);
 
   // ---- Energy Model ----
   // Sensors: small battery (2.0 J initial)
@@ -464,7 +464,7 @@ int main (int argc, char *argv[])
   Simulator::Stop (Seconds (simTime));
   Simulator::Run ();
 
-  PrintResults (fm, fh, chs, sink, nCH, useBroker, csvName);
+  PrintResults (fm, fh, chs, sink, nCH, useBroker, csvName, simTime);
 
   // ---- Energy Report ----
   std::cout << "  ============================================\n"
