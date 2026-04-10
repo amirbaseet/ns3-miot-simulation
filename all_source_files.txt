@@ -1,0 +1,2616 @@
+/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+#ifndef MQTT_SN_BROKER_H
+#define MQTT_SN_BROKER_H
+
+#include "ns3/application.h"
+#include "ns3/socket.h"
+#include <map>
+
+namespace ns3 {
+
+struct BrokerStats
+{
+  uint32_t rxPackets = 0;
+  uint32_t rxBytes = 0;
+  uint32_t emergencies = 0;
+  uint32_t fromGateways = 0;
+  std::map<uint16_t, uint32_t> topicCounts;
+  std::map<uint8_t, uint32_t> priorityCounts;
+};
+
+class MqttSnBroker : public Application
+{
+public:
+  static TypeId GetTypeId (void);
+  MqttSnBroker ();
+  virtual ~MqttSnBroker ();
+
+  void Setup (uint16_t port);
+  BrokerStats GetStats () const;
+  void PrintStats () const;
+
+private:
+  virtual void StartApplication (void);
+  virtual void StopApplication (void);
+  void HandleRead (Ptr<Socket> socket);
+
+  Ptr<Socket>  m_socket;
+  uint16_t     m_port;
+  BrokerStats  m_stats;
+};
+
+} // namespace ns3
+#endif
+/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+#ifndef MQTT_SN_GATEWAY_H
+#define MQTT_SN_GATEWAY_H
+
+#include "ns3/application.h"
+#include "ns3/socket.h"
+#include "ns3/address.h"
+#include <map>
+#include <queue>
+
+namespace ns3 {
+
+struct PriorityPacket
+{
+  uint8_t priority;
+  uint16_t topicId;
+  uint16_t msgId;
+  uint32_t size;
+  double rxTime;
+  uint8_t qos;
+  bool emergency;
+
+  bool operator< (const PriorityPacket &other) const
+  {
+    if (priority != other.priority) return priority < other.priority;
+    return rxTime > other.rxTime;
+  }
+};
+
+struct GatewayStats
+{
+  uint32_t rxPackets = 0;
+  uint32_t rxBytes = 0;
+  uint32_t connects = 0;
+  uint32_t disconnects = 0;
+  uint32_t emergencies = 0;
+  uint32_t forwardedToBroker = 0;
+  std::map<uint16_t, uint32_t> topicCounts;
+  std::map<uint8_t, uint32_t> priorityCounts;
+  uint32_t processedHigh = 0;
+  uint32_t processedMed = 0;
+  uint32_t processedLow = 0;
+  uint32_t queueDrops = 0;
+};
+
+class MqttSnGateway : public Application
+{
+public:
+  static TypeId GetTypeId (void);
+  MqttSnGateway ();
+  virtual ~MqttSnGateway ();
+
+  void Setup (uint16_t port);
+  void SetBroker (Ipv4Address brokerAddr, uint16_t brokerPort);
+  GatewayStats GetStats () const;
+  void PrintStats () const;
+
+private:
+  virtual void StartApplication (void);
+  virtual void StopApplication (void);
+
+  void HandleRead (Ptr<Socket> socket);
+  void ProcessQueue (void);
+  void ForwardToBroker (PriorityPacket &pp);
+  void SendConnAck (Ptr<Socket> socket, Address from);
+  void SendPubAck (Ptr<Socket> socket, Address from, uint16_t msgId);
+
+  Ptr<Socket>  m_socket;
+  Ptr<Socket>  m_brokerSocket;
+  uint16_t     m_port;
+  Ipv4Address  m_brokerAddr;
+  uint16_t     m_brokerPort;
+  bool         m_hasBroker;
+  GatewayStats m_stats;
+  std::priority_queue<PriorityPacket> m_pQueue;
+};
+
+} // namespace ns3
+#endif
+/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+#ifndef MQTT_SN_HEADER_H
+#define MQTT_SN_HEADER_H
+
+#include "ns3/header.h"
+#include "ns3/buffer.h"
+
+namespace ns3 {
+
+// Message Types
+enum MqttSnMsgType : uint8_t
+{
+  MQTTSN_CONNECT    = 0x04,
+  MQTTSN_CONNACK    = 0x05,
+  MQTTSN_PUBLISH    = 0x0C,
+  MQTTSN_PUBACK     = 0x0D,
+  MQTTSN_SUBSCRIBE  = 0x12,
+  MQTTSN_SUBACK     = 0x13,
+  MQTTSN_PINGREQ    = 0x16,
+  MQTTSN_PINGRESP   = 0x17,
+  MQTTSN_DISCONNECT = 0x18
+};
+
+// Topic IDs
+enum MqttSnTopicId : uint16_t
+{
+  TOPIC_ECG          = 10,
+  TOPIC_HEART_RATE   = 20,
+  TOPIC_TEMPERATURE  = 30,
+  TOPIC_BLOOD_OX     = 40,
+  TOPIC_BLOOD_PRESS  = 50,
+  TOPIC_EMERGENCY    = 99
+};
+
+// Priority Levels (mapped to QoS)
+enum MqttSnPriority : uint8_t
+{
+  PRIORITY_HIGH   = 2,   // ECG — must deliver, retransmit if lost
+  PRIORITY_CRITICAL = 3,  // Emergency — highest priority
+  PRIORITY_MEDIUM = 1,   // Heart Rate — important but tolerates some loss
+  PRIORITY_LOW    = 0    // Temperature — best effort
+};
+
+class MqttSnHeader : public Header
+{
+public:
+  MqttSnHeader ();
+  virtual ~MqttSnHeader ();
+
+  void SetMsgType (uint8_t type);
+  void SetTopicId (uint16_t topicId);
+  void SetMsgId (uint16_t msgId);
+  void SetPayloadSize (uint16_t size);
+  void SetQos (uint8_t qos);
+  void SetEmergency (bool isEmergency);
+
+  uint8_t GetMsgType () const;
+  uint16_t GetTopicId () const;
+  uint16_t GetMsgId () const;
+  uint16_t GetPayloadSize () const;
+  uint8_t GetQos () const;
+  bool IsEmergency () const;
+
+  // Priority based on QoS + Emergency flag
+  uint8_t GetPriority () const;
+
+  std::string GetMsgTypeName () const;
+  std::string GetTopicName () const;
+  std::string GetPriorityName () const;
+
+  static TypeId GetTypeId (void);
+  virtual TypeId GetInstanceTypeId (void) const;
+  virtual uint32_t GetSerializedSize (void) const;
+  virtual void Serialize (Buffer::Iterator start) const;
+  virtual uint32_t Deserialize (Buffer::Iterator start);
+  virtual void Print (std::ostream &os) const;
+
+private:
+  uint8_t  m_msgType;
+  uint16_t m_topicId;
+  uint16_t m_msgId;
+  uint16_t m_payloadSize;
+  uint8_t  m_qos;
+  uint8_t  m_emergency;  // 0=normal, 1=emergency
+};
+
+} // namespace ns3
+#endif
+/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+#ifndef MQTT_SN_PUBLISHER_H
+#define MQTT_SN_PUBLISHER_H
+
+#include "ns3/application.h"
+#include "ns3/socket.h"
+#include "ns3/address.h"
+#include "ns3/event-id.h"
+#include "ns3/random-variable-stream.h"
+
+namespace ns3 {
+
+class MqttSnPublisher : public Application
+{
+public:
+  static TypeId GetTypeId (void);
+  MqttSnPublisher ();
+  virtual ~MqttSnPublisher ();
+
+  void Setup (Address gatewayAddr, uint16_t port,
+              uint16_t topicId, Time interval,
+              uint32_t payloadSize, uint8_t qos);
+
+  // Enable emergency detection (random abnormal values trigger emergency)
+  void EnableEmergencyDetection (double probability);
+
+private:
+  virtual void StartApplication (void);
+  virtual void StopApplication (void);
+
+  void SendConnect (void);
+  void SendPublish (void);
+  void SendEmergency (void);
+  void HandleRead (Ptr<Socket> socket);
+
+  Ptr<Socket> m_socket;
+  Address     m_gatewayAddr;
+  uint16_t    m_port;
+  uint16_t    m_topicId;
+  Time        m_interval;
+  uint32_t    m_payloadSize;
+  uint8_t     m_qos;
+  uint16_t    m_msgCounter;
+  bool        m_running;
+  EventId     m_sendEvent;
+
+  // Emergency
+  bool        m_emergencyEnabled;
+  double      m_emergencyProb;
+  Ptr<UniformRandomVariable> m_emergencyRng;
+
+  // Stats
+  uint32_t    m_txPackets;
+  uint32_t    m_txBytes;
+  uint32_t    m_emergencyCount;
+};
+
+} // namespace ns3
+#endif
+/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+/*
+ * Priority-Aware MQTT-SN for MIoT (Scalability Version)
+ * =======================================================
+ * Supports command-line node count for experiments:
+ *   ./ns3 run "cluster-aodv-mqtt --nSensors=50 --nCH=5"
+ *   ./ns3 run "cluster-aodv-mqtt --nSensors=100 --nCH=10"
+ *   ./ns3 run "cluster-aodv-mqtt --nSensors=200 --nCH=20"
+ */
+
+#include "mqtt-sn-header.h"
+#include "mqtt-sn-publisher.h"
+#include "mqtt-sn-gateway.h"
+#include "mqtt-sn-broker.h"
+
+#include "ns3/core-module.h"
+#include "ns3/network-module.h"
+#include "ns3/internet-module.h"
+#include "ns3/wifi-module.h"
+#include "ns3/mobility-module.h"
+#include "ns3/aodv-module.h"
+#include "ns3/flow-monitor-module.h"
+#include "ns3/netanim-module.h"
+#include "ns3/energy-module.h"
+#include "ns3/wifi-radio-energy-model-helper.h"
+
+#include <cmath>
+#include <vector>
+#include <fstream>
+#include <iomanip>
+#include <algorithm>
+#include <limits>
+#include <sstream>
+
+using namespace ns3;
+
+NS_LOG_COMPONENT_DEFINE ("ClusterAodvMqtt");
+
+static const double   AREA   = 1000.0;
+static const uint16_t MQTT_PORT   = 1883;
+static const uint16_t BROKER_PORT = 1884;
+static const double   EMERGENCY_PROB = 0.005;
+
+// Dynamic vectors (sized at runtime)
+std::vector<uint32_t> cAssign;
+std::vector<uint32_t> cSizes;
+
+static double CalcDist (const Vector &a, const Vector &b)
+{ return std::sqrt ((a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y)); }
+
+NetDeviceContainer ConfigWifi (NodeContainer &all, YansWifiPhyHelper &phy)
+{
+  WifiHelper w; w.SetStandard (WIFI_STANDARD_80211b);
+  w.SetRemoteStationManager ("ns3::ConstantRateWifiManager",
+    "DataMode", StringValue ("DsssRate11Mbps"),
+    "ControlMode", StringValue ("DsssRate1Mbps"));
+  YansWifiChannelHelper ch;
+  ch.SetPropagationDelay ("ns3::ConstantSpeedPropagationDelayModel");
+  ch.AddPropagationLoss ("ns3::LogDistancePropagationLossModel",
+    "Exponent", DoubleValue (2.5), "ReferenceDistance", DoubleValue (1.0),
+    "ReferenceLoss", DoubleValue (46.6777));
+  phy.SetChannel (ch.Create ());
+  phy.Set ("TxPowerStart", DoubleValue (20.0));
+  phy.Set ("TxPowerEnd", DoubleValue (20.0));
+  WifiMacHelper mac; mac.SetType ("ns3::AdhocWifiMac");
+  return w.Install (phy, mac, all);
+}
+
+Ipv4InterfaceContainer InstallStack (NodeContainer &all, NetDeviceContainer &dev)
+{
+  AodvHelper aodv;
+  aodv.Set ("HelloInterval", TimeValue (Seconds (2)));
+  aodv.Set ("AllowedHelloLoss", UintegerValue (3));
+  aodv.Set ("ActiveRouteTimeout", TimeValue (Seconds (15)));
+  aodv.Set ("RreqRetries", UintegerValue (5));
+  aodv.Set ("NetDiameter", UintegerValue (20));
+  aodv.Set ("NodeTraversalTime", TimeValue (MilliSeconds (100)));
+  InternetStackHelper inet; inet.SetRoutingHelper (aodv); inet.Install (all);
+  Ipv4AddressHelper addr; addr.SetBase ("10.1.0.0", "255.255.0.0");
+  return addr.Assign (dev);
+}
+
+void PositionNodes (NodeContainer &sens, NodeContainer &chs, NodeContainer &sink,
+                    uint32_t nCH, bool mobility, double speed)
+{
+  // CHs: static grid (always fixed)
+  MobilityHelper chMob;
+  chMob.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
+  uint32_t cols = (uint32_t)std::ceil (std::sqrt ((double)nCH));
+  if (cols < 1) cols = 1;
+  uint32_t rows = (nCH + cols - 1) / cols;
+  Ptr<ListPositionAllocator> cp = CreateObject<ListPositionAllocator> ();
+  double cW = AREA / cols, cH = AREA / rows;
+  for (uint32_t i = 0; i < nCH; i++)
+    cp->Add (Vector ((i%cols+0.5)*cW, (i/cols+0.5)*cH, 0));
+  chMob.SetPositionAllocator (cp); chMob.Install (chs);
+
+  // Sensors: static or mobile
+  uint32_t nSens = sens.GetN ();
+  if (mobility)
+    {
+      // RandomWaypoint: sensors walk randomly at given speed
+      MobilityHelper sensMob;
+
+      // Create position allocator for waypoints
+      Ptr<RandomRectanglePositionAllocator> wpAlloc =
+        CreateObject<RandomRectanglePositionAllocator> ();
+      Ptr<UniformRandomVariable> xVar = CreateObject<UniformRandomVariable> ();
+      xVar->SetAttribute ("Min", DoubleValue (0.0));
+      xVar->SetAttribute ("Max", DoubleValue (AREA));
+      Ptr<UniformRandomVariable> yVar = CreateObject<UniformRandomVariable> ();
+      yVar->SetAttribute ("Min", DoubleValue (0.0));
+      yVar->SetAttribute ("Max", DoubleValue (AREA));
+      wpAlloc->SetX (xVar);
+      wpAlloc->SetY (yVar);
+
+      // Initial position allocator (same area)
+      sensMob.SetPositionAllocator (
+        "ns3::RandomRectanglePositionAllocator",
+        "X", StringValue ("ns3::UniformRandomVariable[Min=0|Max=" + std::to_string ((int)AREA) + "]"),
+        "Y", StringValue ("ns3::UniformRandomVariable[Min=0|Max=" + std::to_string ((int)AREA) + "]"));
+
+      std::string speedStr = "ns3::ConstantRandomVariable[Constant=" + std::to_string (speed) + "]";
+      sensMob.SetMobilityModel ("ns3::RandomWaypointMobilityModel",
+        "Speed", StringValue (speedStr),
+        "Pause", StringValue ("ns3::ConstantRandomVariable[Constant=2.0]"),
+        "PositionAllocator", PointerValue (wpAlloc));
+      sensMob.Install (sens);
+      std::cout << "  Mobility: RandomWaypoint (speed=" << speed << " m/s, pause=2s)\n";
+    }
+  else
+    {
+      // Static sensors
+      MobilityHelper sensMob;
+      sensMob.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
+      Ptr<ListPositionAllocator> sp = CreateObject<ListPositionAllocator> ();
+      Ptr<UniformRandomVariable> rx = CreateObject<UniformRandomVariable> ();
+      rx->SetAttribute ("Min", DoubleValue (0)); rx->SetAttribute ("Max", DoubleValue (AREA));
+      Ptr<UniformRandomVariable> ry = CreateObject<UniformRandomVariable> ();
+      ry->SetAttribute ("Min", DoubleValue (0)); ry->SetAttribute ("Max", DoubleValue (AREA));
+      for (uint32_t i = 0; i < nSens; i++)
+        sp->Add (Vector (rx->GetValue (), ry->GetValue (), 0));
+      sensMob.SetPositionAllocator (sp); sensMob.Install (sens);
+      std::cout << "  Mobility: Static\n";
+    }
+
+  // Sink: center (always fixed)
+  MobilityHelper sinkMob;
+  sinkMob.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
+  Ptr<ListPositionAllocator> skp = CreateObject<ListPositionAllocator> ();
+  skp->Add (Vector (AREA/2.0, AREA/2.0, 0));
+  sinkMob.SetPositionAllocator (skp); sinkMob.Install (sink);
+}
+
+void AssignClusters (NodeContainer &sens, NodeContainer &chs, uint32_t nCH)
+{
+  uint32_t nSens = sens.GetN ();
+  cAssign.resize (nSens, 0);
+  cSizes.resize (nCH, 0);
+
+  std::vector<Vector> chP (nCH);
+  for (uint32_t i = 0; i < nCH; i++)
+    chP[i] = chs.Get (i)->GetObject<MobilityModel> ()->GetPosition ();
+  std::fill (cSizes.begin (), cSizes.end (), 0);
+
+  for (uint32_t n = 0; n < nSens; n++)
+    {
+      Vector np = sens.Get (n)->GetObject<MobilityModel> ()->GetPosition ();
+      double md = 1e9; uint32_t ne = 0;
+      for (uint32_t c = 0; c < nCH; c++)
+        { double d = CalcDist (np, chP[c]); if (d < md) { md = d; ne = c; } }
+      cAssign[n] = ne; cSizes[ne]++;
+    }
+  std::cout << "  Clusters: min=" << *std::min_element (cSizes.begin (), cSizes.end ())
+            << " max=" << *std::max_element (cSizes.begin (), cSizes.end ())
+            << " avg=" << std::fixed << std::setprecision (1)
+            << (double)nSens/nCH << "\n";
+}
+
+void InstallMqtt (NodeContainer &sens, NodeContainer &chs, NodeContainer &sink,
+                  Ipv4InterfaceContainer &ifaces, uint32_t nSens, uint32_t nCH,
+                  bool useBroker, uint32_t nECGin, uint32_t nHRin, double simTime)
+{
+  uint32_t sinkIfIdx = nSens + nCH;
+  Ipv4Address brokerAddr = ifaces.GetAddress (sinkIfIdx);
+
+  // Broker on sink
+  if (useBroker)
+    {
+      Ptr<MqttSnBroker> broker = CreateObject<MqttSnBroker> ();
+      broker->Setup (BROKER_PORT);
+      sink.Get (0)->AddApplication (broker);
+      broker->SetStartTime (Seconds (0));
+      broker->SetStopTime (Seconds (simTime));
+    }
+
+  // Gateways on CHs
+  for (uint32_t c = 0; c < nCH; c++)
+    {
+      Ptr<MqttSnGateway> gw = CreateObject<MqttSnGateway> ();
+      gw->Setup (MQTT_PORT);
+      if (useBroker)
+        gw->SetBroker (brokerAddr, BROKER_PORT);
+      chs.Get (c)->AddApplication (gw);
+      gw->SetStartTime (Seconds (0));
+      gw->SetStopTime (Seconds (simTime));
+    }
+
+  // Publishers on sensors
+  Ptr<UniformRandomVariable> rng = CreateObject<UniformRandomVariable> ();
+  rng->SetAttribute ("Min", DoubleValue (30.0));  // Warm-up: 0-30s for AODV
+  rng->SetAttribute ("Max", DoubleValue (45.0));  // All sensors start 30-45s
+
+  uint32_t nECG = (nECGin > 0) ? nECGin : nSens / 3;
+  uint32_t nHR  = (nHRin > 0)  ? nHRin  : nSens / 3;
+  if (nECG + nHR > nSens) { nECG = nSens / 3; nHR = nSens / 3; }
+  // rest = temperature
+
+  for (uint32_t n = 0; n < nSens; n++)
+    {
+      uint32_t chIf = nSens + cAssign[n];
+      Ipv4Address gwAddr = ifaces.GetAddress (chIf);
+
+      uint16_t topic; Time interval; uint32_t payload; uint8_t qos;
+      if (n < nECG) {
+        topic = TOPIC_ECG; interval = MilliSeconds (250);
+        payload = 128; qos = PRIORITY_HIGH;
+      } else if (n < nECG + nHR) {
+        topic = TOPIC_HEART_RATE; interval = Seconds (1.0);
+        payload = 64; qos = PRIORITY_MEDIUM;
+      } else {
+        topic = TOPIC_TEMPERATURE; interval = Seconds (5.0);
+        payload = 32; qos = PRIORITY_LOW;
+      }
+
+      Ptr<MqttSnPublisher> pub = CreateObject<MqttSnPublisher> ();
+      pub->Setup (gwAddr, MQTT_PORT, topic, interval, payload, qos);
+      pub->EnableEmergencyDetection (EMERGENCY_PROB);
+      sens.Get (n)->AddApplication (pub);
+      pub->SetStartTime (Seconds (rng->GetValue ()));
+      pub->SetStopTime (Seconds (simTime - 10.0));  // Stop 10s before end
+    }
+
+  std::cout << "  Sensors: " << nECG << " ECG + " << nHR << " HR + "
+            << (nSens - nECG - nHR) << " Temp\n"
+            << "  Broker: " << (useBroker ? "enabled" : "disabled") << "\n\n";
+}
+
+void PrintResults (Ptr<FlowMonitor> fm, FlowMonitorHelper &fh,
+                   NodeContainer &chs, NodeContainer &sink,
+                   uint32_t nCH, bool useBroker, std::string csvName, double simTime)
+{
+  fm->CheckForLostPackets ();
+  Ptr<Ipv4FlowClassifier> cls = DynamicCast<Ipv4FlowClassifier> (fh.GetClassifier ());
+  auto stats = fm->GetFlowStats ();
+
+  uint64_t tTx = 0, tRx = 0, tRxB = 0;
+  double tDel = 0; uint32_t fl = 0, dead = 0;
+
+  std::ofstream csv (csvName);
+  csv << "FlowID,SrcAddr,DstAddr,TxPackets,RxPackets,LostPackets,"
+      << "PDR_pct,Throughput_kbps,AvgDelay_ms,AvgJitter_ms\n";
+
+  for (auto &kv : stats)
+    {
+      auto ft = cls->FindFlow (kv.first); auto &s = kv.second;
+      double pdr = s.txPackets > 0 ? (double)s.rxPackets/s.txPackets*100 : 0;
+      double dur = s.rxPackets > 0 ? (s.timeLastRxPacket-s.timeFirstTxPacket).GetSeconds () : 0;
+      double tp = dur > 0 ? s.rxBytes*8.0/dur/1000 : 0;
+      double dl = s.rxPackets > 0 ? s.delaySum.GetMilliSeconds ()/(double)s.rxPackets : 0;
+      double jt = s.rxPackets > 1 ? s.jitterSum.GetMilliSeconds ()/(double)(s.rxPackets-1) : 0;
+      tTx += s.txPackets; tRx += s.rxPackets; tRxB += s.rxBytes;
+      tDel += s.rxPackets > 0 ? s.delaySum.GetMilliSeconds () : 0;
+      fl++; if (s.rxPackets == 0) dead++;
+      csv << kv.first << "," << ft.sourceAddress << "," << ft.destinationAddress
+          << "," << s.txPackets << "," << s.rxPackets << "," << s.lostPackets
+          << "," << std::fixed << std::setprecision (2)
+          << pdr << "," << tp << "," << dl << "," << jt << "\n";
+    }
+  csv.close ();
+
+  double pdr = tTx > 0 ? (double)tRx/tTx*100 : 0;
+  double avgD = tRx > 0 ? tDel/tRx : 0;
+
+  std::cout << "============================================================\n"
+    << "  RESULTS\n"
+    << "============================================================\n"
+    << "  Flows: " << fl << " (dead: " << dead << ")\n"
+    << "  Tx: " << tTx << " | Rx: " << tRx << "\n"
+    << "  PDR: " << std::fixed << std::setprecision (2) << pdr << "%\n"
+    << "  Avg Delay: " << avgD << " ms\n"
+    << "  Throughput: " << (tRxB*8.0/simTime/1000) << " kbps\n"
+    << "  Output: " << csvName << "\n"
+    << "============================================================\n\n";
+
+  // Per-Gateway
+  uint32_t totalEmerg = 0, totalFwd = 0;
+  for (uint32_t c = 0; c < nCH; c++)
+    {
+      Ptr<MqttSnGateway> gw = DynamicCast<MqttSnGateway> (chs.Get (c)->GetApplication (0));
+      if (gw) {
+        gw->PrintStats ();
+        totalEmerg += gw->GetStats ().emergencies;
+        totalFwd += gw->GetStats ().forwardedToBroker;
+      }
+    }
+
+  if (useBroker)
+    {
+      Ptr<MqttSnBroker> br = DynamicCast<MqttSnBroker> (sink.Get (0)->GetApplication (0));
+      if (br) br->PrintStats ();
+    }
+
+  std::cout << "  Emergencies: " << totalEmerg
+            << " | Forwarded: " << totalFwd << "\n\n";
+
+  fm->SerializeToXmlFile (csvName + ".flowmon.xml", true, true);
+}
+
+// ============================================================
+//  MAIN
+// ============================================================
+int main (int argc, char *argv[])
+{
+  uint32_t nSensors = 180;
+  uint32_t nCH      = 20;
+  uint32_t nECGcmd  = 0;   // 0 = auto (nSensors/3)
+  uint32_t nHRcmd   = 0;   // 0 = auto (nSensors/3)
+  uint32_t runNum   = 1;   // For multiple seeds
+  double   simTime  = 300.0;  // Increased from 100s
+  bool     useBroker = true;
+  bool     enableMobility = false;
+  double   speed    = 1.5;
+  bool     enableAnim = false;
+  bool     verbose  = false;
+  std::string csvName = "";
+
+  CommandLine cmd (__FILE__);
+  cmd.AddValue ("nSensors", "Number of sensor nodes", nSensors);
+  cmd.AddValue ("nCH", "Number of cluster heads", nCH);
+  cmd.AddValue ("nECG", "Number of ECG sensors (0=auto)", nECGcmd);
+  cmd.AddValue ("nHR", "Number of HR sensors (0=auto)", nHRcmd);
+  cmd.AddValue ("run", "Run number for seed variation", runNum);
+  cmd.AddValue ("simTime", "Simulation time", simTime);
+  cmd.AddValue ("broker", "Enable broker/sink", useBroker);
+  cmd.AddValue ("mobility", "Enable sensor mobility", enableMobility);
+  cmd.AddValue ("speed", "Mobility speed in m/s", speed);
+  cmd.AddValue ("anim", "Enable NetAnim", enableAnim);
+  cmd.AddValue ("verbose", "Verbose logging", verbose);
+  cmd.AddValue ("csv", "Output CSV filename", csvName);
+  cmd.Parse (argc, argv);
+
+  if (verbose) {
+    LogComponentEnable ("ClusterAodvMqtt", LOG_LEVEL_INFO);
+    LogComponentEnable ("MqttSnPublisher", LOG_LEVEL_INFO);
+    LogComponentEnable ("MqttSnGateway", LOG_LEVEL_INFO);
+    LogComponentEnable ("MqttSnBroker", LOG_LEVEL_INFO);
+  }
+
+  // Auto CSV name
+  if (csvName.empty ())
+    {
+      std::ostringstream oss;
+      oss << "mqtt-sn-" << nSensors << "nodes";
+      if (useBroker) oss << "-broker";
+      oss << "-results.csv";
+      csvName = oss.str ();
+    }
+
+  uint32_t totalNodes = nSensors + nCH + 1; // +1 for sink (always created)
+
+  SeedManager::SetSeed (42); SeedManager::SetRun (runNum);
+
+  std::cout << "\n============================================================\n"
+    << "  MQTT-SN MIoT Simulation\n"
+    << "  Sensors: " << nSensors << " | CHs: " << nCH
+    << " | Broker: " << (useBroker ? "yes" : "no")
+    << " | Total: " << totalNodes << "\n"
+    << "  Area: " << AREA << "x" << AREA << "m | AODV | " << simTime << "s\n"
+    << "  CSV: " << csvName << "\n"
+    << "============================================================\n\n";
+
+  // Build
+  NodeContainer sens, chs, sink, all;
+  sens.Create (nSensors);
+  chs.Create (nCH);
+  sink.Create (1);  // Always create sink (needed for positioning)
+  all.Add (sens); all.Add (chs); all.Add (sink);
+
+  YansWifiPhyHelper phy;
+  NetDeviceContainer dev = ConfigWifi (all, phy);
+  Ipv4InterfaceContainer ifaces = InstallStack (all, dev);
+
+  PositionNodes (sens, chs, sink, nCH, enableMobility, speed);
+
+  AssignClusters (sens, chs, nCH);
+  InstallMqtt (sens, chs, sink, ifaces, nSensors, nCH, useBroker, nECGcmd, nHRcmd, simTime);
+
+  // ---- Energy Model ----
+  // Sensors: small battery (2.0 J initial)
+  // CHs: larger battery (5.0 J initial)
+  // WiFi radio energy: Tx=1.14W, Rx=0.94W, Idle=0.82W, Sleep=0.10W
+  BasicEnergySourceHelper sensEnergyHelper;
+  sensEnergyHelper.Set ("BasicEnergySourceInitialEnergyJ", DoubleValue (2.0));
+  sensEnergyHelper.Set ("BasicEnergySupplyVoltageV", DoubleValue (3.3));
+  EnergySourceContainer sensSources = sensEnergyHelper.Install (sens);
+
+  BasicEnergySourceHelper chEnergyHelper;
+  chEnergyHelper.Set ("BasicEnergySourceInitialEnergyJ", DoubleValue (5.0));
+  chEnergyHelper.Set ("BasicEnergySupplyVoltageV", DoubleValue (3.3));
+  EnergySourceContainer chSources = chEnergyHelper.Install (chs);
+
+  WifiRadioEnergyModelHelper radioEnergyHelper;
+  radioEnergyHelper.Set ("TxCurrentA", DoubleValue (0.346));  // ~1.14W at 3.3V
+  radioEnergyHelper.Set ("RxCurrentA", DoubleValue (0.285));  // ~0.94W
+  radioEnergyHelper.Set ("IdleCurrentA", DoubleValue (0.248)); // ~0.82W
+  radioEnergyHelper.Set ("SleepCurrentA", DoubleValue (0.030)); // ~0.10W
+
+  // Install on sensor WiFi devices
+  for (uint32_t i = 0; i < nSensors; i++)
+    {
+      NetDeviceContainer sensDevs;
+      sensDevs.Add (dev.Get (i));
+      radioEnergyHelper.Install (sensDevs, sensSources.Get (i));
+    }
+  // Install on CH WiFi devices
+  for (uint32_t i = 0; i < nCH; i++)
+    {
+      NetDeviceContainer chDevs;
+      chDevs.Add (dev.Get (nSensors + i));
+      radioEnergyHelper.Install (chDevs, chSources.Get (i));
+    }
+
+  std::cout << "  Energy: Sensors=" << 2.0 << "J, CHs=" << 5.0 << "J\n\n";
+
+  FlowMonitorHelper fh;
+  Ptr<FlowMonitor> fm = fh.InstallAll ();
+
+  // NetAnim
+  AnimationInterface *anim = nullptr;
+  if (enableAnim)
+    {
+      anim = new AnimationInterface ("mqtt-sn-animation.xml");
+      anim->SetMaxPktsPerTraceFile (500000);
+      uint32_t nECG = nSensors/3, nHR = nSensors/3;
+      for (uint32_t i = 0; i < nECG; i++) {
+        anim->UpdateNodeColor (sens.Get (i), 255, 59, 48);
+        anim->UpdateNodeSize (sens.Get (i)->GetId (), 8, 8); }
+      for (uint32_t i = nECG; i < nECG+nHR; i++) {
+        anim->UpdateNodeColor (sens.Get (i), 0, 122, 255);
+        anim->UpdateNodeSize (sens.Get (i)->GetId (), 8, 8); }
+      for (uint32_t i = nECG+nHR; i < nSensors; i++) {
+        anim->UpdateNodeColor (sens.Get (i), 52, 199, 89);
+        anim->UpdateNodeSize (sens.Get (i)->GetId (), 8, 8); }
+      for (uint32_t i = 0; i < nCH; i++) {
+        anim->UpdateNodeColor (chs.Get (i), 175, 82, 222);
+        anim->UpdateNodeSize (chs.Get (i)->GetId (), 25, 25); }
+      if (useBroker) {
+        anim->UpdateNodeColor (sink.Get (0), 255, 204, 0);
+        anim->UpdateNodeSize (sink.Get (0)->GetId (), 40, 40); }
+    }
+
+  std::cout << "[RUN] " << simTime << "s...\n";
+  Simulator::Stop (Seconds (simTime));
+  Simulator::Run ();
+
+  PrintResults (fm, fh, chs, sink, nCH, useBroker, csvName, simTime);
+
+  // ---- Energy Report ----
+  std::cout << "  ============================================\n"
+            << "  ENERGY REPORT\n"
+            << "  ============================================\n";
+
+  double totalSensInit = nSensors * 2.0;
+  double totalCHInit = nCH * 5.0;
+  double totalSensRemain = 0, totalCHRemain = 0;
+  uint32_t deadSensors = 0, deadCHs = 0;
+
+  // Sensor energy
+  double minSensE = 999, maxSensE = 0, sumSensE = 0;
+  for (uint32_t i = 0; i < nSensors; i++)
+    {
+      double remain = sensSources.Get (i)->GetRemainingEnergy ();
+      totalSensRemain += remain;
+      sumSensE += remain;
+      if (remain < minSensE) minSensE = remain;
+      if (remain > maxSensE) maxSensE = remain;
+      if (remain <= 0.0) deadSensors++;
+    }
+  double avgSensE = nSensors > 0 ? sumSensE / nSensors : 0;
+  double sensConsumed = totalSensInit - totalSensRemain;
+
+  // CH energy
+  double minCHE = 999, maxCHE = 0, sumCHE = 0;
+  for (uint32_t i = 0; i < nCH; i++)
+    {
+      double remain = chSources.Get (i)->GetRemainingEnergy ();
+      totalCHRemain += remain;
+      sumCHE += remain;
+      if (remain < minCHE) minCHE = remain;
+      if (remain > maxCHE) maxCHE = remain;
+      if (remain <= 0.0) deadCHs++;
+    }
+  double avgCHE = nCH > 0 ? sumCHE / nCH : 0;
+  double chConsumed = totalCHInit - totalCHRemain;
+
+  std::cout << std::fixed << std::setprecision (4)
+            << "  Sensor Energy:\n"
+            << "    Initial: " << totalSensInit << " J (" << nSensors << " x 2.0 J)\n"
+            << "    Remaining: " << totalSensRemain << " J\n"
+            << "    Consumed: " << sensConsumed << " J ("
+            << std::setprecision (1) << (sensConsumed/totalSensInit*100) << "%)\n"
+            << std::setprecision (4)
+            << "    Per sensor: avg=" << avgSensE << "J  min=" << minSensE << "J  max=" << maxSensE << "J\n"
+            << "    Dead sensors (0 energy): " << deadSensors << "\n"
+            << "  CH Energy:\n"
+            << "    Initial: " << totalCHInit << " J (" << nCH << " x 5.0 J)\n"
+            << "    Remaining: " << totalCHRemain << " J\n"
+            << "    Consumed: " << chConsumed << " J ("
+            << std::setprecision (1) << (chConsumed/totalCHInit*100) << "%)\n"
+            << std::setprecision (4)
+            << "    Per CH: avg=" << avgCHE << "J  min=" << minCHE << "J  max=" << maxCHE << "J\n"
+            << "    Dead CHs (0 energy): " << deadCHs << "\n"
+            << "  ============================================\n\n";
+
+  // Save energy CSV
+  std::string energyCsv = csvName + ".energy.csv";
+  std::ofstream ecsv (energyCsv);
+  ecsv << "NodeID,Type,InitialEnergy_J,RemainingEnergy_J,ConsumedEnergy_J,ConsumedPct\n";
+  for (uint32_t i = 0; i < nSensors; i++)
+    {
+      double rem = sensSources.Get (i)->GetRemainingEnergy ();
+      double cons = 2.0 - rem;
+      std::string stype = (i < nSensors/3) ? "ECG" : (i < 2*nSensors/3) ? "HR" : "Temp";
+      ecsv << i << "," << stype << ",2.0," << std::fixed << std::setprecision (4)
+           << rem << "," << cons << "," << std::setprecision (2) << (cons/2.0*100) << "\n";
+    }
+  for (uint32_t i = 0; i < nCH; i++)
+    {
+      double rem = chSources.Get (i)->GetRemainingEnergy ();
+      double cons = 5.0 - rem;
+      ecsv << (nSensors + i) << ",CH,5.0," << std::fixed << std::setprecision (4)
+           << rem << "," << cons << "," << std::setprecision (2) << (cons/5.0*100) << "\n";
+    }
+  ecsv.close ();
+  std::cout << "  Energy CSV: " << energyCsv << "\n\n";
+
+  Simulator::Destroy ();
+  if (anim) delete anim;
+  std::cout << "[DONE]\n\n";
+  return 0;
+}
+/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+#include "mqtt-sn-broker.h"
+#include "mqtt-sn-header.h"
+#include "ns3/log.h"
+#include "ns3/simulator.h"
+#include "ns3/inet-socket-address.h"
+#include "ns3/udp-socket-factory.h"
+#include "ns3/packet.h"
+
+namespace ns3 {
+
+NS_LOG_COMPONENT_DEFINE ("MqttSnBroker");
+NS_OBJECT_ENSURE_REGISTERED (MqttSnBroker);
+
+TypeId MqttSnBroker::GetTypeId (void)
+{
+  static TypeId tid = TypeId ("ns3::MqttSnBroker")
+    .SetParent<Application> ()
+    .AddConstructor<MqttSnBroker> ();
+  return tid;
+}
+
+MqttSnBroker::MqttSnBroker () : m_socket (nullptr), m_port (1884) {}
+MqttSnBroker::~MqttSnBroker () { m_socket = nullptr; }
+
+void MqttSnBroker::Setup (uint16_t port) { m_port = port; }
+BrokerStats MqttSnBroker::GetStats () const { return m_stats; }
+
+void MqttSnBroker::PrintStats () const
+{
+  std::cout << "\n  ============================================\n"
+            << "  BROKER (SINK) STATISTICS\n"
+            << "  ============================================\n"
+            << "  Total Rx Packets  : " << m_stats.rxPackets << "\n"
+            << "  Total Rx Bytes    : " << m_stats.rxBytes << "\n"
+            << "  From Gateways     : " << m_stats.fromGateways << "\n"
+            << "  Emergencies       : " << m_stats.emergencies << "\n"
+            << "  ---\n"
+            << "  Per-Topic Breakdown:\n";
+  for (auto &kv : m_stats.topicCounts)
+    {
+      MqttSnHeader tmp;
+      tmp.SetTopicId (kv.first);
+      std::cout << "    " << tmp.GetTopicName () << " (ID=" << kv.first
+                << "): " << kv.second << " packets\n";
+    }
+  std::cout << "  Per-Priority Breakdown:\n";
+  for (auto &kv : m_stats.priorityCounts)
+    {
+      MqttSnHeader tmp;
+      tmp.SetQos (kv.first);
+      std::string name;
+      switch (kv.first) {
+        case 3: name = "CRITICAL"; break;
+        case 2: name = "HIGH"; break;
+        case 1: name = "MEDIUM"; break;
+        default: name = "LOW"; break;
+      }
+      std::cout << "    " << name << " (" << (int)kv.first
+                << "): " << kv.second << " packets\n";
+    }
+  std::cout << "  ============================================\n\n";
+}
+
+void MqttSnBroker::StartApplication (void)
+{
+  if (!m_socket)
+    {
+      m_socket = Socket::CreateSocket (GetNode (), UdpSocketFactory::GetTypeId ());
+      m_socket->Bind (InetSocketAddress (Ipv4Address::GetAny (), m_port));
+      m_socket->SetRecvCallback (MakeCallback (&MqttSnBroker::HandleRead, this));
+    }
+  NS_LOG_INFO ("[BROKER] Listening on port " << m_port);
+}
+
+void MqttSnBroker::StopApplication (void)
+{
+  if (m_socket)
+    {
+      m_socket->Close ();
+      m_socket->SetRecvCallback (MakeNullCallback<void, Ptr<Socket>> ());
+    }
+  PrintStats ();
+}
+
+void MqttSnBroker::HandleRead (Ptr<Socket> socket)
+{
+  Ptr<Packet> packet;
+  Address from;
+
+  while ((packet = socket->RecvFrom (from)))
+    {
+      MqttSnHeader header;
+      packet->RemoveHeader (header);
+
+      m_stats.rxPackets++;
+      m_stats.rxBytes += packet->GetSize () + header.GetSerializedSize ();
+      m_stats.fromGateways++;
+      m_stats.topicCounts[header.GetTopicId ()]++;
+      m_stats.priorityCounts[header.GetPriority ()]++;
+
+      if (header.IsEmergency ())
+        {
+          m_stats.emergencies++;
+          NS_LOG_INFO ("[BROKER] *** EMERGENCY *** from "
+                       << InetSocketAddress::ConvertFrom (from).GetIpv4 ()
+                       << " Topic=" << header.GetTopicName ()
+                       << " MsgID=" << header.GetMsgId ());
+        }
+      else
+        {
+          NS_LOG_DEBUG ("[BROKER] Rx from "
+                        << InetSocketAddress::ConvertFrom (from).GetIpv4 ()
+                        << " Topic=" << header.GetTopicName ()
+                        << " Priority=" << header.GetPriorityName ());
+        }
+    }
+}
+
+} // namespace ns3
+/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+#include "mqtt-sn-gateway.h"
+#include "mqtt-sn-header.h"
+#include "ns3/log.h"
+#include "ns3/simulator.h"
+#include "ns3/inet-socket-address.h"
+#include "ns3/udp-socket-factory.h"
+#include "ns3/packet.h"
+
+namespace ns3 {
+
+NS_LOG_COMPONENT_DEFINE ("MqttSnGateway");
+NS_OBJECT_ENSURE_REGISTERED (MqttSnGateway);
+
+TypeId MqttSnGateway::GetTypeId (void)
+{
+  static TypeId tid = TypeId ("ns3::MqttSnGateway")
+    .SetParent<Application> ()
+    .AddConstructor<MqttSnGateway> ();
+  return tid;
+}
+
+MqttSnGateway::MqttSnGateway ()
+  : m_socket (nullptr), m_brokerSocket (nullptr), m_port (9),
+    m_brokerPort (1884), m_hasBroker (false) {}
+
+MqttSnGateway::~MqttSnGateway () { m_socket = nullptr; m_brokerSocket = nullptr; }
+
+void MqttSnGateway::Setup (uint16_t port) { m_port = port; }
+
+void MqttSnGateway::SetBroker (Ipv4Address brokerAddr, uint16_t brokerPort)
+{
+  m_brokerAddr = brokerAddr;
+  m_brokerPort = brokerPort;
+  m_hasBroker = true;
+}
+
+GatewayStats MqttSnGateway::GetStats () const { return m_stats; }
+
+void MqttSnGateway::PrintStats () const
+{
+  std::cout << "    CH" << GetNode ()->GetId ()
+            << " | Rx:" << m_stats.rxPackets
+            << " Emerg:" << m_stats.emergencies
+            << " Fwd:" << m_stats.forwardedToBroker
+            << " QDrop:" << m_stats.queueDrops
+            << " | Pri[H:" << m_stats.processedHigh
+            << " M:" << m_stats.processedMed
+            << " L:" << m_stats.processedLow << "]"
+            << " | Topics:";
+  for (auto &kv : m_stats.topicCounts)
+    {
+      MqttSnHeader tmp;
+      tmp.SetTopicId (kv.first);
+      std::cout << " " << tmp.GetTopicName () << "=" << kv.second;
+    }
+  std::cout << std::endl;
+}
+
+void MqttSnGateway::StartApplication (void)
+{
+  // Socket for receiving from sensors
+  if (!m_socket)
+    {
+      m_socket = Socket::CreateSocket (GetNode (), UdpSocketFactory::GetTypeId ());
+      m_socket->Bind (InetSocketAddress (Ipv4Address::GetAny (), m_port));
+      m_socket->SetRecvCallback (MakeCallback (&MqttSnGateway::HandleRead, this));
+    }
+
+  // Socket for forwarding to broker
+  if (m_hasBroker && !m_brokerSocket)
+    {
+      m_brokerSocket = Socket::CreateSocket (GetNode (), UdpSocketFactory::GetTypeId ());
+      m_brokerSocket->Bind ();
+    }
+
+  NS_LOG_INFO ("[CH " << GetNode ()->GetId () << "] Gateway on port " << m_port
+               << (m_hasBroker ? " (broker forwarding enabled)" : ""));
+}
+
+void MqttSnGateway::StopApplication (void)
+{
+  ProcessQueue ();
+  if (m_socket)
+    {
+      m_socket->Close ();
+      m_socket->SetRecvCallback (MakeNullCallback<void, Ptr<Socket>> ());
+    }
+  if (m_brokerSocket)
+    {
+      m_brokerSocket->Close ();
+    }
+  PrintStats ();
+}
+
+void MqttSnGateway::HandleRead (Ptr<Socket> socket)
+{
+  Ptr<Packet> packet;
+  Address from;
+
+  while ((packet = socket->RecvFrom (from)))
+    {
+      MqttSnHeader header;
+      packet->RemoveHeader (header);
+
+      m_stats.rxPackets++;
+      m_stats.rxBytes += packet->GetSize () + header.GetSerializedSize ();
+
+      switch (header.GetMsgType ())
+        {
+        case MQTTSN_CONNECT:
+          m_stats.connects++;
+          NS_LOG_INFO ("[CH " << GetNode ()->GetId ()
+                       << "] CONNECT from " << InetSocketAddress::ConvertFrom (from).GetIpv4 ()
+                       << " Topic=" << header.GetTopicName ()
+                       << " Priority=" << header.GetPriorityName ());
+          SendConnAck (socket, from);
+          break;
+
+        case MQTTSN_PUBLISH:
+          {
+            m_stats.topicCounts[header.GetTopicId ()]++;
+            m_stats.priorityCounts[header.GetPriority ()]++;
+
+            if (header.IsEmergency ())
+              {
+                m_stats.emergencies++;
+                NS_LOG_INFO ("[CH " << GetNode ()->GetId ()
+                             << "] *** EMERGENCY *** from "
+                             << InetSocketAddress::ConvertFrom (from).GetIpv4 ());
+              }
+
+            // Add to priority queue
+            PriorityPacket pp;
+            pp.priority  = header.GetPriority ();
+            pp.topicId   = header.GetTopicId ();
+            pp.msgId     = header.GetMsgId ();
+            pp.size      = header.GetPayloadSize ();
+            pp.rxTime    = Simulator::Now ().GetSeconds ();
+            pp.qos       = header.GetQos ();
+            pp.emergency = header.IsEmergency ();
+            if (m_pQueue.size () >= 10000)
+              {
+                m_stats.queueDrops++;
+                NS_LOG_WARN ("[CH " << GetNode ()->GetId () << "] Queue full — DROP");
+              }
+            else
+              {
+                m_pQueue.push (pp);
+              }
+
+            if (header.GetQos () > 0)
+              SendPubAck (socket, from, header.GetMsgId ());
+
+            ProcessQueue ();
+            break;
+          }
+
+        case MQTTSN_DISCONNECT:
+          m_stats.disconnects++;
+          NS_LOG_INFO ("[CH " << GetNode ()->GetId ()
+                       << "] DISCONNECT from "
+                       << InetSocketAddress::ConvertFrom (from).GetIpv4 ());
+          break;
+
+        default:
+          NS_LOG_WARN ("[CH " << GetNode ()->GetId ()
+                       << "] Unknown MsgType: " << (int)header.GetMsgType ());
+          break;
+        }
+    }
+}
+
+void MqttSnGateway::ProcessQueue (void)
+{
+  // Process ONE packet at a time with 1ms delay between each
+  // This makes priority queue effect visible in delay measurements
+  if (!m_pQueue.empty ())
+    {
+      PriorityPacket pp = m_pQueue.top ();
+      m_pQueue.pop ();
+
+      if (pp.priority >= 2)      m_stats.processedHigh++;
+      else if (pp.priority == 1) m_stats.processedMed++;
+      else                       m_stats.processedLow++;
+
+      // Forward to broker (sink)
+      if (m_hasBroker)
+        ForwardToBroker (pp);
+
+      // Schedule next packet processing after 1ms
+      if (!m_pQueue.empty ())
+        Simulator::Schedule (MilliSeconds (1), &MqttSnGateway::ProcessQueue, this);
+    }
+}
+
+void MqttSnGateway::ForwardToBroker (PriorityPacket &pp)
+{
+  // Create aggregated packet to forward to broker
+  Ptr<Packet> pkt = Create<Packet> (pp.size);
+  MqttSnHeader header;
+  header.SetMsgType (MQTTSN_PUBLISH);
+  header.SetTopicId (pp.topicId);
+  header.SetMsgId (pp.msgId);
+  header.SetPayloadSize (pp.size);
+  header.SetQos (pp.qos);
+  header.SetEmergency (pp.emergency);
+  pkt->AddHeader (header);
+
+  m_brokerSocket->SendTo (pkt, 0,
+    InetSocketAddress (m_brokerAddr, m_brokerPort));
+
+  m_stats.forwardedToBroker++;
+
+  NS_LOG_DEBUG ("[CH " << GetNode ()->GetId ()
+                << "] FORWARD to Broker: Topic=" << header.GetTopicName ()
+                << " Priority=" << header.GetPriorityName ());
+}
+
+void MqttSnGateway::SendConnAck (Ptr<Socket> socket, Address from)
+{
+  Ptr<Packet> pkt = Create<Packet> ();
+  MqttSnHeader h;
+  h.SetMsgType (MQTTSN_CONNACK);
+  h.SetQos (0); h.SetEmergency (false);
+  pkt->AddHeader (h);
+  socket->SendTo (pkt, 0, from);
+}
+
+void MqttSnGateway::SendPubAck (Ptr<Socket> socket, Address from, uint16_t msgId)
+{
+  Ptr<Packet> pkt = Create<Packet> ();
+  MqttSnHeader h;
+  h.SetMsgType (MQTTSN_PUBACK);
+  h.SetMsgId (msgId);
+  h.SetQos (0); h.SetEmergency (false);
+  pkt->AddHeader (h);
+  socket->SendTo (pkt, 0, from);
+}
+
+} // namespace ns3
+/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+#include "mqtt-sn-header.h"
+#include "ns3/log.h"
+
+namespace ns3 {
+
+NS_LOG_COMPONENT_DEFINE ("MqttSnHeader");
+NS_OBJECT_ENSURE_REGISTERED (MqttSnHeader);
+
+TypeId MqttSnHeader::GetTypeId (void)
+{
+  static TypeId tid = TypeId ("ns3::MqttSnHeader")
+    .SetParent<Header> ()
+    .AddConstructor<MqttSnHeader> ();
+  return tid;
+}
+
+TypeId MqttSnHeader::GetInstanceTypeId () const { return GetTypeId (); }
+
+MqttSnHeader::MqttSnHeader ()
+  : m_msgType (0), m_topicId (0), m_msgId (0),
+    m_payloadSize (0), m_qos (0), m_emergency (0) {}
+
+MqttSnHeader::~MqttSnHeader () {}
+
+void MqttSnHeader::SetMsgType (uint8_t t) { m_msgType = t; }
+void MqttSnHeader::SetTopicId (uint16_t t) { m_topicId = t; }
+void MqttSnHeader::SetMsgId (uint16_t m) { m_msgId = m; }
+void MqttSnHeader::SetPayloadSize (uint16_t s) { m_payloadSize = s; }
+void MqttSnHeader::SetQos (uint8_t q) { m_qos = q; }
+void MqttSnHeader::SetEmergency (bool e) { m_emergency = e ? 1 : 0; }
+
+uint8_t  MqttSnHeader::GetMsgType () const { return m_msgType; }
+uint16_t MqttSnHeader::GetTopicId () const { return m_topicId; }
+uint16_t MqttSnHeader::GetMsgId () const { return m_msgId; }
+uint16_t MqttSnHeader::GetPayloadSize () const { return m_payloadSize; }
+uint8_t  MqttSnHeader::GetQos () const { return m_qos; }
+bool     MqttSnHeader::IsEmergency () const { return m_emergency != 0; }
+
+uint8_t
+MqttSnHeader::GetPriority () const
+{
+  // Emergency always highest priority (3)
+  if (m_emergency) return 3;
+  // Otherwise priority = QoS level (0=low, 1=medium, 2=high)
+  return m_qos;
+}
+
+std::string MqttSnHeader::GetMsgTypeName () const
+{
+  switch (m_msgType) {
+    case MQTTSN_CONNECT:    return "CONNECT";
+    case MQTTSN_CONNACK:    return "CONNACK";
+    case MQTTSN_PUBLISH:    return "PUBLISH";
+    case MQTTSN_PUBACK:     return "PUBACK";
+    case MQTTSN_SUBSCRIBE:  return "SUBSCRIBE";
+    case MQTTSN_SUBACK:     return "SUBACK";
+    case MQTTSN_PINGREQ:    return "PINGREQ";
+    case MQTTSN_PINGRESP:   return "PINGRESP";
+    case MQTTSN_DISCONNECT: return "DISCONNECT";
+    default:                return "UNKNOWN";
+  }
+}
+
+std::string MqttSnHeader::GetTopicName () const
+{
+  switch (m_topicId) {
+    case TOPIC_ECG:         return "ECG";
+    case TOPIC_HEART_RATE:  return "HeartRate";
+    case TOPIC_TEMPERATURE: return "Temperature";
+    case TOPIC_BLOOD_OX:    return "BloodOxygen";
+    case TOPIC_BLOOD_PRESS: return "BloodPressure";
+    case TOPIC_EMERGENCY:   return "EMERGENCY";
+    default:                return "Topic_" + std::to_string (m_topicId);
+  }
+}
+
+std::string MqttSnHeader::GetPriorityName () const
+{
+  switch (GetPriority ()) {
+    case 3:  return "CRITICAL";
+    case 2:  return "HIGH";
+    case 1:  return "MEDIUM";
+    case 0:  return "LOW";
+    default: return "UNKNOWN";
+  }
+}
+
+// Serialized: [Len:1][MsgType:1][QoS:1][Emergency:1][TopicID:2][MsgID:2][PayloadSize:2] = 10 bytes
+uint32_t MqttSnHeader::GetSerializedSize () const { return 10; }
+
+void MqttSnHeader::Serialize (Buffer::Iterator start) const
+{
+  start.WriteU8 (GetSerializedSize ());
+  start.WriteU8 (m_msgType);
+  start.WriteU8 (m_qos);
+  start.WriteU8 (m_emergency);
+  start.WriteHtonU16 (m_topicId);
+  start.WriteHtonU16 (m_msgId);
+  start.WriteHtonU16 (m_payloadSize);
+}
+
+uint32_t MqttSnHeader::Deserialize (Buffer::Iterator start)
+{
+  start.ReadU8 ();
+  m_msgType     = start.ReadU8 ();
+  m_qos         = start.ReadU8 ();
+  m_emergency   = start.ReadU8 ();
+  m_topicId     = start.ReadNtohU16 ();
+  m_msgId       = start.ReadNtohU16 ();
+  m_payloadSize = start.ReadNtohU16 ();
+  return GetSerializedSize ();
+}
+
+void MqttSnHeader::Print (std::ostream &os) const
+{
+  os << "MQTT-SN [" << GetMsgTypeName ()
+     << " Topic=" << GetTopicName ()
+     << " MsgID=" << m_msgId
+     << " QoS=" << (uint16_t)m_qos
+     << " Priority=" << GetPriorityName ()
+     << (m_emergency ? " EMERGENCY!" : "")
+     << " Payload=" << m_payloadSize << "B]";
+}
+
+} // namespace ns3
+/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+#include "mqtt-sn-publisher.h"
+#include "mqtt-sn-header.h"
+#include "ns3/log.h"
+#include "ns3/simulator.h"
+#include "ns3/inet-socket-address.h"
+#include "ns3/udp-socket-factory.h"
+#include "ns3/packet.h"
+
+namespace ns3 {
+
+NS_LOG_COMPONENT_DEFINE ("MqttSnPublisher");
+NS_OBJECT_ENSURE_REGISTERED (MqttSnPublisher);
+
+TypeId MqttSnPublisher::GetTypeId (void)
+{
+  static TypeId tid = TypeId ("ns3::MqttSnPublisher")
+    .SetParent<Application> ()
+    .AddConstructor<MqttSnPublisher> ();
+  return tid;
+}
+
+MqttSnPublisher::MqttSnPublisher ()
+  : m_socket (nullptr), m_port (9), m_topicId (TOPIC_HEART_RATE),
+    m_interval (Seconds (1.0)), m_payloadSize (64), m_qos (0),
+    m_msgCounter (0), m_running (false),
+    m_emergencyEnabled (false), m_emergencyProb (0.01),
+    m_txPackets (0), m_txBytes (0), m_emergencyCount (0)
+{
+  m_emergencyRng = CreateObject<UniformRandomVariable> ();
+}
+
+MqttSnPublisher::~MqttSnPublisher () { m_socket = nullptr; }
+
+void MqttSnPublisher::Setup (Address ga, uint16_t port, uint16_t topic,
+                             Time interval, uint32_t payload, uint8_t qos)
+{
+  m_gatewayAddr = ga; m_port = port; m_topicId = topic;
+  m_interval = interval; m_payloadSize = payload; m_qos = qos;
+}
+
+void MqttSnPublisher::EnableEmergencyDetection (double prob)
+{
+  m_emergencyEnabled = true;
+  m_emergencyProb = prob;
+}
+
+void MqttSnPublisher::StartApplication (void)
+{
+  m_running = true;
+  m_msgCounter = 0;
+  m_txPackets = 0; m_txBytes = 0; m_emergencyCount = 0;
+
+  if (!m_socket)
+    {
+      m_socket = Socket::CreateSocket (GetNode (), UdpSocketFactory::GetTypeId ());
+      m_socket->Bind ();
+      m_socket->SetRecvCallback (MakeCallback (&MqttSnPublisher::HandleRead, this));
+    }
+
+  SendConnect ();
+  m_sendEvent = Simulator::Schedule (Seconds (0.5), &MqttSnPublisher::SendPublish, this);
+}
+
+void MqttSnPublisher::StopApplication (void)
+{
+  m_running = false;
+  Simulator::Cancel (m_sendEvent);
+
+  if (m_socket)
+    {
+      Ptr<Packet> pkt = Create<Packet> ();
+      MqttSnHeader h;
+      h.SetMsgType (MQTTSN_DISCONNECT);
+      h.SetTopicId (m_topicId);
+      h.SetMsgId (m_msgCounter++);
+      h.SetPayloadSize (0);
+      h.SetQos (0);
+      h.SetEmergency (false);
+      pkt->AddHeader (h);
+      m_socket->SendTo (pkt, 0, InetSocketAddress (Ipv4Address::ConvertFrom (m_gatewayAddr), m_port));
+
+      NS_LOG_INFO ("[Node " << GetNode ()->GetId ()
+                   << "] DISCONNECT. Published: " << m_txPackets
+                   << " pkts, Emergencies: " << m_emergencyCount);
+    }
+}
+
+void MqttSnPublisher::SendConnect (void)
+{
+  Ptr<Packet> pkt = Create<Packet> ();
+  MqttSnHeader h;
+  h.SetMsgType (MQTTSN_CONNECT);
+  h.SetTopicId (m_topicId);
+  h.SetMsgId (0);
+  h.SetPayloadSize (0);
+  h.SetQos (m_qos);
+  h.SetEmergency (false);
+  pkt->AddHeader (h);
+  m_socket->SendTo (pkt, 0, InetSocketAddress (Ipv4Address::ConvertFrom (m_gatewayAddr), m_port));
+
+  NS_LOG_INFO ("[Node " << GetNode ()->GetId ()
+               << "] CONNECT Topic=" << h.GetTopicName ()
+               << " QoS=" << (int)m_qos
+               << " Priority=" << h.GetPriorityName ());
+}
+
+void MqttSnPublisher::SendPublish (void)
+{
+  if (!m_running) return;
+
+  // Check for emergency (abnormal sensor value)
+  if (m_emergencyEnabled && m_emergencyRng->GetValue () < m_emergencyProb)
+    {
+      SendEmergency ();
+    }
+
+  // Normal PUBLISH
+  Ptr<Packet> pkt = Create<Packet> (m_payloadSize);
+  MqttSnHeader h;
+  h.SetMsgType (MQTTSN_PUBLISH);
+  h.SetTopicId (m_topicId);
+  h.SetMsgId (m_msgCounter++);
+  h.SetPayloadSize (m_payloadSize);
+  h.SetQos (m_qos);
+  h.SetEmergency (false);
+  pkt->AddHeader (h);
+
+  int sent = m_socket->SendTo (pkt, 0,
+    InetSocketAddress (Ipv4Address::ConvertFrom (m_gatewayAddr), m_port));
+
+  if (sent > 0) { m_txPackets++; m_txBytes += sent; }
+
+  NS_LOG_DEBUG ("[Node " << GetNode ()->GetId ()
+                << "] PUBLISH #" << (m_msgCounter - 1)
+                << " Topic=" << h.GetTopicName ()
+                << " Priority=" << h.GetPriorityName ());
+
+  m_sendEvent = Simulator::Schedule (m_interval, &MqttSnPublisher::SendPublish, this);
+}
+
+void MqttSnPublisher::SendEmergency (void)
+{
+  // Emergency: abnormal value detected! Send immediately with highest priority
+  Ptr<Packet> pkt = Create<Packet> (m_payloadSize);
+  MqttSnHeader h;
+  h.SetMsgType (MQTTSN_PUBLISH);
+  h.SetTopicId (TOPIC_EMERGENCY);
+  h.SetMsgId (m_msgCounter++);
+  h.SetPayloadSize (m_payloadSize);
+  h.SetQos (PRIORITY_CRITICAL);
+  h.SetEmergency (true);
+  pkt->AddHeader (h);
+
+  m_socket->SendTo (pkt, 0,
+    InetSocketAddress (Ipv4Address::ConvertFrom (m_gatewayAddr), m_port));
+
+  m_emergencyCount++;
+  m_txPackets++;
+
+  NS_LOG_INFO ("[Node " << GetNode ()->GetId ()
+               << "] *** EMERGENCY ALERT *** #" << m_emergencyCount
+               << " from " << h.GetTopicName ());
+}
+
+void MqttSnPublisher::HandleRead (Ptr<Socket> socket)
+{
+  Ptr<Packet> packet;
+  Address from;
+  while ((packet = socket->RecvFrom (from)))
+    {
+      MqttSnHeader h;
+      packet->RemoveHeader (h);
+      if (h.GetMsgType () == MQTTSN_CONNACK)
+        NS_LOG_INFO ("[Node " << GetNode ()->GetId () << "] CONNACK received");
+      else if (h.GetMsgType () == MQTTSN_PUBACK)
+        NS_LOG_DEBUG ("[Node " << GetNode ()->GetId () << "] PUBACK MsgID=" << h.GetMsgId ());
+    }
+}
+
+} // namespace ns3
+/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+/*
+ * Traditional WSN: Cluster-Based AODV + UDP (Scalability Version)
+ * ================================================================
+ * Supports command-line node count:
+ *   ./ns3 run "cluster-aodv-nosink --numRegular=50 --numCH=5"
+ *   ./ns3 run "cluster-aodv-nosink --numRegular=200 --numCH=20"
+ */
+
+#include "ns3/core-module.h"
+#include "ns3/network-module.h"
+#include "ns3/internet-module.h"
+#include "ns3/wifi-module.h"
+#include "ns3/mobility-module.h"
+#include "ns3/aodv-module.h"
+#include "ns3/applications-module.h"
+#include "ns3/flow-monitor-module.h"
+#include "ns3/netanim-module.h"
+#include "ns3/energy-module.h"
+#include "ns3/wifi-radio-energy-model-helper.h"
+
+#include <cmath>
+#include <vector>
+#include <fstream>
+#include <iomanip>
+#include <sstream>
+#include <algorithm>
+#include <limits>
+
+using namespace ns3;
+
+NS_LOG_COMPONENT_DEFINE ("ClusterAodvNoSink");
+
+static const double   AREA       = 1000.0;
+static const double   SIM_TIME   = 300.0;
+static const uint32_t PKT_SIZE   = 512;
+static const std::string DATA_RATE = "4kbps";
+static const uint16_t APP_PORT   = 9;
+static const uint16_t SINK_PORT  = 10;
+static const double   START_MIN  = 30.0;   // Warm-up: 0-30s for AODV convergence
+static const double   START_MAX  = 45.0;   // All sensors start within 30-45s
+static const double   STOP_TIME  = 290.0;  // Stop 10s before end
+
+// Dynamic (sized at runtime)
+std::vector<uint32_t> clusterAssign;
+std::vector<uint32_t> clusterSizes;
+
+// ============================================================
+// UdpForwarder: Receives packets and forwards them to sink
+// This is REAL forwarding — CH only sends to sink what it receives
+// ============================================================
+class UdpForwarder : public Application
+{
+public:
+  static TypeId GetTypeId (void)
+  {
+    static TypeId tid = TypeId ("ns3::UdpForwarder")
+      .SetParent<Application> ()
+      .AddConstructor<UdpForwarder> ();
+    return tid;
+  }
+
+  UdpForwarder () : m_rxSocket (nullptr), m_txSocket (nullptr),
+    m_rxPort (0), m_rxCount (0), m_fwdCount (0), m_fwdEnabled (false) {}
+
+  virtual ~UdpForwarder () {}
+
+  void Setup (uint16_t rxPort, Ipv4Address sinkAddr, uint16_t sinkPort)
+  {
+    m_rxPort = rxPort;
+    m_sinkAddr = sinkAddr;
+    m_sinkPort = sinkPort;
+    m_fwdEnabled = true;
+  }
+
+  void SetupNoForward (uint16_t rxPort)
+  {
+    m_rxPort = rxPort;
+    m_fwdEnabled = false;
+  }
+
+  uint32_t GetRxCount () const { return m_rxCount; }
+  uint32_t GetFwdCount () const { return m_fwdCount; }
+
+private:
+  virtual void StartApplication (void)
+  {
+    // Receive socket
+    m_rxSocket = Socket::CreateSocket (GetNode (), UdpSocketFactory::GetTypeId ());
+    m_rxSocket->Bind (InetSocketAddress (Ipv4Address::GetAny (), m_rxPort));
+    m_rxSocket->SetRecvCallback (MakeCallback (&UdpForwarder::HandleRead, this));
+
+    // Forward socket (if enabled)
+    if (m_fwdEnabled)
+      {
+        m_txSocket = Socket::CreateSocket (GetNode (), UdpSocketFactory::GetTypeId ());
+        m_txSocket->Bind ();
+      }
+  }
+
+  virtual void StopApplication (void)
+  {
+    if (m_rxSocket) { m_rxSocket->Close (); }
+    if (m_txSocket) { m_txSocket->Close (); }
+  }
+
+  void HandleRead (Ptr<Socket> socket)
+  {
+    Ptr<Packet> packet;
+    Address from;
+    while ((packet = socket->RecvFrom (from)))
+      {
+        m_rxCount++;
+
+        // Forward to sink (real forwarding — same packet)
+        if (m_fwdEnabled && m_txSocket)
+          {
+            Ptr<Packet> fwdPkt = packet->Copy ();
+            m_txSocket->SendTo (fwdPkt, 0,
+              InetSocketAddress (m_sinkAddr, m_sinkPort));
+            m_fwdCount++;
+          }
+      }
+  }
+
+  Ptr<Socket>  m_rxSocket;
+  Ptr<Socket>  m_txSocket;
+  uint16_t     m_rxPort;
+  Ipv4Address  m_sinkAddr;
+  uint16_t     m_sinkPort;
+  uint32_t     m_rxCount;
+  uint32_t     m_fwdCount;
+  bool         m_fwdEnabled;
+};
+
+NS_OBJECT_ENSURE_REGISTERED (UdpForwarder);
+
+static double CalcDist (const Vector &a, const Vector &b)
+{ return std::sqrt ((a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y)); }
+
+// ============================================================
+NetDeviceContainer
+ConfigWifi (NodeContainer &all, YansWifiPhyHelper &phy)
+{
+  WifiHelper w; w.SetStandard (WIFI_STANDARD_80211b);
+  w.SetRemoteStationManager ("ns3::ConstantRateWifiManager",
+    "DataMode", StringValue ("DsssRate11Mbps"),
+    "ControlMode", StringValue ("DsssRate1Mbps"));
+  YansWifiChannelHelper ch;
+  ch.SetPropagationDelay ("ns3::ConstantSpeedPropagationDelayModel");
+  ch.AddPropagationLoss ("ns3::LogDistancePropagationLossModel",
+    "Exponent", DoubleValue (2.5), "ReferenceDistance", DoubleValue (1.0),
+    "ReferenceLoss", DoubleValue (46.6777));
+  phy.SetChannel (ch.Create ());
+  phy.Set ("TxPowerStart", DoubleValue (20.0));
+  phy.Set ("TxPowerEnd", DoubleValue (20.0));
+  WifiMacHelper mac; mac.SetType ("ns3::AdhocWifiMac");
+  return w.Install (phy, mac, all);
+}
+
+Ipv4InterfaceContainer
+InstallStack (NodeContainer &all, NetDeviceContainer &dev)
+{
+  AodvHelper aodv;
+  aodv.Set ("HelloInterval", TimeValue (Seconds (2)));
+  aodv.Set ("AllowedHelloLoss", UintegerValue (3));
+  aodv.Set ("ActiveRouteTimeout", TimeValue (Seconds (15)));
+  aodv.Set ("RreqRetries", UintegerValue (5));
+  aodv.Set ("NetDiameter", UintegerValue (20));
+  aodv.Set ("NodeTraversalTime", TimeValue (MilliSeconds (100)));
+  InternetStackHelper inet; inet.SetRoutingHelper (aodv); inet.Install (all);
+  Ipv4AddressHelper addr; addr.SetBase ("10.1.0.0", "255.255.0.0");
+  return addr.Assign (dev);
+}
+
+void PositionNodes (NodeContainer &sens, NodeContainer &chs, NodeContainer &sinkNode,
+                    uint32_t nCH)
+{
+  MobilityHelper m; m.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
+
+  uint32_t cols = (uint32_t)std::ceil (std::sqrt ((double)nCH));
+  if (cols < 1) cols = 1;
+  uint32_t rows = (nCH + cols - 1) / cols;
+
+  Ptr<ListPositionAllocator> cp = CreateObject<ListPositionAllocator> ();
+  double cW = AREA / cols, cH = AREA / rows;
+  for (uint32_t i = 0; i < nCH; i++)
+    cp->Add (Vector ((i%cols+0.5)*cW, (i/cols+0.5)*cH, 0));
+  m.SetPositionAllocator (cp); m.Install (chs);
+
+  uint32_t nSens = sens.GetN ();
+  Ptr<ListPositionAllocator> sp = CreateObject<ListPositionAllocator> ();
+  Ptr<UniformRandomVariable> rx = CreateObject<UniformRandomVariable> ();
+  rx->SetAttribute ("Min", DoubleValue (0)); rx->SetAttribute ("Max", DoubleValue (AREA));
+  Ptr<UniformRandomVariable> ry = CreateObject<UniformRandomVariable> ();
+  ry->SetAttribute ("Min", DoubleValue (0)); ry->SetAttribute ("Max", DoubleValue (AREA));
+  for (uint32_t i = 0; i < nSens; i++)
+    sp->Add (Vector (rx->GetValue (), ry->GetValue (), 0));
+  m.SetPositionAllocator (sp); m.Install (sens);
+
+  // Sink at center
+  Ptr<ListPositionAllocator> skp = CreateObject<ListPositionAllocator> ();
+  skp->Add (Vector (AREA/2.0, AREA/2.0, 0));
+  m.SetPositionAllocator (skp); m.Install (sinkNode);
+}
+
+void AssignClusters (NodeContainer &sens, NodeContainer &chs, uint32_t nCH)
+{
+  uint32_t nSens = sens.GetN ();
+  clusterAssign.resize (nSens, 0);
+  clusterSizes.resize (nCH, 0);
+
+  std::vector<Vector> chP (nCH);
+  for (uint32_t i = 0; i < nCH; i++)
+    chP[i] = chs.Get (i)->GetObject<MobilityModel> ()->GetPosition ();
+  std::fill (clusterSizes.begin (), clusterSizes.end (), 0);
+
+  for (uint32_t n = 0; n < nSens; n++)
+    {
+      Vector np = sens.Get (n)->GetObject<MobilityModel> ()->GetPosition ();
+      double md = 1e9; uint32_t ne = 0;
+      for (uint32_t c = 0; c < nCH; c++)
+        { double d = CalcDist (np, chP[c]); if (d < md) { md = d; ne = c; } }
+      clusterAssign[n] = ne; clusterSizes[ne]++;
+    }
+
+  std::cout << "  Clusters: min=" << *std::min_element (clusterSizes.begin (), clusterSizes.end ())
+            << " max=" << *std::max_element (clusterSizes.begin (), clusterSizes.end ())
+            << " avg=" << std::fixed << std::setprecision (1)
+            << (double)nSens/nCH << "\n";
+}
+
+void InstallTraffic (NodeContainer &sens, NodeContainer &chs,
+                     NodeContainer &sinkNode, Ipv4InterfaceContainer &ifaces,
+                     uint32_t nSens, bool useSink, bool hetero)
+{
+  Ptr<UniformRandomVariable> rng = CreateObject<UniformRandomVariable> ();
+  rng->SetAttribute ("Min", DoubleValue (START_MIN));
+  rng->SetAttribute ("Max", DoubleValue (START_MAX));
+
+  uint32_t nCH = chs.GetN ();
+  uint32_t sinkIfIdx = nSens + nCH;
+  uint32_t nECG = nSens / 3;
+  uint32_t nHR  = nSens / 3;
+
+  // Sensor -> CH traffic (OnOff UDP)
+  for (uint32_t n = 0; n < nSens; n++)
+    {
+      uint32_t chIf = nSens + clusterAssign[n];
+
+      std::string rate;
+      uint32_t pktSize;
+
+      if (hetero)
+        {
+          // Match MQTT-SN traffic profile: ECG=4kbps/128B, HR=0.5kbps/64B, Temp=0.05kbps/32B
+          if (n < nECG) { rate = "4kbps"; pktSize = 128; }
+          else if (n < nECG + nHR) { rate = "512bps"; pktSize = 64; }
+          else { rate = "51bps"; pktSize = 32; }
+        }
+      else
+        {
+          // Original constant rate
+          rate = DATA_RATE;
+          pktSize = PKT_SIZE;
+        }
+
+      OnOffHelper onoff ("ns3::UdpSocketFactory",
+        InetSocketAddress (ifaces.GetAddress (chIf), APP_PORT));
+      onoff.SetAttribute ("DataRate", StringValue (rate));
+      onoff.SetAttribute ("PacketSize", UintegerValue (pktSize));
+      onoff.SetAttribute ("OnTime", StringValue ("ns3::ConstantRandomVariable[Constant=1]"));
+      onoff.SetAttribute ("OffTime", StringValue ("ns3::ConstantRandomVariable[Constant=0]"));
+      ApplicationContainer app = onoff.Install (sens.Get (n));
+      app.Start (Seconds (rng->GetValue ()));
+      app.Stop (Seconds (STOP_TIME));
+    }
+
+  // CH: UdpForwarder
+  for (uint32_t c = 0; c < nCH; c++)
+    {
+      Ptr<UdpForwarder> fwd = CreateObject<UdpForwarder> ();
+      if (useSink)
+        fwd->Setup (APP_PORT, ifaces.GetAddress (sinkIfIdx), SINK_PORT);
+      else
+        fwd->SetupNoForward (APP_PORT);
+      chs.Get (c)->AddApplication (fwd);
+      fwd->SetStartTime (Seconds (0.0));
+      fwd->SetStopTime (Seconds (SIM_TIME));
+    }
+
+  // Sink
+  if (useSink)
+    {
+      PacketSinkHelper sinkHelper ("ns3::UdpSocketFactory",
+        InetSocketAddress (Ipv4Address::GetAny (), SINK_PORT));
+      sinkHelper.Install (sinkNode.Get (0)).Start (Seconds (0.0));
+    }
+
+  if (hetero)
+    std::cout << "  Traffic: HETEROGENEOUS (" << nECG << " ECG@4kbps + "
+              << nHR << " HR@512bps + " << (nSens-nECG-nHR) << " Temp@51bps)\n";
+  else
+    std::cout << "  Traffic: CONSTANT (" << nSens << " x " << DATA_RATE << ", " << PKT_SIZE << "B)\n";
+
+  if (useSink)
+    std::cout << "  Flow: Sensors -> " << nCH << " CHs (forward) -> 1 Sink\n\n";
+  else
+    std::cout << "  Flow: Sensors -> " << nCH << " CHs (receive only)\n\n";
+}
+
+void PrintResults (Ptr<FlowMonitor> fm, FlowMonitorHelper &fh,
+                   std::string csvName)
+{
+  fm->CheckForLostPackets ();
+  Ptr<Ipv4FlowClassifier> cls = DynamicCast<Ipv4FlowClassifier> (fh.GetClassifier ());
+  auto stats = fm->GetFlowStats ();
+
+  uint64_t tTx = 0, tRx = 0, tRxB = 0;
+  double tDel = 0; uint32_t fl = 0, dead = 0;
+
+  std::ofstream csv (csvName);
+  csv << "FlowID,SrcAddr,DstAddr,TxPackets,RxPackets,LostPackets,"
+      << "PDR_pct,Throughput_kbps,AvgDelay_ms,AvgJitter_ms\n";
+
+  for (auto &kv : stats)
+    {
+      auto ft = cls->FindFlow (kv.first); auto &s = kv.second;
+      double pdr = s.txPackets > 0 ? (double)s.rxPackets/s.txPackets*100 : 0;
+      double dur = s.rxPackets > 0 ? (s.timeLastRxPacket-s.timeFirstTxPacket).GetSeconds () : 0;
+      double tp = dur > 0 ? s.rxBytes*8.0/dur/1000 : 0;
+      double dl = s.rxPackets > 0 ? s.delaySum.GetMilliSeconds ()/(double)s.rxPackets : 0;
+      double jt = s.rxPackets > 1 ? s.jitterSum.GetMilliSeconds ()/(double)(s.rxPackets-1) : 0;
+      tTx += s.txPackets; tRx += s.rxPackets; tRxB += s.rxBytes;
+      tDel += s.rxPackets > 0 ? s.delaySum.GetMilliSeconds () : 0;
+      fl++; if (s.rxPackets == 0) dead++;
+      csv << kv.first << "," << ft.sourceAddress << "," << ft.destinationAddress
+          << "," << s.txPackets << "," << s.rxPackets << "," << s.lostPackets
+          << "," << std::fixed << std::setprecision (2)
+          << pdr << "," << tp << "," << dl << "," << jt << "\n";
+    }
+  csv.close ();
+
+  double pdr = tTx > 0 ? (double)tRx/tTx*100 : 0;
+  double avgD = tRx > 0 ? tDel/tRx : 0;
+
+  std::cout << "============================================================\n"
+    << "  WSN RESULTS\n"
+    << "============================================================\n"
+    << "  Flows: " << fl << " (dead: " << dead << ")\n"
+    << "  Tx: " << tTx << " | Rx: " << tRx << "\n"
+    << "  PDR: " << std::fixed << std::setprecision (2) << pdr << "%\n"
+    << "  Avg Delay: " << avgD << " ms\n"
+    << "  Throughput: " << (tRxB*8.0/SIM_TIME/1000) << " kbps\n"
+    << "  Output: " << csvName << "\n"
+    << "============================================================\n\n";
+
+  fm->SerializeToXmlFile (csvName + ".flowmon.xml", true, true);
+}
+
+// ============================================================
+int main (int argc, char *argv[])
+{
+  uint32_t numRegular = 180;
+  uint32_t numCH      = 20;
+  uint32_t runNum     = 1;
+  double   simTime    = 300.0;
+  bool     useSink    = false;
+  bool     hetero     = false;  // Heterogeneous traffic (match MQTT-SN load)
+  bool     enableAnim = false;
+  bool     verbose    = false;
+  std::string csvName = "";
+
+  CommandLine cmd (__FILE__);
+  cmd.AddValue ("numRegular", "Number of regular sensor nodes", numRegular);
+  cmd.AddValue ("numCH", "Number of cluster heads", numCH);
+  cmd.AddValue ("run", "Run number for seed variation", runNum);
+  cmd.AddValue ("simTime", "Simulation time (seconds)", simTime);
+  cmd.AddValue ("useSink", "Enable sink/broker node", useSink);
+  cmd.AddValue ("hetero", "Heterogeneous traffic (match MQTT-SN rates)", hetero);
+  cmd.AddValue ("anim", "Enable NetAnim output", enableAnim);
+  cmd.AddValue ("verbose", "Enable verbose logging", verbose);
+  cmd.AddValue ("csv", "Output CSV filename", csvName);
+  cmd.Parse (argc, argv);
+
+  if (verbose)
+    LogComponentEnable ("ClusterAodvNoSink", LOG_LEVEL_INFO);
+
+  if (csvName.empty ())
+    {
+      std::ostringstream oss;
+      oss << "wsn-" << numRegular << "nodes";
+      if (useSink) oss << "-sink";
+      oss << "-results.csv";
+      csvName = oss.str ();
+    }
+
+  SeedManager::SetSeed (42);
+  SeedManager::SetRun (runNum);
+
+  uint32_t totalNodes = numRegular + numCH + 1; // +1 sink always created
+
+  std::cout << "\n============================================================\n"
+    << "  Traditional WSN (AODV + UDP)\n"
+    << "  Sensors: " << numRegular << " | CHs: " << numCH
+    << " | Sink: " << (useSink ? "yes" : "no")
+    << " | Total: " << totalNodes << "\n"
+    << "  Area: " << AREA << "x" << AREA << "m | AODV | " << simTime << "s\n"
+    << "  CSV: " << csvName << "\n"
+    << "============================================================\n\n";
+
+  NodeContainer sens, chs, sinkNode, all;
+  sens.Create (numRegular);
+  chs.Create (numCH);
+  sinkNode.Create (1);
+  all.Add (sens); all.Add (chs); all.Add (sinkNode);
+
+  YansWifiPhyHelper phy;
+  NetDeviceContainer dev = ConfigWifi (all, phy);
+  Ipv4InterfaceContainer ifaces = InstallStack (all, dev);
+
+  PositionNodes (sens, chs, sinkNode, numCH);
+  AssignClusters (sens, chs, numCH);
+  InstallTraffic (sens, chs, sinkNode, ifaces, numRegular, useSink, hetero);
+
+  // ---- Energy Model Setup ----
+  BasicEnergySourceHelper energySourceHelper;
+  // BasicEnergySourceHelper uses BasicEnergySource by default
+  energySourceHelper.Set ("BasicEnergySourceInitialEnergyJ", DoubleValue (2.0));
+  EnergySourceContainer sensSources;
+  for (uint32_t i = 0; i < numRegular; i++)
+    {
+      NodeContainer tmp;
+      tmp.Add (sens.Get (i));
+      sensSources.Add (energySourceHelper.Install (tmp));
+    }
+
+  BasicEnergySourceHelper chEnergyHelper;
+  // BasicEnergySourceHelper uses BasicEnergySource by default
+  chEnergyHelper.Set ("BasicEnergySourceInitialEnergyJ", DoubleValue (5.0));
+  EnergySourceContainer chSources;
+  for (uint32_t i = 0; i < numCH; i++)
+    {
+      NodeContainer tmp;
+      tmp.Add (chs.Get (i));
+      chSources.Add (chEnergyHelper.Install (tmp));
+    }
+
+  WifiRadioEnergyModelHelper radioEnergyHelper;
+  radioEnergyHelper.Set ("TxCurrentA", DoubleValue (0.380));
+  radioEnergyHelper.Set ("RxCurrentA", DoubleValue (0.313));
+  radioEnergyHelper.Set ("IdleCurrentA", DoubleValue (0.273));
+  radioEnergyHelper.Set ("SleepCurrentA", DoubleValue (0.030));
+  for (uint32_t i = 0; i < numRegular; i++)
+    {
+      NetDeviceContainer d; d.Add (dev.Get (i));
+      radioEnergyHelper.Install (d, sensSources.Get (i));
+    }
+  for (uint32_t i = 0; i < numCH; i++)
+    {
+      NetDeviceContainer d; d.Add (dev.Get (numRegular + i));
+      radioEnergyHelper.Install (d, chSources.Get (i));
+    }
+  std::cout << "  Energy: Sensors=2.0J, CHs=5.0J\n\n";
+
+  FlowMonitorHelper fh;
+  Ptr<FlowMonitor> fm = fh.InstallAll ();
+
+  std::cout << "[RUN] " << simTime << "s...\n";
+  Simulator::Stop (Seconds (simTime));
+  Simulator::Run ();
+
+  PrintResults (fm, fh, csvName);
+
+  // ---- Energy Report ----
+  std::cout << "  ============================================\n"
+            << "  ENERGY REPORT\n"
+            << "  ============================================\n";
+  double totalSensInit = numRegular * 2.0;
+  double totalCHInit   = numCH * 5.0;
+  double totalSensRemain = 0, totalCHRemain = 0;
+  uint32_t deadSensors = 0, deadCHs = 0;
+  double minSE = 999, maxSE = 0, sumSE = 0;
+  for (uint32_t i = 0; i < numRegular; i++)
+    {
+      double r = sensSources.Get (i)->GetRemainingEnergy ();
+      totalSensRemain += r; sumSE += r;
+      if (r < minSE) minSE = r; if (r > maxSE) maxSE = r;
+      if (r <= 0.0) deadSensors++;
+    }
+  double minCE = 999, maxCE = 0, sumCE = 0;
+  for (uint32_t i = 0; i < numCH; i++)
+    {
+      double r = chSources.Get (i)->GetRemainingEnergy ();
+      totalCHRemain += r; sumCE += r;
+      if (r < minCE) minCE = r; if (r > maxCE) maxCE = r;
+      if (r <= 0.0) deadCHs++;
+    }
+  double sensConsumed = totalSensInit - totalSensRemain;
+  double chConsumed   = totalCHInit   - totalCHRemain;
+  std::cout << std::fixed << std::setprecision (4)
+            << "  Sensor Energy:\n"
+            << "    Initial: "   << totalSensInit   << " J (" << numRegular << " x 2.0 J)\n"
+            << "    Remaining: " << totalSensRemain << " J\n"
+            << "    Consumed: "  << sensConsumed    << " J ("
+            << std::setprecision (1) << (sensConsumed/totalSensInit*100) << "%)\n"
+            << std::setprecision (4)
+            << "    Per sensor: avg=" << (numRegular>0?sumSE/numRegular:0)
+            << "J  min=" << minSE << "J  max=" << maxSE << "J\n"
+            << "    Dead sensors (0 energy): " << deadSensors << "\n"
+            << "  CH Energy:\n"
+            << "    Initial: "   << totalCHInit   << " J (" << numCH << " x 5.0 J)\n"
+            << "    Remaining: " << totalCHRemain << " J\n"
+            << "    Consumed: "  << chConsumed    << " J ("
+            << std::setprecision (1) << (chConsumed/totalCHInit*100) << "%)\n"
+            << std::setprecision (4)
+            << "    Per CH: avg=" << (numCH>0?sumCE/numCH:0)
+            << "J  min=" << minCE << "J  max=" << maxCE << "J\n"
+            << "    Dead CHs (0 energy): " << deadCHs << "\n"
+            << "  ============================================\n\n";
+  std::string energyCsv = csvName + ".energy.csv";
+  std::ofstream ecsv (energyCsv);
+  ecsv << "NodeID,Type,InitialEnergy_J,RemainingEnergy_J,ConsumedEnergy_J,ConsumedPct\n";
+  uint32_t nECG_e = numRegular/3, nHR_e = numRegular/3;
+  for (uint32_t i = 0; i < numRegular; i++)
+    {
+      double rem = sensSources.Get (i)->GetRemainingEnergy ();
+      double cons = 2.0 - rem;
+      std::string t = (i < nECG_e) ? "ECG" : (i < nECG_e+nHR_e) ? "HR" : "Temp";
+      ecsv << i << "," << t << ",2.0," << std::fixed << std::setprecision (4)
+           << rem << "," << cons << "," << std::setprecision (2) << (cons/2.0*100) << "\n";
+    }
+  for (uint32_t i = 0; i < numCH; i++)
+    {
+      double rem = chSources.Get (i)->GetRemainingEnergy ();
+      double cons = 5.0 - rem;
+      ecsv << (numRegular+i) << ",CH,5.0," << std::fixed << std::setprecision (4)
+           << rem << "," << cons << "," << std::setprecision (2) << (cons/5.0*100) << "\n";
+    }
+  ecsv.close ();
+  std::cout << "  Energy CSV: " << energyCsv << "\n\n";
+
+  // Print CH forwarding stats
+  if (useSink)
+    {
+      std::cout << "  Per-CH Forwarding Stats:\n";
+      uint32_t totalRx = 0, totalFwd = 0;
+      for (uint32_t c = 0; c < numCH; c++)
+        {
+          Ptr<UdpForwarder> fwd = DynamicCast<UdpForwarder> (chs.Get (c)->GetApplication (0));
+          if (fwd)
+            {
+              std::cout << "    CH" << (numRegular + c) << " | Rx:" << fwd->GetRxCount ()
+                        << " Fwd:" << fwd->GetFwdCount () << "\n";
+              totalRx += fwd->GetRxCount ();
+              totalFwd += fwd->GetFwdCount ();
+            }
+        }
+      std::cout << "  Total: Rx=" << totalRx << " Fwd=" << totalFwd << "\n\n";
+    }
+
+  Simulator::Destroy ();
+  std::cout << "[DONE]\n\n";
+  return 0;
+}
+#!/usr/bin/env python3
+"""
+WSN vs MQTT-SN Statistical Comparison Analysis (Bilingual TR/EN)
+================================================================
+Reads multi-seed CSV data, computes mean+-std, generates graphs,
+runs statistical tests (Welch t-test), outputs in Turkish and English.
+
+Usage: python3 scripts/analyze_comparison.py
+"""
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib
+import numpy as np
+import os, sys
+from scipy import stats
+
+matplotlib.use('Agg')
+
+OUTPUT_DIR = "graphs/comparison"
+DPI = 200
+NODES = [50, 100, 150, 200]
+MAX_SEEDS = 10
+
+C_WSN = '#E74C3C'
+C_MQTT = '#2E86C1'
+C_WSN_L = '#F5B7B1'
+C_MQTT_L = '#AED6F1'
+C_HET = '#27AE60'
+
+def load_csv(path):
+    if os.path.exists(path):
+        try:
+            df = pd.read_csv(path)
+            if 'TxPackets' in df.columns:
+                return df
+        except Exception:
+            pass
+    return None
+
+def calc_metrics(df):
+    if df is None: return None
+    tx = df['TxPackets'].sum()
+    rx = df['RxPackets'].sum()
+    d = df['AvgDelay_ms'][df['AvgDelay_ms'] > 0]
+    return {
+        'PDR': rx/tx*100 if tx > 0 else 0,
+        'Delay': d.mean() if len(d) > 0 else 0,
+        'Throughput': df['Throughput_kbps'].mean(),
+        'Dead': len(df[df['RxPackets'] == 0]),
+    }
+
+def load_set(prefix, nodes, max_seeds):
+    """Load a set of experiments and return dict of results"""
+    results = {}
+    for n in nodes:
+        key = f"{prefix}_{n}"
+        runs = []
+        for r in range(1, max_seeds + 1):
+            path = f"experiments/statistical/{key}_r{r}.csv"
+            df = load_csv(path)
+            if df is not None:
+                m = calc_metrics(df)
+                if m: runs.append(m)
+        # Fallback to comparison dir
+        if len(runs) == 0:
+            path = f"experiments/comparison/{key}.csv"
+            df = load_csv(path)
+            if df is not None:
+                m = calc_metrics(df)
+                if m: runs.append(m)
+        if len(runs) > 0:
+            results[key] = {
+                'n_runs': len(runs),
+                'runs_raw': runs,
+                'PDR_mean': np.mean([r['PDR'] for r in runs]),
+                'PDR_std': np.std([r['PDR'] for r in runs], ddof=1) if len(runs) > 1 else 0,
+                'Delay_mean': np.mean([r['Delay'] for r in runs]),
+                'Delay_std': np.std([r['Delay'] for r in runs], ddof=1) if len(runs) > 1 else 0,
+                'Dead_mean': np.mean([r['Dead'] for r in runs]),
+                'Dead_std': np.std([r['Dead'] for r in runs], ddof=1) if len(runs) > 1 else 0,
+                'Throughput_mean': np.mean([r['Throughput'] for r in runs]),
+            }
+            print(f"[OK] {key}: {len(runs)} seeds")
+    return results
+
+def load_all():
+    results = {}
+    # Set 1 & 2
+    for s in [1, 2]:
+        for sc in ['wsn', 'mqtt']:
+            r = load_set(f"exp{s}_{sc}", NODES, MAX_SEEDS)
+            results.update(r)
+    # Set 3: Hetero WSN no broker
+    results.update(load_set("exp3_wsn_hetero", NODES, MAX_SEEDS))
+    # Set 3b: Hetero WSN with broker
+    results.update(load_set("exp3b_wsn_hetero_broker", NODES, MAX_SEEDS))
+    return results
+
+# ============================================================
+# WELCH T-TEST
+# ============================================================
+def welch_ttest(data, key_a, key_b, metric='PDR'):
+    a = data.get(key_a, {}).get('runs_raw', [])
+    b = data.get(key_b, {}).get('runs_raw', [])
+    if len(a) < 2 or len(b) < 2:
+        return None
+    va = [r[metric] for r in a]
+    vb = [r[metric] for r in b]
+    t_stat, p_val = stats.ttest_ind(va, vb, equal_var=False)
+    return p_val
+
+def sig_label(p):
+    if p is None: return "N/A"
+    if p < 0.001: return "***"
+    if p < 0.01: return "**"
+    if p < 0.05: return "*"
+    return "ns"
+
+# ============================================================
+# BAR CHART (Error Bar) - Bilingual
+# ============================================================
+def plot_bars(data, setnum, metric, ylabel_tr, ylabel_en, title_tr, title_en, filename):
+    for lang, ylabel, title in [('tr', ylabel_tr, title_tr), ('en', ylabel_en, title_en)]:
+        fig, ax = plt.subplots(figsize=(9, 5))
+        pf = f"exp{setnum}"
+        wm = [data.get(f"{pf}_wsn_{n}", {}).get(f'{metric}_mean', 0) for n in NODES]
+        ws = [data.get(f"{pf}_wsn_{n}", {}).get(f'{metric}_std', 0) for n in NODES]
+        mm = [data.get(f"{pf}_mqtt_{n}", {}).get(f'{metric}_mean', 0) for n in NODES]
+        ms = [data.get(f"{pf}_mqtt_{n}", {}).get(f'{metric}_std', 0) for n in NODES]
+        x = np.arange(len(NODES)); w = 0.3
+        lb_a = 'KAA (AODV+UDP)' if lang=='tr' else 'WSN (AODV+UDP)'
+        ax.bar(x-w/2, wm, w, yerr=ws, capsize=5, label=lb_a, color=C_WSN, edgecolor='white', zorder=3, alpha=0.85)
+        ax.bar(x+w/2, mm, w, yerr=ms, capsize=5, label='MQTT-SN', color=C_MQTT, edgecolor='white', zorder=3, alpha=0.85)
+        mv = max(max(wm) if wm else 1, max(mm) if mm else 1)
+        for i in range(len(NODES)):
+            f1 = f'{wm[i]:.1f}' if metric != 'Dead' else f'{wm[i]:.0f}'
+            f2 = f'{mm[i]:.1f}' if metric != 'Dead' else f'{mm[i]:.0f}'
+            ax.text(x[i]-w/2, wm[i]+ws[i]+mv*0.02, f1, ha='center', fontsize=7, color=C_WSN, fontweight='bold')
+            ax.text(x[i]+w/2, mm[i]+ms[i]+mv*0.02, f2, ha='center', fontsize=7, color=C_MQTT, fontweight='bold')
+        ax.set_xticks(x); ax.set_xticklabels([f'{n}' for n in NODES])
+        xl = 'Sensor Dugum Sayisi' if lang=='tr' else 'Number of Sensor Nodes'
+        ax.set_xlabel(xl, fontsize=11); ax.set_ylabel(ylabel, fontsize=11)
+        nr = data.get(f"{pf}_wsn_50", {}).get('n_runs', 1)
+        seeds_label = f'{nr} tohum' if lang=='tr' else f'{nr} seeds'
+        ax.set_title(f'{title} ({seeds_label}, mean+/-std)', fontsize=12, fontweight='bold')
+        ax.legend(); ax.grid(axis='y', alpha=0.3, zorder=0)
+        fn = filename.replace('.png', f'_{lang}.png')
+        plt.tight_layout(); plt.savefig(os.path.join(OUTPUT_DIR, fn), dpi=DPI, bbox_inches='tight'); plt.close()
+        print(f"[OK] {fn}")
+
+# ============================================================
+# LINE CHART (Confidence Band) - Bilingual
+# ============================================================
+def plot_lines(data, setnum, metric, ylabel_tr, ylabel_en, title_tr, title_en, filename):
+    for lang, ylabel, title in [('tr', ylabel_tr, title_tr), ('en', ylabel_en, title_en)]:
+        fig, ax = plt.subplots(figsize=(9, 5))
+        pf = f"exp{setnum}"
+        wm = [data.get(f"{pf}_wsn_{n}", {}).get(f'{metric}_mean', 0) for n in NODES]
+        ws = [data.get(f"{pf}_wsn_{n}", {}).get(f'{metric}_std', 0) for n in NODES]
+        mm = [data.get(f"{pf}_mqtt_{n}", {}).get(f'{metric}_mean', 0) for n in NODES]
+        ms = [data.get(f"{pf}_mqtt_{n}", {}).get(f'{metric}_std', 0) for n in NODES]
+        lb_a = 'KAA (AODV+UDP)' if lang=='tr' else 'WSN (AODV+UDP)'
+        ax.plot(NODES, wm, 'o-', color=C_WSN, linewidth=2, markersize=8, label=lb_a)
+        ax.fill_between(NODES, [m-s for m,s in zip(wm,ws)], [m+s for m,s in zip(wm,ws)], color=C_WSN, alpha=0.15)
+        ax.plot(NODES, mm, 's-', color=C_MQTT, linewidth=2, markersize=8, label='MQTT-SN')
+        ax.fill_between(NODES, [m-s for m,s in zip(mm,ms)], [m+s for m,s in zip(mm,ms)], color=C_MQTT, alpha=0.15)
+        for i in range(len(NODES)):
+            ax.annotate(f'{wm[i]:.1f}', (NODES[i], wm[i]), textcoords="offset points", xytext=(0,12), ha='center', fontsize=9, color=C_WSN)
+            ax.annotate(f'{mm[i]:.1f}', (NODES[i], mm[i]), textcoords="offset points", xytext=(0,-15), ha='center', fontsize=9, color=C_MQTT)
+        xl = 'Sensor Dugum Sayisi' if lang=='tr' else 'Number of Sensor Nodes'
+        band_label = 'golgeli alan = +/-1 std' if lang=='tr' else 'shaded area = +/-1 std'
+        ax.set_xlabel(xl, fontsize=11); ax.set_ylabel(ylabel, fontsize=11)
+        ax.set_title(f'{title} ({band_label})', fontsize=12, fontweight='bold')
+        ax.set_xticks(NODES); ax.legend(); ax.grid(alpha=0.3)
+        fn = filename.replace('.png', f'_{lang}.png')
+        plt.tight_layout(); plt.savefig(os.path.join(OUTPUT_DIR, fn), dpi=DPI, bbox_inches='tight'); plt.close()
+        print(f"[OK] {fn}")
+
+# ============================================================
+# DASHBOARD (5 scenarios) - Bilingual
+# ============================================================
+def plot_dashboard(data):
+    for lang in ['tr', 'en']:
+        fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+        t = 'KAA ile MQTT-SN Istatistiksel Karsilastirma Panosu' if lang=='tr' else 'WSN vs MQTT-SN Statistical Comparison Dashboard'
+        fig.suptitle(t, fontsize=16, fontweight='bold')
+        if lang == 'tr':
+            scen = [
+                ('exp1_wsn', 'KAA Sabit A.Yok', C_WSN, 'o-'),
+                ('exp1_mqtt', 'MQTT-SN A.Yok', C_MQTT, 's-'),
+                ('exp3_wsn_hetero', 'KAA Hetero A.Yok', C_HET, '^-'),
+                ('exp2_wsn', 'KAA Sabit A.Var', C_WSN_L, 'o--'),
+                ('exp2_mqtt', 'MQTT-SN A.Var', C_MQTT_L, 's--'),
+            ]
+            panels = [
+                (axes[0,0], 'PDR', 'PDR (%)', 'Paket Teslim Orani'),
+                (axes[0,1], 'Delay', 'Gecikme (ms)', 'Uctan Uca Gecikme'),
+                (axes[1,0], 'Throughput', 'Verim (kbps)', 'Ag Verimi'),
+                (axes[1,1], 'Dead', 'Basarisiz Akis', 'Basarisiz Akis Sayisi'),
+            ]
+        else:
+            scen = [
+                ('exp1_wsn', 'WSN Const. No Broker', C_WSN, 'o-'),
+                ('exp1_mqtt', 'MQTT-SN No Broker', C_MQTT, 's-'),
+                ('exp3_wsn_hetero', 'WSN Hetero No Broker', C_HET, '^-'),
+                ('exp2_wsn', 'WSN Const. W/Broker', C_WSN_L, 'o--'),
+                ('exp2_mqtt', 'MQTT-SN W/Broker', C_MQTT_L, 's--'),
+            ]
+            panels = [
+                (axes[0,0], 'PDR', 'PDR (%)', 'Packet Delivery Ratio'),
+                (axes[0,1], 'Delay', 'Delay (ms)', 'End-to-End Delay'),
+                (axes[1,0], 'Throughput', 'Throughput (kbps)', 'Network Throughput'),
+                (axes[1,1], 'Dead', 'Dead Flows', 'Dead Flow Count'),
+            ]
+        for ax, m, yl, tt in panels:
+            for pf, lb, cl, st in scen:
+                mn = [data.get(f"{pf}_{n}",{}).get(f'{m}_mean',0) for n in NODES]
+                sd = [data.get(f"{pf}_{n}",{}).get(f'{m}_std',0) for n in NODES]
+                ax.errorbar(NODES, mn, yerr=sd, fmt=st, color=cl, linewidth=2, markersize=6, label=lb, capsize=3)
+            xl = 'Dugum Sayisi' if lang=='tr' else 'Nodes'
+            ax.set_xlabel(xl); ax.set_ylabel(yl); ax.set_title(tt, fontweight='bold')
+            ax.set_xticks(NODES); ax.legend(fontsize=6); ax.grid(alpha=0.3)
+        plt.tight_layout()
+        plt.savefig(os.path.join(OUTPUT_DIR, f'10_dashboard_{lang}.png'), dpi=DPI, bbox_inches='tight'); plt.close()
+        print(f"[OK] 10_dashboard_{lang}.png")
+
+# ============================================================
+# EQUAL LOAD COMPARISON (Set 3 + Set 3b) - Bilingual
+# ============================================================
+def plot_equal_load(data):
+    for lang in ['tr', 'en']:
+        fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+        if lang == 'tr':
+            fig.suptitle('Esit Yuk Karsilastirmasi (Araci Yok)', fontsize=13, fontweight='bold')
+            labels = ['KAA Sabit (4kbps)', 'KAA Hetero (esit yuk)', 'MQTT-SN']
+            xl = 'Dugum Sayisi'; yl1 = 'PDR (%)'; yl2 = 'Gecikme (ms)'
+            t1 = 'PDR: Esit Yuk'; t2 = 'Gecikme: Esit Yuk'
+        else:
+            fig.suptitle('Equal Load Comparison (No Broker)', fontsize=13, fontweight='bold')
+            labels = ['WSN Constant (4kbps)', 'WSN Hetero (equal load)', 'MQTT-SN']
+            xl = 'Number of Nodes'; yl1 = 'PDR (%)'; yl2 = 'Delay (ms)'
+            t1 = 'PDR: Equal Load'; t2 = 'Delay: Equal Load'
+
+        ax = axes[0]
+        for pf, lb, cl, st in [('exp1_wsn', labels[0], C_WSN, 'o-'), ('exp3_wsn_hetero', labels[1], C_HET, '^-'), ('exp1_mqtt', labels[2], C_MQTT, 's-')]:
+            mn = [data.get(f"{pf}_{n}",{}).get('PDR_mean',0) for n in NODES]
+            sd = [data.get(f"{pf}_{n}",{}).get('PDR_std',0) for n in NODES]
+            ax.errorbar(NODES, mn, yerr=sd, fmt=st, color=cl, lw=2, ms=7, capsize=4, label=lb)
+            for i in range(len(NODES)):
+                ax.annotate(f'{mn[i]:.1f}', (NODES[i], mn[i]), textcoords="offset points", xytext=(0,10), ha='center', fontsize=8, color=cl)
+        ax.set_xlabel(xl); ax.set_ylabel(yl1); ax.set_title(t1, fontweight='bold')
+        ax.set_xticks(NODES); ax.legend(fontsize=8); ax.grid(alpha=0.3)
+
+        ax = axes[1]
+        for pf, lb, cl, st in [('exp1_wsn', labels[0], C_WSN, 'o-'), ('exp3_wsn_hetero', labels[1], C_HET, '^-'), ('exp1_mqtt', labels[2], C_MQTT, 's-')]:
+            mn = [data.get(f"{pf}_{n}",{}).get('Delay_mean',0) for n in NODES]
+            sd = [data.get(f"{pf}_{n}",{}).get('Delay_std',0) for n in NODES]
+            ax.errorbar(NODES, mn, yerr=sd, fmt=st, color=cl, lw=2, ms=7, capsize=4, label=lb)
+        ax.set_xlabel(xl); ax.set_ylabel(yl2); ax.set_title(t2, fontweight='bold')
+        ax.set_xticks(NODES); ax.legend(fontsize=8); ax.grid(alpha=0.3)
+
+        fn = f'12_equal_load_{lang}.png'
+        plt.tight_layout(); plt.savefig(os.path.join(OUTPUT_DIR, fn), dpi=DPI, bbox_inches='tight'); plt.close()
+        print(f"[OK] {fn}")
+
+# ============================================================
+# EQUAL LOAD WITH BROKER (Set 3b vs Set 2 MQTT) - Bilingual
+# ============================================================
+def plot_equal_load_broker(data):
+    for lang in ['tr', 'en']:
+        fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+        if lang == 'tr':
+            fig.suptitle('Esit Yuk Karsilastirmasi (Araci Var)', fontsize=13, fontweight='bold')
+            labels = ['KAA Sabit+Araci', 'KAA Hetero+Araci', 'MQTT-SN+Araci']
+            xl = 'Dugum Sayisi'
+        else:
+            fig.suptitle('Equal Load Comparison (With Broker)', fontsize=13, fontweight='bold')
+            labels = ['WSN Const.+Broker', 'WSN Hetero+Broker', 'MQTT-SN+Broker']
+            xl = 'Number of Nodes'
+
+        ax = axes[0]
+        for pf, lb, cl, st in [('exp2_wsn', labels[0], C_WSN, 'o-'), ('exp3b_wsn_hetero_broker', labels[1], C_HET, '^-'), ('exp2_mqtt', labels[2], C_MQTT, 's-')]:
+            mn = [data.get(f"{pf}_{n}",{}).get('PDR_mean',0) for n in NODES]
+            sd = [data.get(f"{pf}_{n}",{}).get('PDR_std',0) for n in NODES]
+            ax.errorbar(NODES, mn, yerr=sd, fmt=st, color=cl, lw=2, ms=7, capsize=4, label=lb)
+            for i in range(len(NODES)):
+                ax.annotate(f'{mn[i]:.1f}', (NODES[i], mn[i]), textcoords="offset points", xytext=(0,10), ha='center', fontsize=8, color=cl)
+        ax.set_xlabel(xl); ax.set_ylabel('PDR (%)')
+        ax.set_title('PDR' if lang=='en' else 'PDR', fontweight='bold')
+        ax.set_xticks(NODES); ax.legend(fontsize=8); ax.grid(alpha=0.3)
+
+        ax = axes[1]
+        for pf, lb, cl, st in [('exp2_wsn', labels[0], C_WSN, 'o-'), ('exp3b_wsn_hetero_broker', labels[1], C_HET, '^-'), ('exp2_mqtt', labels[2], C_MQTT, 's-')]:
+            mn = [data.get(f"{pf}_{n}",{}).get('Delay_mean',0) for n in NODES]
+            sd = [data.get(f"{pf}_{n}",{}).get('Delay_std',0) for n in NODES]
+            ax.errorbar(NODES, mn, yerr=sd, fmt=st, color=cl, lw=2, ms=7, capsize=4, label=lb)
+        yl = 'Gecikme (ms)' if lang=='tr' else 'Delay (ms)'
+        ax.set_xlabel(xl); ax.set_ylabel(yl)
+        ax.set_title('Gecikme' if lang=='tr' else 'Delay', fontweight='bold')
+        ax.set_xticks(NODES); ax.legend(fontsize=8); ax.grid(alpha=0.3)
+
+        fn = f'13_equal_load_broker_{lang}.png'
+        plt.tight_layout(); plt.savefig(os.path.join(OUTPUT_DIR, fn), dpi=DPI, bbox_inches='tight'); plt.close()
+        print(f"[OK] {fn}")
+
+# ============================================================
+# BROKER IMPACT - Bilingual
+# ============================================================
+def plot_broker_impact(data):
+    for lang in ['tr', 'en']:
+        fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+        t = 'Merkezi Toplama Dugumunun PDR Etkisi' if lang=='tr' else 'Broker Impact on PDR'
+        fig.suptitle(t, fontsize=14, fontweight='bold')
+
+        for idx, (sc, sc_label) in enumerate([('wsn', 'KAA' if lang=='tr' else 'WSN'), ('mqtt', 'MQTT-SN')]):
+            ax = axes[idx]
+            no = [data.get(f"exp1_{sc}_{n}", {}).get('PDR_mean', 0) for n in NODES]
+            no_s = [data.get(f"exp1_{sc}_{n}", {}).get('PDR_std', 0) for n in NODES]
+            yes = [data.get(f"exp2_{sc}_{n}", {}).get('PDR_mean', 0) for n in NODES]
+            yes_s = [data.get(f"exp2_{sc}_{n}", {}).get('PDR_std', 0) for n in NODES]
+            lb_no = 'Araci Yok' if lang=='tr' else 'No Broker'
+            lb_yes = 'Araci Var' if lang=='tr' else 'With Broker'
+            c1 = C_WSN if sc=='wsn' else C_MQTT
+            c2 = C_WSN_L if sc=='wsn' else C_MQTT_L
+            ax.errorbar(NODES, no, yerr=no_s, fmt='o-', color=c1, lw=2, ms=8, capsize=4, label=f'{sc_label} {lb_no}')
+            ax.errorbar(NODES, yes, yerr=yes_s, fmt='o--', color=c2, lw=2, ms=8, capsize=4, label=f'{sc_label} {lb_yes}')
+            for i in range(len(NODES)):
+                ax.annotate(f'{no[i]:.1f}%', (NODES[i], no[i]), textcoords="offset points", xytext=(0,12), ha='center', fontsize=9)
+                ax.annotate(f'{yes[i]:.1f}%', (NODES[i], yes[i]), textcoords="offset points", xytext=(0,-15), ha='center', fontsize=9)
+            xl = 'Dugum Sayisi' if lang=='tr' else 'Nodes'
+            ax.set_xlabel(xl); ax.set_ylabel('PDR (%)')
+            ax.set_title(f'{sc_label}: Broker Impact' if lang=='en' else f'{sc_label}: Araci Etkisi', fontweight='bold')
+            ax.set_xticks(NODES); ax.legend(); ax.grid(alpha=0.3)
+
+        fn = f'09_broker_impact_{lang}.png'
+        plt.tight_layout(); plt.savefig(os.path.join(OUTPUT_DIR, fn), dpi=DPI, bbox_inches='tight'); plt.close()
+        print(f"[OK] {fn}")
+
+# ============================================================
+# PRINT RESULTS - Bilingual with p-values
+# ============================================================
+def print_results(data):
+    for lang in ['tr', 'en']:
+        if lang == 'tr':
+            print("\n" + "="*120)
+            print("  KAA ile MQTT-SN ISTATISTIKSEL KARSILASTIRMA (TURKCE)")
+            print("="*120)
+        else:
+            print("\n" + "="*120)
+            print("  WSN vs MQTT-SN STATISTICAL COMPARISON (ENGLISH)")
+            print("="*120)
+
+        for s in [1,2]:
+            if lang == 'tr':
+                sn = "ARACI YOK" if s==1 else "ARACI VAR"
+                print(f"\n  --- KUME {s}: {sn} ---")
+                print(f"  {'Dugum':<8} {'Tohum':<6} {'KAA PDR':<20} {'MQTT PDR':<20} {'p(PDR)':<8} {'KAA Gecikme':<20} {'MQTT Gecikme':<20} {'p(Del)':<8}")
+            else:
+                sn = "NO BROKER" if s==1 else "WITH BROKER"
+                print(f"\n  --- SET {s}: {sn} ---")
+                print(f"  {'Nodes':<8} {'Seeds':<6} {'WSN PDR':<20} {'MQTT PDR':<20} {'p(PDR)':<8} {'WSN Delay':<20} {'MQTT Delay':<20} {'p(Del)':<8}")
+            print("  "+"-"*110)
+            for n in NODES:
+                w = data.get(f"exp{s}_wsn_{n}",{}); m = data.get(f"exp{s}_mqtt_{n}",{})
+                nr = w.get('n_runs',0)
+                wp = f"{w.get('PDR_mean',0):.1f}+/-{w.get('PDR_std',0):.1f}%"
+                mp = f"{m.get('PDR_mean',0):.1f}+/-{m.get('PDR_std',0):.1f}%"
+                wd = f"{w.get('Delay_mean',0):.1f}+/-{w.get('Delay_std',0):.1f}ms"
+                md = f"{m.get('Delay_mean',0):.1f}+/-{m.get('Delay_std',0):.1f}ms"
+                p_pdr = welch_ttest(data, f"exp{s}_wsn_{n}", f"exp{s}_mqtt_{n}", 'PDR')
+                p_del = welch_ttest(data, f"exp{s}_wsn_{n}", f"exp{s}_mqtt_{n}", 'Delay')
+                pp = f"{p_pdr:.4f}" if p_pdr is not None else "N/A"
+                pd = f"{p_del:.4f}" if p_del is not None else "N/A"
+                print(f"  {n:<8} {nr:<6} {wp:<20} {mp:<20} {pp:<8} {wd:<20} {md:<20} {pd:<8}")
+
+        # Set 3: Equal load no broker
+        if lang == 'tr':
+            print(f"\n  --- KUME 3: ESIT YUK, ARACI YOK (KAA Hetero vs MQTT-SN) ---")
+            print(f"  {'Dugum':<8} {'Tohum':<6} {'KAA Het. PDR':<22} {'MQTT-SN PDR':<22} {'p(PDR)':<8} {'KAA Het. Gec.':<22} {'MQTT-SN Gec.':<22}")
+        else:
+            print(f"\n  --- SET 3: EQUAL LOAD, NO BROKER (WSN Hetero vs MQTT-SN) ---")
+            print(f"  {'Nodes':<8} {'Seeds':<6} {'WSN Het. PDR':<22} {'MQTT-SN PDR':<22} {'p(PDR)':<8} {'WSN Het. Delay':<22} {'MQTT-SN Delay':<22}")
+        print("  "+"-"*110)
+        for n in NODES:
+            h = data.get(f"exp3_wsn_hetero_{n}",{}); m = data.get(f"exp1_mqtt_{n}",{})
+            nr = h.get('n_runs',0)
+            hp = f"{h.get('PDR_mean',0):.1f}+/-{h.get('PDR_std',0):.1f}%"
+            mp = f"{m.get('PDR_mean',0):.1f}+/-{m.get('PDR_std',0):.1f}%"
+            hd = f"{h.get('Delay_mean',0):.1f}+/-{h.get('Delay_std',0):.1f}ms"
+            md = f"{m.get('Delay_mean',0):.1f}+/-{m.get('Delay_std',0):.1f}ms"
+            p_pdr = welch_ttest(data, f"exp3_wsn_hetero_{n}", f"exp1_mqtt_{n}", 'PDR')
+            pp = f"{p_pdr:.4f}" if p_pdr is not None else "N/A"
+            print(f"  {n:<8} {nr:<6} {hp:<22} {mp:<22} {pp:<8} {hd:<22} {md:<22}")
+
+        # Set 3b: Equal load with broker
+        if lang == 'tr':
+            print(f"\n  --- KUME 3b: ESIT YUK, ARACI VAR (KAA Het.+Araci vs MQTT-SN+Araci) ---")
+            print(f"  {'Dugum':<8} {'Tohum':<6} {'KAA Het.+A PDR':<22} {'MQTT+A PDR':<22} {'p(PDR)':<8} {'KAA Het.+A Gec.':<22} {'MQTT+A Gec.':<22}")
+        else:
+            print(f"\n  --- SET 3b: EQUAL LOAD, WITH BROKER (WSN Het.+Broker vs MQTT-SN+Broker) ---")
+            print(f"  {'Nodes':<8} {'Seeds':<6} {'WSN Het.+B PDR':<22} {'MQTT+B PDR':<22} {'p(PDR)':<8} {'WSN Het.+B Del.':<22} {'MQTT+B Del.':<22}")
+        print("  "+"-"*110)
+        for n in NODES:
+            h = data.get(f"exp3b_wsn_hetero_broker_{n}",{}); m = data.get(f"exp2_mqtt_{n}",{})
+            nr = h.get('n_runs',0)
+            hp = f"{h.get('PDR_mean',0):.1f}+/-{h.get('PDR_std',0):.1f}%"
+            mp = f"{m.get('PDR_mean',0):.1f}+/-{m.get('PDR_std',0):.1f}%"
+            hd = f"{h.get('Delay_mean',0):.1f}+/-{h.get('Delay_std',0):.1f}ms"
+            md = f"{m.get('Delay_mean',0):.1f}+/-{m.get('Delay_std',0):.1f}ms"
+            p_pdr = welch_ttest(data, f"exp3b_wsn_hetero_broker_{n}", f"exp2_mqtt_{n}", 'PDR')
+            pp = f"{p_pdr:.4f}" if p_pdr is not None else "N/A"
+            print(f"  {n:<8} {nr:<6} {hp:<22} {mp:<22} {pp:<8} {hd:<22} {md:<22}")
+
+        print("\n"+"="*120+"\n")
+
+# ============================================================
+if __name__ == "__main__":
+    print("\n[MIoT] WSN vs MQTT-SN Statistical Comparison Analysis\n")
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    data = load_all()
+    if len(data) == 0: print("[ERROR] No data found!"); sys.exit(1)
+
+    # Set 1: No Broker
+    plot_bars(data, 1, 'PDR', 'PDR (%)', 'PDR (%)',
+             'Paket Teslim Orani: KAA ve MQTT-SN - Araci Yok',
+             'PDR: WSN vs MQTT-SN - No Broker', '01_set1_pdr_bar.png')
+    plot_bars(data, 1, 'Delay', 'Gecikme (ms)', 'Delay (ms)',
+             'Gecikme: KAA ve MQTT-SN - Araci Yok',
+             'Delay: WSN vs MQTT-SN - No Broker', '02_set1_delay_bar.png')
+    plot_lines(data, 1, 'PDR', 'PDR (%)', 'PDR (%)',
+              'PDR Olceklenebilirligi - Araci Yok',
+              'PDR Scalability - No Broker', '04_set1_pdr_line.png')
+    plot_lines(data, 1, 'Delay', 'Gecikme (ms)', 'Delay (ms)',
+              'Gecikme Olceklenebilirligi - Araci Yok',
+              'Delay Scalability - No Broker', '04b_set1_delay_line.png')
+
+    # Set 2: With Broker
+    plot_bars(data, 2, 'PDR', 'PDR (%)', 'PDR (%)',
+             'Paket Teslim Orani: KAA ve MQTT-SN - Araci Var',
+             'PDR: WSN vs MQTT-SN - With Broker', '05_set2_pdr_bar.png')
+    plot_bars(data, 2, 'Delay', 'Gecikme (ms)', 'Delay (ms)',
+             'Gecikme: KAA ve MQTT-SN - Araci Var',
+             'Delay: WSN vs MQTT-SN - With Broker', '06_set2_delay_bar.png')
+    plot_lines(data, 2, 'PDR', 'PDR (%)', 'PDR (%)',
+              'PDR Olceklenebilirligi - Araci Var',
+              'PDR Scalability - With Broker', '08_set2_pdr_line.png')
+    plot_lines(data, 2, 'Delay', 'Gecikme (ms)', 'Delay (ms)',
+              'Gecikme Olceklenebilirligi - Araci Var',
+              'Delay Scalability - With Broker', '08b_set2_delay_line.png')
+
+    # Comparisons
+    plot_broker_impact(data)
+    plot_dashboard(data)
+    plot_equal_load(data)
+    plot_equal_load_broker(data)
+
+    print_results(data)
+#!/bin/bash
+# ============================================================
+# WSN vs MQTT-SN Fair Comparison (Statistical Version)
+# 10 seeds x 2 sets x 2 scenarios x 4 node counts
+# SimTime: 300s (increased from 100s for steady-state)
+# ============================================================
+
+cd ~/ns-3-dev
+mkdir -p experiments/statistical
+
+SIMTIME=300
+SEEDS=10  # Number of runs per experiment
+
+echo ""
+echo "============================================================"
+echo "  WSN vs MQTT-SN Fair Comparison (Statistical)"
+echo "  Seeds: $SEEDS | SimTime: ${SIMTIME}s"
+echo "  Total: $((SEEDS * 2 * 2 * 4)) simulations"
+echo "============================================================"
+
+# ============================================================
+# EXPERIMENT SET 1: NO BROKER
+# ============================================================
+echo ""
+echo "======== SET 1: NO BROKER (Application Layer) ========"
+
+for N in 50 100 150 200; do
+    CH=$((N / 10))
+    for RUN in $(seq 1 $SEEDS); do
+        echo "[Set1-WSN] N=$N CH=$CH Run=$RUN..."
+        ./ns3 run "cluster-aodv-nosink --numRegular=$N --numCH=$CH --useSink=false --run=$RUN --simTime=$SIMTIME --csv=experiments/statistical/exp1_wsn_${N}_r${RUN}.csv" 2>/dev/null
+
+        echo "[Set1-MQTT] N=$N CH=$CH Run=$RUN..."
+        ./ns3 run "cluster-aodv-mqtt --nSensors=$N --nCH=$CH --broker=false --run=$RUN --simTime=$SIMTIME --anim=false --csv=experiments/statistical/exp1_mqtt_${N}_r${RUN}.csv" 2>/dev/null
+    done
+    echo "[OK] Set1 N=$N complete ($SEEDS runs each)"
+done
+
+# ============================================================
+# EXPERIMENT SET 2: WITH BROKER
+# ============================================================
+echo ""
+echo "======== SET 2: WITH BROKER (Full Architecture) ========"
+
+for N in 50 100 150 200; do
+    CH=$((N / 10))
+    for RUN in $(seq 1 $SEEDS); do
+        echo "[Set2-WSN] N=$N CH=$CH Run=$RUN..."
+        ./ns3 run "cluster-aodv-nosink --numRegular=$N --numCH=$CH --useSink=true --run=$RUN --simTime=$SIMTIME --csv=experiments/statistical/exp2_wsn_${N}_r${RUN}.csv" 2>/dev/null
+
+        echo "[Set2-MQTT] N=$N CH=$CH Run=$RUN..."
+        ./ns3 run "cluster-aodv-mqtt --nSensors=$N --nCH=$CH --broker=true --run=$RUN --simTime=$SIMTIME --anim=false --csv=experiments/statistical/exp2_mqtt_${N}_r${RUN}.csv" 2>/dev/null
+    done
+    echo "[OK] Set2 N=$N complete ($SEEDS runs each)"
+done
+
+echo ""
+echo "============================================================"
+echo "  All main experiments complete!"
+echo "============================================================"
+
+# ============================================================
+# EXPERIMENT SET 3: SAME-LOAD WSN (Heterogeneous, 10 seeds)
+# Isolates protocol overhead from traffic model difference
+# ============================================================
+echo ""
+echo "======== SET 3: SAME-LOAD (Hetero WSN vs MQTT-SN, No Broker) ========"
+
+for N in 50 100 150 200; do
+    CH=$((N / 10))
+    for RUN in $(seq 1 $SEEDS); do
+        echo "[Set3-WSN-Hetero] N=$N Run=$RUN..."
+        ./ns3 run "cluster-aodv-nosink --numRegular=$N --numCH=$CH --useSink=false --hetero=true --run=$RUN --simTime=$SIMTIME --csv=experiments/statistical/exp3_wsn_hetero_${N}_r${RUN}.csv" 2>/dev/null
+    done
+    echo "[OK] Set3 N=$N complete ($SEEDS runs)"
+done
+
+# ============================================================
+# EXPERIMENT SET 4: MOBILITY WITHOUT BROKER (10 seeds)
+# Isolates AODV mobility impact from broker bottleneck
+# ============================================================
+echo ""
+echo "======== SET 4: MOBILITY NO BROKER (10 seeds) ========"
+
+for SPEED in 0 0.5 1.5 3.0; do
+    SNAME=$(echo $SPEED | tr '.' '_')
+    for RUN in $(seq 1 $SEEDS); do
+        if [ "$SPEED" = "0" ]; then
+            echo "[Set4] Static Run=$RUN..."
+            ./ns3 run "cluster-aodv-mqtt --nSensors=180 --nCH=20 --broker=false --mobility=false --run=$RUN --simTime=$SIMTIME --anim=false --csv=experiments/statistical/exp4_mob_${SNAME}_r${RUN}.csv" 2>/dev/null
+        else
+            echo "[Set4] Speed=${SPEED}m/s Run=$RUN..."
+            ./ns3 run "cluster-aodv-mqtt --nSensors=180 --nCH=20 --broker=false --mobility=true --speed=$SPEED --run=$RUN --simTime=$SIMTIME --anim=false --csv=experiments/statistical/exp4_mob_${SNAME}_r${RUN}.csv" 2>/dev/null
+        fi
+    done
+    echo "[OK] Set4 Speed=$SPEED complete ($SEEDS runs)"
+done
+
+echo ""
+echo "============================================================"
+echo "  ALL EXPERIMENTS COMPLETE!"
+echo "============================================================"
+ls experiments/statistical/*.csv 2>/dev/null | wc -l
+echo "total CSV files."
