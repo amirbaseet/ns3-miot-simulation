@@ -20,22 +20,45 @@ TypeId MqttSnBroker::GetTypeId (void)
   return tid;
 }
 
-MqttSnBroker::MqttSnBroker () : m_socket (nullptr), m_port (1884) {}
-MqttSnBroker::~MqttSnBroker () { m_socket = nullptr; }
+MqttSnBroker::MqttSnBroker ()
+  : m_socket (nullptr), m_rootSocket (nullptr),
+    m_port (1884), m_rootPort (1885), m_hasRoot (false) {}
 
-void MqttSnBroker::Setup (uint16_t port) { m_port = port; }
+MqttSnBroker::~MqttSnBroker ()
+{
+  m_socket     = nullptr;
+  m_rootSocket = nullptr;
+}
+
+void MqttSnBroker::Setup (uint16_t port)
+{
+  m_port = port;
+}
+
+void MqttSnBroker::SetRootBroker (Ipv4Address rootAddr, uint16_t rootPort)
+{
+  m_rootAddr = rootAddr;
+  m_rootPort = rootPort;
+  m_hasRoot  = true;
+}
+
 BrokerStats MqttSnBroker::GetStats () const { return m_stats; }
 
 void MqttSnBroker::PrintStats () const
 {
+  std::string role     = m_hasRoot ? "LOCAL BROKER (tier-1)" : "ROOT BROKER (tier-2)";
+  std::string upstreamLabel = m_hasRoot ? "From Gateways     " : "From Local Brokers";
+
   std::cout << "\n  ============================================\n"
-            << "  BROKER (SINK) STATISTICS\n"
+            << "  " << role << " STATISTICS\n"
             << "  ============================================\n"
             << "  Total Rx Packets  : " << m_stats.rxPackets << "\n"
             << "  Total Rx Bytes    : " << m_stats.rxBytes << "\n"
-            << "  From Gateways     : " << m_stats.fromGateways << "\n"
-            << "  Emergencies       : " << m_stats.emergencies << "\n"
-            << "  ---\n"
+            << "  " << upstreamLabel << ": " << m_stats.fromUpstream << "\n"
+            << "  Emergencies       : " << m_stats.emergencies << "\n";
+  if (m_hasRoot)
+    std::cout << "  Forwarded to Root : " << m_stats.forwardedToRoot << "\n";
+  std::cout << "  ---\n"
             << "  Per-Topic Breakdown:\n";
   for (auto &kv : m_stats.topicCounts)
     {
@@ -47,14 +70,12 @@ void MqttSnBroker::PrintStats () const
   std::cout << "  Per-Priority Breakdown:\n";
   for (auto &kv : m_stats.priorityCounts)
     {
-      MqttSnHeader tmp;
-      tmp.SetQos (kv.first);
       std::string name;
       switch (kv.first) {
-        case 3: name = "CRITICAL"; break;
-        case 2: name = "HIGH"; break;
-        case 1: name = "MEDIUM"; break;
-        default: name = "LOW"; break;
+        case 3:  name = "CRITICAL"; break;
+        case 2:  name = "HIGH";     break;
+        case 1:  name = "MEDIUM";   break;
+        default: name = "LOW";      break;
       }
       std::cout << "    " << name << " (" << (int)kv.first
                 << "): " << kv.second << " packets\n";
@@ -64,13 +85,23 @@ void MqttSnBroker::PrintStats () const
 
 void MqttSnBroker::StartApplication (void)
 {
+  // Receive socket — accepts from gateways (tier-1) or local brokers (root)
   if (!m_socket)
     {
       m_socket = Socket::CreateSocket (GetNode (), UdpSocketFactory::GetTypeId ());
       m_socket->Bind (InetSocketAddress (Ipv4Address::GetAny (), m_port));
       m_socket->SetRecvCallback (MakeCallback (&MqttSnBroker::HandleRead, this));
     }
-  NS_LOG_INFO ("[BROKER] Listening on port " << m_port);
+
+  // Forward socket — only created for tier-1 brokers
+  if (m_hasRoot && !m_rootSocket)
+    {
+      m_rootSocket = Socket::CreateSocket (GetNode (), UdpSocketFactory::GetTypeId ());
+      m_rootSocket->Bind ();
+    }
+
+  NS_LOG_INFO ("[BROKER] Listening on port " << m_port
+               << (m_hasRoot ? " (tier-1, forwards to root)" : " (root)"));
 }
 
 void MqttSnBroker::StopApplication (void)
@@ -80,6 +111,9 @@ void MqttSnBroker::StopApplication (void)
       m_socket->Close ();
       m_socket->SetRecvCallback (MakeNullCallback<void, Ptr<Socket>> ());
     }
+  if (m_rootSocket)
+    m_rootSocket->Close ();
+
   PrintStats ();
 }
 
@@ -95,7 +129,7 @@ void MqttSnBroker::HandleRead (Ptr<Socket> socket)
 
       m_stats.rxPackets++;
       m_stats.rxBytes += packet->GetSize () + header.GetSerializedSize ();
-      m_stats.fromGateways++;
+      m_stats.fromUpstream++;
       m_stats.topicCounts[header.GetTopicId ()]++;
       m_stats.priorityCounts[header.GetPriority ()]++;
 
@@ -104,8 +138,7 @@ void MqttSnBroker::HandleRead (Ptr<Socket> socket)
           m_stats.emergencies++;
           NS_LOG_INFO ("[BROKER] *** EMERGENCY *** from "
                        << InetSocketAddress::ConvertFrom (from).GetIpv4 ()
-                       << " Topic=" << header.GetTopicName ()
-                       << " MsgID=" << header.GetMsgId ());
+                       << " Topic=" << header.GetTopicName ());
         }
       else
         {
@@ -114,7 +147,34 @@ void MqttSnBroker::HandleRead (Ptr<Socket> socket)
                         << " Topic=" << header.GetTopicName ()
                         << " Priority=" << header.GetPriorityName ());
         }
+
+      // Tier-1 broker: forward every received packet up to the root
+      if (m_hasRoot)
+        ForwardToRoot (header);
     }
+}
+
+void MqttSnBroker::ForwardToRoot (MqttSnHeader &hdr)
+{
+  // Build a fresh packet from the received header fields and forward to root.
+  // Pattern mirrors MqttSnGateway::ForwardToBroker exactly.
+  Ptr<Packet> fwdPkt = Create<Packet> (hdr.GetPayloadSize ());
+  MqttSnHeader fwdHdr;
+  fwdHdr.SetMsgType    (MQTTSN_PUBLISH);
+  fwdHdr.SetTopicId    (hdr.GetTopicId ());
+  fwdHdr.SetMsgId      (hdr.GetMsgId ());
+  fwdHdr.SetPayloadSize(hdr.GetPayloadSize ());
+  fwdHdr.SetQos        (hdr.GetQos ());
+  fwdHdr.SetEmergency  (hdr.IsEmergency ());
+  fwdPkt->AddHeader (fwdHdr);
+
+  m_rootSocket->SendTo (fwdPkt, 0,
+    InetSocketAddress (m_rootAddr, m_rootPort));
+
+  m_stats.forwardedToRoot++;
+
+  NS_LOG_DEBUG ("[LOCAL-BROKER] Forwarded to root: Topic=" << hdr.GetTopicName ()
+                << " Priority=" << hdr.GetPriorityName ());
 }
 
 } // namespace ns3
