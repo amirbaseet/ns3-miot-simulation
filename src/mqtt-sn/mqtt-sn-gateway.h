@@ -40,6 +40,7 @@ struct GatewayStats
   uint32_t processedHigh = 0;
   uint32_t processedMed = 0;
   uint32_t processedLow = 0;
+  uint32_t queueDrops = 0;
 };
 
 class MqttSnGateway : public Application

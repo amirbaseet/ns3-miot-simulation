@@ -43,6 +43,7 @@ void MqttSnGateway::PrintStats () const
             << " | Rx:" << m_stats.rxPackets
             << " Emerg:" << m_stats.emergencies
             << " Fwd:" << m_stats.forwardedToBroker
+            << " QDrop:" << m_stats.queueDrops
             << " | Pri[H:" << m_stats.processedHigh
             << " M:" << m_stats.processedMed
             << " L:" << m_stats.processedLow << "]"
@@ -138,7 +139,15 @@ void MqttSnGateway::HandleRead (Ptr<Socket> socket)
             pp.rxTime    = Simulator::Now ().GetSeconds ();
             pp.qos       = header.GetQos ();
             pp.emergency = header.IsEmergency ();
-            m_pQueue.push (pp);
+            if (m_pQueue.size () >= 10000)
+              {
+                m_stats.queueDrops++;
+                NS_LOG_WARN ("[CH " << GetNode ()->GetId () << "] Queue full — DROP");
+              }
+            else
+              {
+                m_pQueue.push (pp);
+              }
 
             if (header.GetQos () > 0)
               SendPubAck (socket, from, header.GetMsgId ());
