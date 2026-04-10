@@ -16,6 +16,8 @@
 #include "ns3/applications-module.h"
 #include "ns3/flow-monitor-module.h"
 #include "ns3/netanim-module.h"
+#include "ns3/energy-module.h"
+#include "ns3/wifi-radio-energy-model-helper.h"
 
 #include <cmath>
 #include <vector>
@@ -421,6 +423,46 @@ int main (int argc, char *argv[])
   AssignClusters (sens, chs, numCH);
   InstallTraffic (sens, chs, sinkNode, ifaces, numRegular, useSink, hetero);
 
+  // ---- Energy Model Setup ----
+  BasicEnergySourceHelper energySourceHelper;
+  // BasicEnergySourceHelper uses BasicEnergySource by default
+  energySourceHelper.Set ("BasicEnergySourceInitialEnergyJ", DoubleValue (2.0));
+  EnergySourceContainer sensSources;
+  for (uint32_t i = 0; i < numRegular; i++)
+    {
+      NodeContainer tmp;
+      tmp.Add (sens.Get (i));
+      sensSources.Add (energySourceHelper.Install (tmp));
+    }
+
+  BasicEnergySourceHelper chEnergyHelper;
+  // BasicEnergySourceHelper uses BasicEnergySource by default
+  chEnergyHelper.Set ("BasicEnergySourceInitialEnergyJ", DoubleValue (5.0));
+  EnergySourceContainer chSources;
+  for (uint32_t i = 0; i < numCH; i++)
+    {
+      NodeContainer tmp;
+      tmp.Add (chs.Get (i));
+      chSources.Add (chEnergyHelper.Install (tmp));
+    }
+
+  WifiRadioEnergyModelHelper radioEnergyHelper;
+  radioEnergyHelper.Set ("TxCurrentA", DoubleValue (0.380));
+  radioEnergyHelper.Set ("RxCurrentA", DoubleValue (0.313));
+  radioEnergyHelper.Set ("IdleCurrentA", DoubleValue (0.273));
+  radioEnergyHelper.Set ("SleepCurrentA", DoubleValue (0.030));
+  for (uint32_t i = 0; i < numRegular; i++)
+    {
+      NetDeviceContainer d; d.Add (dev.Get (i));
+      radioEnergyHelper.Install (d, sensSources.Get (i));
+    }
+  for (uint32_t i = 0; i < numCH; i++)
+    {
+      NetDeviceContainer d; d.Add (dev.Get (numRegular + i));
+      radioEnergyHelper.Install (d, chSources.Get (i));
+    }
+  std::cout << "  Energy: Sensors=2.0J, CHs=5.0J\n\n";
+
   FlowMonitorHelper fh;
   Ptr<FlowMonitor> fm = fh.InstallAll ();
 
@@ -429,6 +471,74 @@ int main (int argc, char *argv[])
   Simulator::Run ();
 
   PrintResults (fm, fh, csvName);
+
+  // ---- Energy Report ----
+  std::cout << "  ============================================\n"
+            << "  ENERGY REPORT\n"
+            << "  ============================================\n";
+  double totalSensInit = numRegular * 2.0;
+  double totalCHInit   = numCH * 5.0;
+  double totalSensRemain = 0, totalCHRemain = 0;
+  uint32_t deadSensors = 0, deadCHs = 0;
+  double minSE = 999, maxSE = 0, sumSE = 0;
+  for (uint32_t i = 0; i < numRegular; i++)
+    {
+      double r = sensSources.Get (i)->GetRemainingEnergy ();
+      totalSensRemain += r; sumSE += r;
+      if (r < minSE) minSE = r; if (r > maxSE) maxSE = r;
+      if (r <= 0.0) deadSensors++;
+    }
+  double minCE = 999, maxCE = 0, sumCE = 0;
+  for (uint32_t i = 0; i < numCH; i++)
+    {
+      double r = chSources.Get (i)->GetRemainingEnergy ();
+      totalCHRemain += r; sumCE += r;
+      if (r < minCE) minCE = r; if (r > maxCE) maxCE = r;
+      if (r <= 0.0) deadCHs++;
+    }
+  double sensConsumed = totalSensInit - totalSensRemain;
+  double chConsumed   = totalCHInit   - totalCHRemain;
+  std::cout << std::fixed << std::setprecision (4)
+            << "  Sensor Energy:\n"
+            << "    Initial: "   << totalSensInit   << " J (" << numRegular << " x 2.0 J)\n"
+            << "    Remaining: " << totalSensRemain << " J\n"
+            << "    Consumed: "  << sensConsumed    << " J ("
+            << std::setprecision (1) << (sensConsumed/totalSensInit*100) << "%)\n"
+            << std::setprecision (4)
+            << "    Per sensor: avg=" << (numRegular>0?sumSE/numRegular:0)
+            << "J  min=" << minSE << "J  max=" << maxSE << "J\n"
+            << "    Dead sensors (0 energy): " << deadSensors << "\n"
+            << "  CH Energy:\n"
+            << "    Initial: "   << totalCHInit   << " J (" << numCH << " x 5.0 J)\n"
+            << "    Remaining: " << totalCHRemain << " J\n"
+            << "    Consumed: "  << chConsumed    << " J ("
+            << std::setprecision (1) << (chConsumed/totalCHInit*100) << "%)\n"
+            << std::setprecision (4)
+            << "    Per CH: avg=" << (numCH>0?sumCE/numCH:0)
+            << "J  min=" << minCE << "J  max=" << maxCE << "J\n"
+            << "    Dead CHs (0 energy): " << deadCHs << "\n"
+            << "  ============================================\n\n";
+  std::string energyCsv = csvName + ".energy.csv";
+  std::ofstream ecsv (energyCsv);
+  ecsv << "NodeID,Type,InitialEnergy_J,RemainingEnergy_J,ConsumedEnergy_J,ConsumedPct\n";
+  uint32_t nECG_e = numRegular/3, nHR_e = numRegular/3;
+  for (uint32_t i = 0; i < numRegular; i++)
+    {
+      double rem = sensSources.Get (i)->GetRemainingEnergy ();
+      double cons = 2.0 - rem;
+      std::string t = (i < nECG_e) ? "ECG" : (i < nECG_e+nHR_e) ? "HR" : "Temp";
+      ecsv << i << "," << t << ",2.0," << std::fixed << std::setprecision (4)
+           << rem << "," << cons << "," << std::setprecision (2) << (cons/2.0*100) << "\n";
+    }
+  for (uint32_t i = 0; i < numCH; i++)
+    {
+      double rem = chSources.Get (i)->GetRemainingEnergy ();
+      double cons = 5.0 - rem;
+      ecsv << (numRegular+i) << ",CH,5.0," << std::fixed << std::setprecision (4)
+           << rem << "," << cons << "," << std::setprecision (2) << (cons/5.0*100) << "\n";
+    }
+  ecsv.close ();
+  std::cout << "  Energy CSV: " << energyCsv << "\n\n";
 
   // Print CH forwarding stats
   if (useSink)
