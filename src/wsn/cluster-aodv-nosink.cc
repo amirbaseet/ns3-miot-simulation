@@ -447,9 +447,9 @@ int main (int argc, char *argv[])
     }
 
   WifiRadioEnergyModelHelper radioEnergyHelper;
-  radioEnergyHelper.Set ("TxCurrentA", DoubleValue (0.380));
-  radioEnergyHelper.Set ("RxCurrentA", DoubleValue (0.313));
-  radioEnergyHelper.Set ("IdleCurrentA", DoubleValue (0.273));
+  radioEnergyHelper.Set ("TxCurrentA", DoubleValue (0.346));
+  radioEnergyHelper.Set ("RxCurrentA", DoubleValue (0.285));
+  radioEnergyHelper.Set ("IdleCurrentA", DoubleValue (0.248));
   radioEnergyHelper.Set ("SleepCurrentA", DoubleValue (0.030));
   for (uint32_t i = 0; i < numRegular; i++)
     {
