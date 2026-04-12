@@ -1,173 +1,193 @@
 # ns3-miot-simulation
 
-## Performance Comparison of Traditional WSN and MQTT-SN Publish-Subscribe Architecture in Cluster-Based MIoT Networks Using ns-3
+## Performance Evaluation of Cluster-Based WSN-AODV and MQTT-SN Architectures for Medical IoT Using ns-3
 
-A comprehensive ns-3 simulation comparing two communication architectures for Medical Internet of Things:
-- **Scenario A (WSN):** Traditional AODV + UDP constant-rate data push
-- **Scenario B (MQTT-SN):** Priority-aware publish-subscribe with heterogeneous sensor traffic
+A statistically validated ns-3 simulation study comparing two cluster-based Medical IoT communication architectures across 240 independent simulation runs (10 seeds per configuration, Welch t-tests).
+
+- **Architecture A (WSN):** Cluster-based AODV routing with fixed-rate UDP transmission
+- **Architecture B (MQTT-SN):** Priority-aware publish-subscribe with QoS differentiation
+
+**Paper:** *Performance Evaluation of Cluster-Based WSN-AODV and MQTT-SN Architectures for Medical IoT Using ns-3* — submitted to SAUCIS (Sakarya University Journal of Computer and Information Sciences)
+
+**SAVTEK 2026:** *Savunma Saha Sağlık Ağlarında Küme Tabanlı KAA-AODV ve MQTT-SN Mimarilerinin ns-3 ile Başarım Değerlendirmesi* — accepted
 
 ---
 
 ## Architecture
 
 ```
-Scenario A - Traditional WSN:
+Architecture A — Traditional WSN (AODV + UDP):
   [Sensor] --OnOff 4kbps UDP--> [CH: UdpForwarder] --forward--> [Sink]
 
-Scenario B - MQTT-SN:
-  [ECG 250ms]---+
-  [HR  1s  ]----+--> [CH: Gateway + Priority Queue] --MQTT-SN--> [Broker]
-  [Temp 5s ]---+
+Architecture B — MQTT-SN Publish-Subscribe:
+  [ECG  250ms/128B/QoS2]---+
+  [HR   1s/64B/QoS1    ]---+--> [CH: MqttSnGateway] --MQTT-SN--> [MqttSnBroker]
+  [Temp 5s/32B/QoS0    ]---+    (priority queue)
+  [Emergency 0.5% prob ]---+
 ```
 
-### Protocol Stack (Same for Both)
+### Shared Protocol Stack
 
 | Layer | Protocol |
 |-------|----------|
-| Application | WSN: OnOff / MQTT-SN: Publish-Subscribe |
+| Application | WSN: OnOffApplication / MQTT-SN: Publish-Subscribe |
 | Transport | UDP |
-| Network | IPv4 + AODV (tuned for 200 nodes) |
-| MAC / PHY | IEEE 802.11b Ad-Hoc (11 Mbps, 20 dBm) |
+| Network | IPv4 + AODV (HelloInterval=2s, RreqRetries=5, ActiveRouteTimeout=15s) |
+| MAC / PHY | IEEE 802.11b Ad-Hoc (11 Mbps, 20 dBm, ~300m range) |
+| Propagation | LogDistance (exponent = 2.5) |
 
 ### MQTT-SN Sensor Types
 
-| Type | Interval | Payload | Priority |
-|------|----------|---------|----------|
-| ECG | 250ms | 128B | HIGH (QoS=2) |
-| Heart Rate | 1s | 64B | MEDIUM (QoS=1) |
-| Temperature | 5s | 32B | LOW (QoS=0) |
-| Emergency | Random 0.5% | 128B | CRITICAL |
+| Type | Interval | Payload | QoS | Priority |
+|------|----------|---------|-----|----------|
+| ECG | 250 ms | 128 B | 2 | HIGH |
+| Heart Rate | 1 s | 64 B | 1 | MEDIUM |
+| Temperature | 5 s | 32 B | 0 | LOW |
+| Emergency | 0.5% per publish | 128 B | 2 | CRITICAL |
 
 ---
 
-## Experimental Results
+## Experimental Results (10 seeds, Welch t-test)
 
-### Experiment 1: WSN vs MQTT-SN - No Broker (Application Layer)
+All results are mean ± std over 10 independent random seeds. Statistical significance: * p<0.05, ** p<0.01, *** p<0.001, ns p≥0.05.
 
-| Nodes | WSN PDR | MQTT-SN PDR | WSN Delay | MQTT-SN Delay | Winner |
-|:-----:|:-------:|:-----------:|:---------:|:-------------:|:------:|
-| 50 | 70.22% | **88.55%** | 66ms | **58ms** | MQTT-SN |
-| 100 | **99.89%** | 98.32% | 56ms | **64ms** | WSN |
-| 150 | 96.63% | **98.97%** | 119ms | **55ms** | MQTT-SN |
-| 200 | 96.36% | **99.97%** | 181ms | **19ms** | MQTT-SN |
+### Set 1 — No Broker (Application-Layer Isolation)
 
-### Experiment 2: WSN vs MQTT-SN - With Broker (Full Architecture)
+| Nodes | WSN PDR | MQTT-SN PDR | p(PDR) | WSN Delay | MQTT-SN Delay | p(Delay) |
+|:-----:|:-------:|:-----------:|:------:|:---------:|:-------------:|:--------:|
+| 50 | 84.1±11.3% | 88.7±8.6% | 0.3282 ns | 53.7±18.8 ms | 29.4±9.2 ms | 0.0028 ** |
+| 100 | 99.1±0.9% | 99.0±0.9% | 0.7950 ns | 86.3±12.8 ms | 58.4±11.3 ms | 0.0001 *** |
+| 150 | 98.3±0.7% | 99.5±0.7% | **0.0011 \*\*** | 111.2±11.5 ms | 64.1±18.3 ms | <0.0001 *** |
+| 200 | 96.7±1.9% | 99.5±0.4% | **0.0011 \*\*** | 123.3±12.2 ms | 121.4±21.0 ms | 0.8122 ns |
 
-| Nodes | WSN PDR | MQTT-SN PDR | WSN Delay | MQTT-SN Delay | Winner |
-|:-----:|:-------:|:-----------:|:---------:|:-------------:|:------:|
-| 50 | 66.47% | **87.33%** | **25ms** | 80ms | MQTT-SN |
-| 100 | **99.68%** | 81.73% | **87ms** | 87ms | WSN |
-| 150 | **79.30%** | 78.83% | **82ms** | 103ms | Tie |
-| 200 | **71.11%** | 70.39% | **172ms** | 192ms | Tie |
+### Set 2 — With Broker (Full End-to-End Architecture)
 
-### Experiment 3: Traffic Load (180 nodes, broker)
+| Nodes | WSN PDR | MQTT-SN PDR | p(PDR) | WSN Delay | MQTT-SN Delay | p(Delay) |
+|:-----:|:-------:|:-----------:|:------:|:---------:|:-------------:|:--------:|
+| 50 | 84.6±11.2% | 85.4±14.0% | 0.8857 ns | 53.0±9.9 ms | 40.8±15.5 ms | 0.0546 ns |
+| 100 | 94.8±4.3% | 90.0±7.7% | 0.1089 ns | 62.2±24.2 ms | 73.5±23.2 ms | 0.2990 ns |
+| 150 | 82.2±2.7% | 76.3±3.1% | **0.0002 \*\*\*** | 124.7±21.8 ms | 151.5±27.1 ms | 0.0260 * |
+| 200 | 67.4±8.3% | 63.4±6.8% | 0.2601 ns | 216.1±37.3 ms | 217.8±27.8 ms | 0.9077 ns |
 
-| Load | ECG/HR/Temp | Tx Packets | PDR | Delay |
-|:----:|:-----------:|:----------:|:---:|:-----:|
-| Low | 20/20/140 | 92K | 74.81% | 148ms |
-| Medium | 60/60/60 | 220K | 71.82% | 137ms |
-| High | 140/20/20 | 505K | 65.45% | 253ms |
+### Set 3 — Equal Load, No Broker (Protocol Mechanism Isolation)
 
-### Experiment 4: Mobility (180 nodes, broker)
+WSN sensors adopt the MQTT-SN heterogeneous traffic profile (ECG 4kbps, HR 512bps, Temp 51bps). MQTT-SN data is identical to Set 1.
 
-| Speed | Scenario | PDR | Dead Flows |
-|:-----:|:--------:|:---:|:----------:|
-| 0 m/s | Static | 71.50% | 211 |
-| 0.5 m/s | Slow walking | 73.60% | 470 |
-| 1.5 m/s | Normal walking | 64.49% | 1,242 |
-| 3.0 m/s | Running | 56.30% | 2,983 |
+| Nodes | WSN-Hetero PDR | MQTT-SN PDR | p(PDR) |
+|:-----:|:--------------:|:-----------:|:------:|
+| 50 | 84.3±11.8% | 88.7±8.6% | 0.3581 ns |
+| 100 | 98.9±1.0% | 99.0±0.9% | 0.7876 ns |
+| 150 | 98.9±0.5% | 99.5±0.7% | 0.0523 ns |
+| 200 | 94.2±5.6% | 99.5±0.4% | **0.0149 \*** |
 
-### Experiment 5: Energy (180 sensors + 20 CHs)
+### Set 3b — Equal Load, With Broker (Gateway Overhead Under Congestion)
 
-| Node Type | Initial | Consumed | Remaining |
-|:---------:|:-------:|:--------:|:---------:|
-| Sensors | 2.0 J each | 72.4% | 0.55 J avg |
-| CHs | 5.0 J each | 72.1% | 1.40 J avg |
+Same heterogeneous traffic as Set 3, broker active. MQTT-SN+broker data is identical to Set 2.
 
-### Experiment 6: Priority MQTT-SN (200 nodes, no broker)
+| Nodes | WSN-Hetero PDR | MQTT-SN PDR | p(PDR) |
+|:-----:|:--------------:|:-----------:|:------:|
+| 50 | 84.0±11.6% | 85.4±14.0% | 0.8114 ns |
+| 100 | 93.7±5.2% | 90.0±7.7% | 0.2332 ns |
+| 150 | 80.4±2.9% | 76.3±3.1% | **0.0066 \*\*** |
+| 200 | 72.4±2.0% | 63.4±6.8% | **0.0022 \*\*** |
 
-| Metric | Value |
-|--------|-------|
-| PDR | 99.97% |
-| Delay | 0.87 ms |
-| Emergency Alerts | 152 |
+### Set 5 — Multi-Broker Hierarchy Sweep (200 nodes, 1 seed)
+
+Two-tier broker architecture: N local tier-1 brokers + 1 root broker. Preliminary results.
+
+| numLocalBrokers | Topology | PDR |
+|:---------------:|:--------:|:---:|
+| 1 | Single broker (baseline) | 73.4% |
+| 2 | Two-tier (2 local + 1 root) | 73.0% |
+| 4 | Two-tier (4 local + 1 root) | 74.5% |
+| 5 | Two-tier (5 local + 1 root) | 73.3% |
+
+**Finding:** PDR is flat across all broker counts (~73–74%). The bottleneck is the shared 802.11b wireless channel, not the broker architecture. Broker distribution alone does not recover performance at this scale.
 
 ---
 
 ## Key Findings
 
-1. **MQTT-SN outperforms WSN without broker** - 99.97% vs 96.36% PDR at 200 nodes, 9.4x lower delay
-2. **Heterogeneous traffic reduces load by 62%** - temperature at 5s vs constant 4kbps
-3. **Broker bottleneck equalizes performance** - both converge to ~70% PDR at 200 nodes
-4. **Mobility degrades AODV** - PDR drops to 56.3% at 3 m/s, dead flows increase 14x
-5. **ECG ratio dominates traffic** - 140 ECG nodes create 5.5x more traffic than 20
-6. **WiFi idle power dominates energy** - uniform 72% consumption regardless of sensor type
+1. **MQTT-SN wins without broker** — Statistically significantly higher PDR at 150 and 200 nodes (p=0.0011). Significantly lower delay at 50–150 nodes.
+2. **WSN wins with broker at 150 nodes** — Gateway overhead (1ms/packet + QoS ACK) amplifies single-sink congestion (p=0.0002).
+3. **MQTT-SN protocol mechanisms are real** — Even under equal traffic load (Set 3), MQTT-SN still wins at 200 nodes (p=0.0149). The PDR advantage is not purely due to lower traffic volume.
+4. **Broker inversion** — Set 3b reverses Set 3: with a broker, WSN-Hetero wins at both 150 and 200 nodes (p=0.0066, p=0.0022). Gateway overhead dominates under centralised congestion.
+5. **Single-seed simulation is insufficient** — Preliminary single-seed runs showed MQTT-SN winning in Set 2. The 10-seed Welch t-test reversed this conclusion at 150 nodes. Multi-seed validation is essential.
+6. **Broker distribution does not help** — Two-tier hierarchy with 1–5 local brokers produces flat PDR (~73–74%) at 200 nodes. Channel saturation is the limiting factor.
 
 ---
 
 ## Quick Start
 
+### Requirements
+
+- ns-3 v3.40 (important: v3.41 causes PDR=0% bug in ad-hoc mode)
+- Python 3.8+ with: `pandas`, `matplotlib`, `scipy`, `numpy`
+
+```bash
+# Verify ns-3 version before running
+cd ~/ns-3-dev && git log --oneline -1
+```
+
 ### Build
 
 ```bash
 mkdir -p ~/ns-3-dev/scratch/cluster-aodv-mqtt
+mkdir -p ~/ns-3-dev/scratch/cluster-aodv-nosink
+
 cp src/mqtt-sn/* ~/ns-3-dev/scratch/cluster-aodv-mqtt/
-cp src/wsn/cluster-aodv-nosink.cc ~/ns-3-dev/scratch/cluster-aodv-nosink/cluster-aodv-nosink.cc
+cp src/wsn/cluster-aodv-nosink.cc ~/ns-3-dev/scratch/cluster-aodv-nosink/
+
 cd ~/ns-3-dev
 ./ns3 build
 ```
 
-### Run Simulations
-
-```bash
-# WSN - no sink
-./ns3 run "cluster-aodv-nosink --numRegular=200 --numCH=20"
-
-# WSN - with sink (real forwarding)
-./ns3 run "cluster-aodv-nosink --numRegular=200 --numCH=20 --useSink=true"
-
-# MQTT-SN - no broker
-./ns3 run "cluster-aodv-mqtt --nSensors=200 --nCH=20 --broker=false"
-
-# MQTT-SN - with broker
-./ns3 run "cluster-aodv-mqtt --nSensors=200 --nCH=20 --broker=true"
-
-# MQTT-SN - with mobility
-./ns3 run "cluster-aodv-mqtt --nSensors=180 --nCH=20 --broker=true --mobility=true --speed=1.5"
-
-# MQTT-SN - custom traffic load
-./ns3 run "cluster-aodv-mqtt --nSensors=180 --nCH=20 --nECG=140 --nHR=20 --broker=true"
-```
-
-### Run All Experiments
+### Run Single Simulations
 
 ```bash
 cd ~/ns-3-dev
-cp ~/projects/ns3-miot-simulation/scripts/run-*.sh .
 
-# Fair comparison (16 simulations)
-chmod +x run-comparison.sh && ./run-comparison.sh
+# WSN — no sink
+./ns3 run "cluster-aodv-nosink --numRegular=200 --numCH=20 --useSink=false --simTime=300"
 
-# Traffic / Mobility / Scalability
-chmod +x run-traffic-experiments.sh && ./run-traffic-experiments.sh
-chmod +x run-mobility-experiments.sh && ./run-mobility-experiments.sh
-chmod +x run-experiments.sh && ./run-experiments.sh
+# WSN — with sink
+./ns3 run "cluster-aodv-nosink --numRegular=200 --numCH=20 --useSink=true --simTime=300"
+
+# WSN — heterogeneous traffic (equal load)
+./ns3 run "cluster-aodv-nosink --numRegular=200 --numCH=20 --useSink=false --hetero=true --simTime=300"
+
+# MQTT-SN — no broker
+./ns3 run "cluster-aodv-mqtt --nSensors=200 --nCH=20 --numLocalBrokers=0 --simTime=300 --anim=false"
+
+# MQTT-SN — single broker
+./ns3 run "cluster-aodv-mqtt --nSensors=200 --nCH=20 --numLocalBrokers=1 --simTime=300 --anim=false"
+
+# MQTT-SN — two-tier hierarchy (4 local brokers + 1 root)
+./ns3 run "cluster-aodv-mqtt --nSensors=200 --nCH=20 --numLocalBrokers=4 --simTime=300 --anim=false"
+```
+
+### Run All Statistical Experiments
+
+```bash
+cd ~/ns-3-dev
+mkdir -p experiments/statistical experiments/hier
+
+# Full 4-set comparison (240 runs, ~8h on 4-core machine)
+tmux new-session -d -s experiments "bash ~/projects/ns3-miot-simulation/scripts/run-comparison.sh"
+tmux attach -t experiments
+
+# Multi-broker hierarchy sweep (Set 5, 40 runs)
+tmux new-session -d -s set5 "bash ~/projects/ns3-miot-simulation/scripts/run-comparison.sh --set5-only"
 ```
 
 ### Analyze Results
 
 ```bash
-cd ~/projects/ns3-miot-simulation
-
-# Main comparison (11 graphs)
-python3 scripts/analyze_comparison.py
-
-# Individual analyses
-python3 scripts/analyze_scalability.py
-python3 scripts/analyze_traffic.py
-python3 scripts/analyze_mobility.py
-python3 scripts/analyze_energy.py experiments/energy/energy_test.csv.energy.csv
+cd ~/ns-3-dev
+python3 ~/projects/ns3-miot-simulation/scripts/analyze_comparison.py
 ```
+
+Generates 24 graphs (TR+EN) in `graphs/comparison/` and `graphs/hier/`, plus full statistical output with Welch t-test p-values.
 
 ---
 
@@ -177,26 +197,24 @@ python3 scripts/analyze_energy.py experiments/energy/energy_test.csv.energy.csv
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
-| --nSensors | 180 | Number of sensor nodes |
+| --nSensors | 200 | Number of sensor nodes |
 | --nCH | 20 | Number of cluster heads |
-| --nECG | 0 (auto) | ECG sensors (0 = nSensors/3) |
-| --nHR | 0 (auto) | HR sensors (0 = nSensors/3) |
-| --broker | true | Enable broker/sink |
-| --mobility | false | Enable RandomWaypoint |
-| --speed | 1.5 | Mobility speed (m/s) |
-| --simTime | 100 | Simulation time (s) |
-| --anim | false | NetAnim output |
-| --verbose | false | Print MQTT-SN messages |
+| --numLocalBrokers | 1 | 0=no broker, 1=single broker, N≥2=two-tier hierarchy |
+| --run | 1 | Random seed index |
+| --simTime | 300 | Simulation time (s) |
+| --anim | false | Generate NetAnim XML |
 | --csv | auto | Output CSV filename |
 
 ### cluster-aodv-nosink (WSN)
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
-| --numRegular | 180 | Number of sensor nodes |
+| --numRegular | 200 | Number of sensor nodes |
 | --numCH | 20 | Number of cluster heads |
-| --useSink | false | Enable sink with real forwarding |
-| --simTime | 100 | Simulation time (s) |
+| --useSink | false | Enable sink with forwarding |
+| --hetero | false | Heterogeneous traffic rates (equal-load mode) |
+| --run | 1 | Random seed index |
+| --simTime | 300 | Simulation time (s) |
 | --csv | auto | Output CSV filename |
 
 ---
@@ -206,96 +224,102 @@ python3 scripts/analyze_energy.py experiments/energy/energy_test.csv.energy.csv
 ```
 ns3-miot-simulation/
 │
-├── src/                              # Source code (latest version)
-│   ├── wsn/                            Scenario A: Traditional WSN
-│   │   └── cluster-aodv-nosink.cc        AODV + UDP + UdpForwarder
-│   └── mqtt-sn/                        Scenario B: MQTT-SN
-│       ├── mqtt-sn-header.h/cc           Packet format + priority levels
-│       ├── mqtt-sn-publisher.h/cc        Sensor app + emergency detection
-│       ├── mqtt-sn-gateway.h/cc          Gateway + priority queue + forwarding
-│       ├── mqtt-sn-broker.h/cc           Broker/sink application
-│       └── cluster-aodv-mqtt.cc          Main simulation
+├── src/
+│   ├── wsn/
+│   │   └── cluster-aodv-nosink.cc       WSN: AODV + UDP + UdpForwarder + --hetero
+│   └── mqtt-sn/
+│       ├── mqtt-sn-header.h/cc          Packet format + 4-level priority
+│       ├── mqtt-sn-publisher.h/cc       Sensor app + emergency detection
+│       ├── mqtt-sn-gateway.h/cc         Gateway + priority queue + 1ms delay
+│       ├── mqtt-sn-broker.h/cc          Broker + two-tier hierarchy support
+│       └── cluster-aodv-mqtt.cc         Main simulation + --numLocalBrokers
 │
-├── archive/                          # Historical phase versions
-│   ├── phase1-baseline/                Original WSN code
-│   └── phase3-priority/                Priority MQTT-SN (no broker)
+├── experiments/
+│   ├── statistical/                     240 CSVs (Sets 1, 2, 3, 3b)
+│   │   ├── exp1_wsn_{50,100,150,200}_r{1-10}.csv
+│   │   ├── exp1_mqtt_{50,100,150,200}_r{1-10}.csv
+│   │   ├── exp2_wsn_{50,100,150,200}_r{1-10}.csv
+│   │   ├── exp2_mqtt_{50,100,150,200}_r{1-10}.csv
+│   │   ├── exp3_wsn_hetero_{50,100,150,200}_r{1-10}.csv
+│   │   └── exp3b_wsn_hetero_broker_{50,100,150,200}_r{1-10}.csv
+│   └── hier/                            Multi-broker sweep CSVs (Set 5)
+│       └── exp_hier_lb{1,2,4,5}_200_r{1-10}.csv
 │
-├── experiments/                      # All experiment results
-│   ├── comparison/                     16 fair comparison CSVs
-│   │   ├── exp1_wsn_50..200.csv          Set 1: No broker
-│   │   ├── exp1_mqtt_50..200.csv
-│   │   ├── exp2_wsn_50..200.csv          Set 2: With broker
-│   │   └── exp2_mqtt_50..200.csv
-│   ├── traffic/                        Low/Medium/High ECG ratio
-│   ├── mobility/                       Static/Slow/Normal/Fast
-│   └── energy/                         Energy consumption data
+├── graphs/
+│   ├── comparison/                      24 analysis graphs (TR+EN)
+│   └── hier/                            Multi-broker hierarchy graphs
 │
-├── results/                          # Phase comparison CSVs
+├── scripts/
+│   ├── analyze_comparison.py            Main analysis: Welch t-tests + 24 graphs
+│   └── run-comparison.sh                Full experiment runner (Sets 1-3b + Set 5)
 │
-├── graphs/                           # Generated analysis graphs
-│   ├── comparison/                     11 WSN vs MQTT-SN graphs
-│   ├── scalability/                    7 scalability graphs
-│   ├── traffic/                        6 traffic load graphs
-│   ├── mobility/                       6 mobility graphs
-│   └── energy/                         4 energy graphs
-│
-├── diagrams/                         # UML diagrams (Mermaid)
-│   ├── 01_class_diagram.mermaid
-│   ├── 02_sequence_diagram.mermaid
-│   ├── 03_activity_diagram.mermaid
-│   ├── 04_network_architecture.mermaid
-│   └── 05_gateway_processing.mermaid
-│
-├── scripts/                          # Analysis and experiment scripts
-│   ├── analyze_comparison.py           WSN vs MQTT-SN (11 graphs)
-│   ├── analyze_scalability.py          Scalability analysis
-│   ├── analyze_traffic.py              Traffic load analysis
-│   ├── analyze_mobility.py             Mobility analysis
-│   ├── analyze_energy.py               Energy analysis
-│   ├── analyze_results.py              Single CSV analyzer
-│   ├── compare_phases.py               Phase comparison
-│   ├── run-comparison.sh               16 fair comparison experiments
-│   ├── run-experiments.sh              Scalability experiments
-│   ├── run-traffic-experiments.sh      Traffic experiments
-│   └── run-mobility-experiments.sh     Mobility experiments
-│
-├── README.md                         # This file
-├── HOW_TO_RUN.md                     # Detailed run instructions
-├── COMPARISON_DESIGN.md              # Experiment design document
-└── MIoT_Report_Updated.docx          # Full project report
+└── README.md
 ```
+
+---
+
+## Simulation Parameters
+
+| Parameter | Value |
+|-----------|-------|
+| Simulation area | 1000 m × 1000 m |
+| Wireless standard | IEEE 802.11b Ad-Hoc, 11 Mbps |
+| Propagation model | LogDistance (exponent = 2.5) |
+| Transmit power | 20 dBm (~300 m range) |
+| Routing | AODV (HelloInterval=2s, RreqRetries=5, ActiveRouteTimeout=15s) |
+| Simulation duration | 300 s |
+| Node start (warmup) | Staggered 5–45 s per node |
+| Random seeds | 10 independent seeds per configuration |
+| Node counts | 50, 100, 150, 200 sensors |
+| CH ratio | 10% (fixed grid placement) |
+| Statistical test | Welch's t-test (equal_var=False) |
+| Energy model | BasicEnergySource: sensors 2.0J, CHs 5.0J |
+| Radio currents | Tx=0.346A, Rx=0.285A, Idle=0.248A (both architectures) |
 
 ---
 
 ## Roadmap
 
 - [x] Phase 1: Cluster-based AODV (Traditional WSN)
-- [x] Phase 2: MQTT-SN protocol integration
-- [x] Phase 3: Priority-aware MQTT-SN + emergency detection
-- [x] Phase 4: Broker/Sink + UdpForwarder
-- [x] Fair Comparison: WSN vs MQTT-SN (broker + no-broker)
-- [x] Scalability experiments (50/100/150/200 nodes)
-- [x] Traffic load experiments (Low/Medium/High ECG)
-- [x] Mobility experiments (Static/0.5/1.5/3.0 m/s)
-- [x] Energy consumption model
-- [ ] Security analysis (replay attack, spoofing)
-- [ ] Alternative routing (OLSR, DSDV)
-- [ ] Multi-sink architecture
-- [ ] Academic publication (IEEE/Elsevier)
+- [x] Phase 2: MQTT-SN protocol stack from scratch
+- [x] Phase 3: Priority-aware gateway + emergency detection
+- [x] Phase 4: Broker/Sink + UdpForwarder + --hetero flag
+- [x] Statistical comparison: 10 seeds + Welch t-test (Sets 1, 2, 3, 3b)
+- [x] Multi-broker hierarchy: two-tier topology (Set 5)
+- [x] Energy model: standardised radio currents (both architectures)
+- [x] SAVTEK 2026 conference paper (Turkish, accepted)
+- [x] SAUCIS journal paper (English, submitted)
+- [ ] Set 5: 10-seed statistical confirmation of multi-broker findings
+- [ ] Energy analysis: comparative cross-architecture energy plots
+- [ ] IEEE 802.15.4 / BLE physical layer evaluation
+- [ ] Real testbed validation
+
+---
+
+## Citation
+
+If you use this code or data in your research, please cite:
+
+```
+A. Baseet and I. Butun, "Performance Evaluation of Cluster-Based WSN-AODV
+and MQTT-SN Architectures for Medical IoT Using ns-3,"
+SAUCIS, 2026. (under review)
+https://github.com/amirbaseet/ns3-miot-simulation
+```
 
 ---
 
 ## Author
 
 **Amro Baseet**
-- Sakarya University of Applied Sciences
-- Computer Engineering, M.Sc.
-- Supervisor: Assoc. Prof. Dr. Ismail Butun
-- Funded by TUBITAK BIDEB
+MSc Computer Engineering, Sakarya University
+Supervisor: Assoc. Prof. Dr. İsmail Bütün
+
+---
 
 ## References
 
-1. C. Perkins et al., "AODV Routing," RFC 3561, 2003
-2. A. Stanford-Clark, "MQTT-SN Protocol," IBM, 2013
-3. ns-3 Network Simulator, https://www.nsnam.org/
+1. C. Perkins et al., "Ad Hoc On-Demand Distance Vector (AODV) Routing," IETF RFC 3561, 2003
+2. A. Stanford-Clark and H. L. Truong, "MQTT for Sensor Networks (MQTT-SN) v1.2," OASIS, 2013
+3. G. F. Riley and T. R. Henderson, "The ns-3 Network Simulator," Springer, 2010
 4. OASIS, "MQTT Version 5.0," 2019
