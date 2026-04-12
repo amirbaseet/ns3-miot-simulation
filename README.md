@@ -287,7 +287,6 @@ ns3-miot-simulation/
 - [x] Statistical comparison: 10 seeds + Welch t-test (Sets 1, 2, 3, 3b)
 - [x] Multi-broker hierarchy: two-tier topology (Set 5)
 - [x] Energy model: standardised radio currents (both architectures)
-- [x] SAVTEK 2026 conference paper (Turkish, accepted)
 - [x] SAUCIS journal paper (English, submitted)
 - [ ] Set 5: 10-seed statistical confirmation of multi-broker findings
 - [ ] Energy analysis: comparative cross-architecture energy plots
