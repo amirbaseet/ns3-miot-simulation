@@ -90,15 +90,19 @@ def load_set(prefix, nodes, max_seeds, base_dir="experiments/statistical"):
 
 def load_hier_set(lb_values, node=200, max_seeds=MAX_SEEDS):
     """Load multi-broker hierarchy experiments.
-    Returns dict keyed by 'hier_lb{LB}_{node}'.
+    LB=1 baseline uses Set 2 MQTT-SN data (exp2_mqtt_{node}_r*.csv).
     """
     results = {}
     for lb in lb_values:
         key  = f"hier_lb{lb}_{node}"
         runs = []
         for r in range(1, max_seeds + 1):
-            path = f"experiments/hier/exp_hier_lb{lb}_{node}_r{r}.csv"
-            df   = load_csv(path)
+            # LB=1: use Set 2 MQTT-SN as baseline
+            if lb == 1:
+                path = f"experiments/statistical/exp2_mqtt_{node}_r{r}.csv"
+            else:
+                path = f"experiments/hier/exp_hier_lb{lb}_{node}_r{r}.csv"
+            df = load_csv(path)
             if df is not None:
                 m = calc_metrics(df)
                 if m: runs.append(m)
@@ -112,7 +116,7 @@ def load_hier_set(lb_values, node=200, max_seeds=MAX_SEEDS):
                 'Delay_std':       np.std ([r['Delay'] for r in runs], ddof=1) if len(runs)>1 else 0,
                 'lb':              lb,
             }
-            print(f"[OK] {key}: {len(runs)} seeds")
+            print(f"[OK] {key}: {len(runs)} seeds" + (" (from Set 2)" if lb==1 else ""))
     return results
 
 def load_all():
