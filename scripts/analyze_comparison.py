@@ -1,9 +1,53 @@
 #!/usr/bin/env python3
 """
-WSN vs MQTT-SN Statistical Comparison Analysis (Bilingual TR/EN)
-+ Multi-Broker Hierarchy Sweep (Direction 1)
-================================================================
-Usage: python3 scripts/analyze_comparison.py
+analyze_comparison.py — Bilingual (TR/EN) statistical analysis for
+  ns3-miot-simulation.
+
+Paper
+-----
+A. Baseet and İ. Bütün, "Performance Evaluation of Cluster-Based WSN-AODV
+and MQTT-SN Architectures for Medical IoT Using ns-3," SAUCIS, 2026
+(under review).  See README.md and REPRODUCE.md.
+
+Inputs  (paths are relative to the CURRENT WORKING DIRECTORY; typically ~/ns-3-dev)
+----------------------------------------------------------------------------------
+    experiments/statistical/
+        exp1_{wsn,mqtt}_{50,100,150,200}_r{1-10}.csv                    (80 files, Set 1)
+        exp2_{wsn,mqtt}_{50,100,150,200}_r{1-10}.csv                    (80 files, Set 2)
+        exp3_wsn_hetero_{50,100,150,200}_r{1-10}.csv                    (40 files, Set 3)
+        exp3b_wsn_hetero_broker_{50,100,150,200}_r{1-10}.csv            (40 files, Set 3b)
+    experiments/hier/
+        exp_hier_lb{2,4,5}_200_r{1-10}.csv                              (30 files, Set 5)
+    Total: 270 CSV files.
+
+    Each CSV is one row per IPv4 flow (FlowMonitor) with columns
+      FlowID, SrcAddr, DstAddr, TxPackets, RxPackets, LostPackets,
+      PDR_pct, Throughput_kbps, AvgDelay_ms, AvgJitter_ms
+    See the "CSV Output Schema" section of README.md.
+
+Outputs
+-------
+    graphs/comparison/*_en.png + *_tr.png   (24 figures — Sets 1, 2, 3, 3b)
+    graphs/hier/*_en.png      + *_tr.png    ( 4 figures — Set 5)
+    stdout                                  — full per-cell mean ± std
+                                              and Welch's t-test p-values.
+
+Usage
+-----
+    cd ~/ns-3-dev
+    python3 ~/ns3-miot-simulation/scripts/analyze_comparison.py \\
+        | tee experiments/statistical/full_analysis_output.txt
+
+Note on Set 5
+-------------
+    The LB=1 (single-broker) baseline is NOT re-simulated. The script reuses
+    the Set 2 200-node MQTT-SN data (exp2_mqtt_200_r{1-10}.csv) as that
+    baseline, and the Welch t-tests for LB=2/4/5 are computed against it.
+    This reuse is disclosed in paper §5.7.
+
+Requires
+--------
+    numpy, pandas, scipy, matplotlib  — see requirements.txt
 """
 
 import pandas as pd

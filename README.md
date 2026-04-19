@@ -2,6 +2,13 @@
 
 ## Performance Evaluation of Cluster-Based WSN-AODV and MQTT-SN Architectures for Medical IoT Using ns-3
 
+<!-- After minting a Zenodo DOI for release v1.0, replace ZENODO-ID below. -->
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![ns-3](https://img.shields.io/badge/ns--3-v3.40-blue)](https://www.nsnam.org/releases/ns-3-40/)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](requirements.txt)
+[![Runs](https://img.shields.io/badge/simulations-270%20runs-brightgreen)](experiments/)
+[![DOI](https://img.shields.io/badge/DOI-pending%20Zenodo-lightgrey)](https://zenodo.org/)
+
 A statistically validated ns-3 simulation study comparing two cluster-based Medical IoT communication architectures across **270 independent simulation runs** spanning five experimental sets (10 seeds per configuration, Welch t-tests). Reproduces all results in Baseet & Bütün, *SAUCIS* 2026.
 
 - **Architecture A (WSN):** Cluster-based AODV routing with fixed-rate UDP transmission
@@ -127,7 +134,7 @@ computed against that baseline.
 ## Key Findings
 
 1. **MQTT-SN wins without broker** — Statistically significantly higher PDR at 150 and 200 nodes (p=0.0011). Significantly lower delay at 50–150 nodes.
-2. **WSN wins with broker at 150 nodes (tie at 200, p=0.2601 ns)** — Gateway overhead (1ms/packet + QoS ACK) amplifies single-sink congestion (p=0.0002).
+2. **WSN wins with broker at 150 nodes, but ties at 200 nodes** — Gateway overhead (1 ms/packet + QoS ACK) amplifies single-sink congestion: at 150 nodes WSN achieves statistically significantly higher PDR (82.2 % vs. 76.3 %, p=0.0002). At 200 nodes both architectures degrade to a statistical tie (67.4 % vs. 63.4 %, p=0.2601 ns) — no winner can be claimed.
 3. **MQTT-SN protocol mechanisms are real** — Even under equal traffic load (Set 3), MQTT-SN still wins at 200 nodes (p=0.0149). The PDR advantage is not purely due to lower traffic volume.
 4. **Broker inversion** — Set 3b reverses Set 3: with a broker, WSN-Hetero wins at both 150 and 200 nodes (p=0.0066, p=0.0022). Gateway overhead dominates under centralised congestion.
 5. **Single-seed simulation is insufficient** — Preliminary single-seed runs showed MQTT-SN winning in Set 2. The 10-seed Welch t-test reversed this conclusion at 150 nodes. Multi-seed validation is essential.
@@ -137,10 +144,15 @@ computed against that baseline.
 
 ## Quick Start
 
+> **Need the full end-to-end recipe** (fresh Ubuntu → compiled ns-3 → all 270 runs → all figures)? See [REPRODUCE.md](REPRODUCE.md).
+
 ### Requirements
 
 - ns-3 v3.40 (important: v3.41 causes PDR=0% bug in ad-hoc mode)
-- Python 3.8+ with: `pandas`, `matplotlib`, `scipy`, `numpy`
+- Python 3.10+ with dependencies in [`requirements.txt`](requirements.txt):
+  ```bash
+  python3 -m pip install -r requirements.txt
+  ```
 
 ```bash
 # Verify ns-3 version before running
@@ -254,46 +266,31 @@ Each simulation writes a per-flow CSV (one row per IPv4 flow, from FlowMonitor):
 | 9 | AvgDelay_ms | ms | Mean end-to-end delay |
 | 10 | AvgJitter_ms | ms | Mean inter-arrival jitter |
 
-MQTT-SN runs additionally write `<name>.csv.energy.csv` with columns:
+MQTT-SN runs additionally write `<csv-name>.csv.energy.csv` with columns:
 `NodeID, Type, InitialEnergy_J, RemainingEnergy_J, ConsumedEnergy_J, ConsumedPct`.
 
-**Sanity check** — aggregate PDR from one run:
-````bash
-awk -F',"' 'NR>1 {tx+=$4; rx+=$5} END {printf "PDR = %.2f%%\n", 100*rx/tx}' \
-    experiments/statistical/exp2_wsn_200_r1.csv
-```
-Single seed will vary (~70–75%); the 10-seed mean matches the paper's 67.4 ± 8.3%.
+### Sanity check — reproduce a paper cell from a single CSV
 
----
+Aggregate PDR for one seed (Set 2, 200-node WSN, seed 1):
 
-## CSV Output Schema
-
-Each simulation writes a per-flow CSV (one row per IPv4 flow, from FlowMonitor):
-
-| # | Column | Unit | Description |
-|---|--------|------|-------------|
-| 1 | FlowID | int | FlowMonitor flow identifier |
-| 2 | SrcAddr | IPv4 | Source address |
-| 3 | DstAddr | IPv4 | Destination address |
-| 4 | TxPackets | count | Packets transmitted in this flow |
-| 5 | RxPackets | count | Packets received in this flow |
-| 6 | LostPackets | count | Tx - Rx |
-| 7 | PDR_pct | % | Per-flow delivery ratio |
-| 8 | Throughput_kbps | kbps | Mean throughput |
-| 9 | AvgDelay_ms | ms | Mean end-to-end delay |
-| 10 | AvgJitter_ms | ms | Mean inter-arrival jitter |
-
-MQTT-SN runs additionally write `<name>.csv.energy.csv` with columns:
-`NodeID, Type, InitialEnergy_J, RemainingEnergy_J, ConsumedEnergy_J, ConsumedPct`.
-
-**Sanity check** — aggregate PDR from one run:
-```
+```bash
 awk -F',' 'NR>1 {tx+=$4; rx+=$5} END {printf "PDR = %.2f%%\n", 100*rx/tx}' \
     experiments/statistical/exp2_wsn_200_r1.csv
-````
-Single seed will vary (~70-75%); the 10-seed mean matches the paper's 67.4 +/- 8.3%.
+```
 
----
+Individual seeds vary (~55–76 %). Averaged over all 10 seeds the result
+matches paper Table 3, Set 2, 200-node WSN (**67.4 ± 8.3 %**):
+
+```bash
+for r in 1 2 3 4 5 6 7 8 9 10; do
+  awk -F',' 'NR>1{tx+=$4;rx+=$5} END{if(tx>0) printf "%.2f\n", 100*rx/tx}' \
+      experiments/statistical/exp2_wsn_200_r${r}.csv
+done | awk '{s+=$1; ss+=$1*$1; n++} END{m=s/n; printf "mean=%.2f%%  std=%.2f%%  N=%d\n", m, sqrt(ss/n - m*m), n}'
+# Expected: mean ≈ 67.35 %  std ≈ 7.88 %  N=10
+```
+
+> **If you see PDR = 0 % on a working seed, you are running ns-3.41.**
+> See the version warning at the top of this README.
 
 ## Project Structure
 
@@ -372,7 +369,7 @@ ns3-miot-simulation/
 
 ## Citation
 
-If you use this code or data in your research, please cite:
+If you use this code or data in your research, please cite the paper:
 
 ```bibtex
 @article{baseet2026saucis,
@@ -382,6 +379,21 @@ If you use this code or data in your research, please cite:
   journal   = {Sakarya University Journal of Computer and Information Sciences},
   year      = {2026},
   note      = {Under review},
+  url       = {https://github.com/amirbaseet/ns3-miot-simulation}
+}
+```
+
+…and the archived code/dataset snapshot (replace `ZENODO-ID` once Zenodo mints the DOI for release `v1.0`):
+
+```bibtex
+@software{baseet2026ns3miot,
+  author    = {Baseet, Amro and B{\"u}t{\"u}n, {\.I}smail},
+  title     = {{ns3-miot-simulation}: Cluster-based {WSN-AODV} vs.\ {MQTT-SN}
+               for {Medical IoT} in ns-3},
+  year      = {2026},
+  version   = {v1.0-saucis-submission},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.ZENODO-ID},
   url       = {https://github.com/amirbaseet/ns3-miot-simulation}
 }
 ```

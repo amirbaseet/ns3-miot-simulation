@@ -1,0 +1,541 @@
+diff -ruN '--exclude=experiments' '--exclude=graphs' '--exclude=archive' '--exclude=diagrams' '--exclude=src' repo/ns3-miot-simulation-main/.gitignore fixed/.gitignore
+--- repo/ns3-miot-simulation-main/.gitignore	2026-04-19 16:08:42.000000000 +0000
++++ fixed/.gitignore	2026-04-19 17:39:00.000000000 +0000
+@@ -1,9 +1,48 @@
++# ============================================================
++# ns3-miot-simulation — .gitignore
++# ============================================================
++
++# --- ns-3 / C++ build artifacts ---
+ *.o
++*.a
++*.so
++*.lo
++*.la
+ *.pcap
+ *.xml
+ build/
++CMakeCache.txt
++CMakeFiles/
++cmake_install.cmake
++compile_commands.json
++
++# --- Python ---
+ __pycache__/
+ *.pyc
++*.pyo
++*.pyd
++.Python
++.pytest_cache/
++.ipynb_checkpoints/
++.venv/
++venv/
++env/
++
++# --- Editors / IDEs ---
++.vscode/
++.idea/
++*.swp
++*.swo
++*~
++
++# --- OS junk ---
++.DS_Store
++Thumbs.db
++
++# --- Local scratch / temp ---
++*.tmp
++scratch_*/
++local_*
+ 
+-# Prevent graph zip duplicates
++# --- Large redundant archives (use `git add -f <file>` to force-add) ---
+ /*.zip
+diff -ruN '--exclude=experiments' '--exclude=graphs' '--exclude=archive' '--exclude=diagrams' '--exclude=src' repo/ns3-miot-simulation-main/CITATION.cff fixed/CITATION.cff
+--- repo/ns3-miot-simulation-main/CITATION.cff	2026-04-19 16:08:42.000000000 +0000
++++ fixed/CITATION.cff	2026-04-19 17:39:56.000000000 +0000
+@@ -1,25 +1,40 @@
+ cff-version: 1.2.0
+-message: "If you use this software or data, please cite the accompanying paper."
++message: "If you use this software or data, please cite the accompanying paper AND the Zenodo archive."
+ title: "ns3-miot-simulation: Cluster-Based WSN-AODV vs MQTT-SN for Medical IoT"
+ authors:
+   - family-names: Baseet
+     given-names: Amro
+-    affiliation: "Sakarya University"
++    orcid: https://orcid.org/0009-0004-5532-8182
++    affiliation: "Sakarya University, Computer Engineering Department"
+   - family-names: Bütün
+     given-names: İsmail
+     orcid: https://orcid.org/0000-0002-1723-5741
+-    affiliation: "Sakarya University"
++    affiliation: "Sakarya University, Software Engineering Department"
+ repository-code: https://github.com/amirbaseet/ns3-miot-simulation
+ version: "1.0"
+ date-released: 2026-04-19
+ license: MIT
++# After the Zenodo DOI is minted for release v1.0, replace the line below
++# with the real identifier (e.g. doi: 10.5281/zenodo.1234567).
++doi: 10.5281/zenodo.PENDING
++keywords:
++  - ns-3
++  - wireless-sensor-network
++  - mqtt-sn
++  - medical-iot
++  - aodv
++  - network-simulation
++  - reproducible-research
+ preferred-citation:
+   type: article
+   title: "Performance Evaluation of Cluster-Based WSN-AODV and MQTT-SN Architectures for Medical IoT Using ns-3"
+   authors:
+     - family-names: Baseet
+       given-names: Amro
++      orcid: https://orcid.org/0009-0004-5532-8182
+     - family-names: Bütün
+       given-names: İsmail
++      orcid: https://orcid.org/0000-0002-1723-5741
+   journal: "Sakarya University Journal of Computer and Information Sciences"
+   year: 2026
++  notes: "Under review."
+diff -ruN '--exclude=experiments' '--exclude=graphs' '--exclude=archive' '--exclude=diagrams' '--exclude=src' repo/ns3-miot-simulation-main/README.md fixed/README.md
+--- repo/ns3-miot-simulation-main/README.md	2026-04-19 16:08:42.000000000 +0000
++++ fixed/README.md	2026-04-19 17:38:44.000000000 +0000
+@@ -2,6 +2,13 @@
+ 
+ ## Performance Evaluation of Cluster-Based WSN-AODV and MQTT-SN Architectures for Medical IoT Using ns-3
+ 
++<!-- After minting a Zenodo DOI for release v1.0, replace ZENODO-ID below. -->
++[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
++[![ns-3](https://img.shields.io/badge/ns--3-v3.40-blue)](https://www.nsnam.org/releases/ns-3-40/)
++[![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](requirements.txt)
++[![Runs](https://img.shields.io/badge/simulations-270%20runs-brightgreen)](experiments/)
++[![DOI](https://img.shields.io/badge/DOI-pending%20Zenodo-lightgrey)](https://zenodo.org/)
++
+ A statistically validated ns-3 simulation study comparing two cluster-based Medical IoT communication architectures across **270 independent simulation runs** spanning five experimental sets (10 seeds per configuration, Welch t-tests). Reproduces all results in Baseet & Bütün, *SAUCIS* 2026.
+ 
+ - **Architecture A (WSN):** Cluster-based AODV routing with fixed-rate UDP transmission
+@@ -127,7 +134,7 @@
+ ## Key Findings
+ 
+ 1. **MQTT-SN wins without broker** — Statistically significantly higher PDR at 150 and 200 nodes (p=0.0011). Significantly lower delay at 50–150 nodes.
+-2. **WSN wins with broker at 150 nodes** — Gateway overhead (1ms/packet + QoS ACK) amplifies single-sink congestion (p=0.0002).
++2. **WSN wins with broker at 150 nodes, but ties at 200 nodes** — Gateway overhead (1 ms/packet + QoS ACK) amplifies single-sink congestion: at 150 nodes WSN achieves statistically significantly higher PDR (82.2 % vs. 76.3 %, p=0.0002). At 200 nodes both architectures degrade to a statistical tie (67.4 % vs. 63.4 %, p=0.2601 ns) — no winner can be claimed.
+ 3. **MQTT-SN protocol mechanisms are real** — Even under equal traffic load (Set 3), MQTT-SN still wins at 200 nodes (p=0.0149). The PDR advantage is not purely due to lower traffic volume.
+ 4. **Broker inversion** — Set 3b reverses Set 3: with a broker, WSN-Hetero wins at both 150 and 200 nodes (p=0.0066, p=0.0022). Gateway overhead dominates under centralised congestion.
+ 5. **Single-seed simulation is insufficient** — Preliminary single-seed runs showed MQTT-SN winning in Set 2. The 10-seed Welch t-test reversed this conclusion at 150 nodes. Multi-seed validation is essential.
+@@ -137,10 +144,15 @@
+ 
+ ## Quick Start
+ 
++> **Need the full end-to-end recipe** (fresh Ubuntu → compiled ns-3 → all 270 runs → all figures)? See [REPRODUCE.md](REPRODUCE.md).
++
+ ### Requirements
+ 
+ - ns-3 v3.40 (important: v3.41 causes PDR=0% bug in ad-hoc mode)
+-- Python 3.8+ with: `pandas`, `matplotlib`, `scipy`, `numpy`
++- Python 3.10+ with dependencies in [`requirements.txt`](requirements.txt):
++  ```bash
++  python3 -m pip install -r requirements.txt
++  ```
+ 
+ ```bash
+ # Verify ns-3 version before running
+@@ -254,46 +266,31 @@
+ | 9 | AvgDelay_ms | ms | Mean end-to-end delay |
+ | 10 | AvgJitter_ms | ms | Mean inter-arrival jitter |
+ 
+-MQTT-SN runs additionally write `<name>.csv.energy.csv` with columns:
++MQTT-SN runs additionally write `<csv-name>.csv.energy.csv` with columns:
+ `NodeID, Type, InitialEnergy_J, RemainingEnergy_J, ConsumedEnergy_J, ConsumedPct`.
+ 
+-**Sanity check** — aggregate PDR from one run:
+-````bash
+-awk -F',"' 'NR>1 {tx+=$4; rx+=$5} END {printf "PDR = %.2f%%\n", 100*rx/tx}' \
+-    experiments/statistical/exp2_wsn_200_r1.csv
+-```
+-Single seed will vary (~70–75%); the 10-seed mean matches the paper's 67.4 ± 8.3%.
+-
+----
++### Sanity check — reproduce a paper cell from a single CSV
+ 
+-## CSV Output Schema
++Aggregate PDR for one seed (Set 2, 200-node WSN, seed 1):
+ 
+-Each simulation writes a per-flow CSV (one row per IPv4 flow, from FlowMonitor):
+-
+-| # | Column | Unit | Description |
+-|---|--------|------|-------------|
+-| 1 | FlowID | int | FlowMonitor flow identifier |
+-| 2 | SrcAddr | IPv4 | Source address |
+-| 3 | DstAddr | IPv4 | Destination address |
+-| 4 | TxPackets | count | Packets transmitted in this flow |
+-| 5 | RxPackets | count | Packets received in this flow |
+-| 6 | LostPackets | count | Tx - Rx |
+-| 7 | PDR_pct | % | Per-flow delivery ratio |
+-| 8 | Throughput_kbps | kbps | Mean throughput |
+-| 9 | AvgDelay_ms | ms | Mean end-to-end delay |
+-| 10 | AvgJitter_ms | ms | Mean inter-arrival jitter |
++```bash
++awk -F',' 'NR>1 {tx+=$4; rx+=$5} END {printf "PDR = %.2f%%\n", 100*rx/tx}' \
++    experiments/statistical/exp2_wsn_200_r1.csv
++```
+ 
+-MQTT-SN runs additionally write `<name>.csv.energy.csv` with columns:
+-`NodeID, Type, InitialEnergy_J, RemainingEnergy_J, ConsumedEnergy_J, ConsumedPct`.
++Individual seeds vary (~55–76 %). Averaged over all 10 seeds the result
++matches paper Table 3, Set 2, 200-node WSN (**67.4 ± 8.3 %**):
+ 
+-**Sanity check** — aggregate PDR from one run:
++```bash
++for r in 1 2 3 4 5 6 7 8 9 10; do
++  awk -F',' 'NR>1{tx+=$4;rx+=$5} END{if(tx>0) printf "%.2f\n", 100*rx/tx}' \
++      experiments/statistical/exp2_wsn_200_r${r}.csv
++done | awk '{s+=$1; ss+=$1*$1; n++} END{m=s/n; printf "mean=%.2f%%  std=%.2f%%  N=%d\n", m, sqrt(ss/n - m*m), n}'
++# Expected: mean ≈ 67.35 %  std ≈ 7.88 %  N=10
+ ```
+-awk -F',' 'NR>1 {tx+=$4; rx+=$5} END {printf "PDR = %.2f%%\n", 100*rx/tx}' \
+-    experiments/statistical/exp2_wsn_200_r1.csv
+-````
+-Single seed will vary (~70-75%); the 10-seed mean matches the paper's 67.4 +/- 8.3%.
+ 
+----
++> **If you see PDR = 0 % on a working seed, you are running ns-3.41.**
++> See the version warning at the top of this README.
+ 
+ ## Project Structure
+ 
+@@ -372,7 +369,7 @@
+ 
+ ## Citation
+ 
+-If you use this code or data in your research, please cite:
++If you use this code or data in your research, please cite the paper:
+ 
+ ```bibtex
+ @article{baseet2026saucis,
+@@ -385,6 +382,21 @@
+   url       = {https://github.com/amirbaseet/ns3-miot-simulation}
+ }
+ ```
++
++…and the archived code/dataset snapshot (replace `ZENODO-ID` once Zenodo mints the DOI for release `v1.0`):
++
++```bibtex
++@software{baseet2026ns3miot,
++  author    = {Baseet, Amro and B{\"u}t{\"u}n, {\.I}smail},
++  title     = {{ns3-miot-simulation}: Cluster-based {WSN-AODV} vs.\ {MQTT-SN}
++               for {Medical IoT} in ns-3},
++  year      = {2026},
++  version   = {v1.0-saucis-submission},
++  publisher = {Zenodo},
++  doi       = {10.5281/zenodo.ZENODO-ID},
++  url       = {https://github.com/amirbaseet/ns3-miot-simulation}
++}
++```
+ 
+ ---
+ 
+diff -ruN '--exclude=experiments' '--exclude=graphs' '--exclude=archive' '--exclude=diagrams' '--exclude=src' repo/ns3-miot-simulation-main/REPRODUCE.md fixed/REPRODUCE.md
+--- repo/ns3-miot-simulation-main/REPRODUCE.md	1970-01-01 00:00:00.000000000 +0000
++++ fixed/REPRODUCE.md	2026-04-19 17:39:43.000000000 +0000
+@@ -0,0 +1,148 @@
++# REPRODUCE.md — Full reproduction recipe (270 runs + all figures)
++
++Reproduces every result in *Baseet & Bütün, "Performance Evaluation of
++Cluster-Based WSN-AODV and MQTT-SN Architectures for Medical IoT Using
++ns-3," SAUCIS 2026.*
++
++| Item                | Value                                                |
++|---------------------|------------------------------------------------------|
++| Target host         | Ubuntu 22.04 LTS or Kali Linux, ≥ 8 GB RAM, ≥ 4 cores, ≥ 20 GB free disk |
++| Simulator           | **ns-3 v3.40 only** — v3.41 causes PDR = 0 % in ad-hoc UDP mode |
++| Wall time (Sets 1–3b) | ≈ 8 h on a 4-core machine                          |
++| Wall time (Set 5)   | ≈ 2 h                                                |
++| Wall time (analysis)| ≈ 10 minutes                                         |
++
++---
++
++## 0. System packages
++
++```bash
++sudo apt update
++sudo apt install -y build-essential cmake ninja-build python3 python3-pip \
++                    git g++ gsl-bin libgsl-dev libgsl27 libxml2 libxml2-dev \
++                    libboost-all-dev
++```
++
++## 1. Install ns-3 v3.40 (the only supported version)
++
++```bash
++cd ~
++git clone https://gitlab.com/nsnam/ns-3-dev.git
++cd ns-3-dev
++git checkout ns-3.40
++git describe --tags --exact-match        # must print: ns-3.40
++./ns3 configure --enable-examples --enable-tests
++./ns3 build
++```
++
++> **Do NOT use `main` / HEAD / v3.41 / v3.42 / v3.43.**
++> v3.41 contains a regression that silently produces PDR = 0 % in ad-hoc UDP mode.
++> All 270 CSVs in this repository were generated with **ns-3.40**.
++
++## 2. Clone this repository and install the simulation scratch targets
++
++```bash
++cd ~
++git clone https://github.com/amirbaseet/ns3-miot-simulation.git
++cd ns3-miot-simulation
++python3 -m pip install -r requirements.txt
++
++mkdir -p ~/ns-3-dev/scratch/cluster-aodv-mqtt
++mkdir -p ~/ns-3-dev/scratch/cluster-aodv-nosink
++cp src/mqtt-sn/*                    ~/ns-3-dev/scratch/cluster-aodv-mqtt/
++cp src/wsn/cluster-aodv-nosink.cc   ~/ns-3-dev/scratch/cluster-aodv-nosink/
++
++cd ~/ns-3-dev
++./ns3 build
++```
++
++## 3. Smoke-test a single 60-second run
++
++```bash
++cd ~/ns-3-dev
++./ns3 run "cluster-aodv-nosink --numRegular=50 --numCH=5 --useSink=true --run=1 --simTime=60"
++# Expect PDR in the 70–90 % range printed to stdout.
++# If you see PDR = 0 %, re-check you are on git tag ns-3.40.
++```
++
++## 4. Run all 270 experiments
++
++```bash
++cd ~/ns-3-dev
++mkdir -p experiments/statistical experiments/hier
++
++# Sets 1, 2, 3, 3b — 240 runs, ≈ 8 h
++tmux new -s experiments
++bash ~/ns3-miot-simulation/scripts/run-comparison.sh
++# Detach: Ctrl-B D       Reattach: tmux attach -t experiments
++
++# Set 5 — multi-broker hierarchy, 30 runs (LB=2,4,5 × 10 seeds).
++# LB=1 is NOT re-simulated; the analysis script reuses Set 2 200-node
++# MQTT-SN data as the LB=1 baseline (disclosed in paper §5.7).
++tmux new -s set5
++bash ~/ns3-miot-simulation/scripts/run-comparison.sh --set5-only
++```
++
++## 5. Verify CSV counts
++
++```bash
++cd ~/ns-3-dev
++ls experiments/statistical/exp1_*.csv       | grep -v energy | wc -l   # → 80
++ls experiments/statistical/exp2_*.csv       | grep -v energy | wc -l   # → 80
++ls experiments/statistical/exp3_wsn_hetero_*.csv \
++                                            | grep -v energy \
++                                            | grep -v broker | wc -l   # → 40
++ls experiments/statistical/exp3b_*.csv      | grep -v energy | wc -l   # → 40
++ls experiments/hier/exp_hier_lb*.csv        | grep -v energy | wc -l   # → 30
++# Total data CSVs: 270
++```
++
++## 6. Generate every figure and statistic
++
++```bash
++cd ~/ns-3-dev
++python3 ~/ns3-miot-simulation/scripts/analyze_comparison.py \
++    | tee experiments/statistical/full_analysis_output.txt
++```
++
++Outputs:
++
++- `graphs/comparison/*_en.png` and `*_tr.png` — 24 figures for Sets 1, 2, 3, 3b
++- `graphs/hier/*_en.png` and `*_tr.png` — 4 figures for Set 5
++- `experiments/statistical/full_analysis_output.txt` — full per-cell mean ± std
++  and Welch's t-test p-values. Must match paper Tables 3 & 4.
++
++## 7. Spot-check against the paper
++
++```bash
++# Set 2, 200-node WSN, all 10 seeds — paper Table 3: 67.4 ± 8.3 %
++for r in 1 2 3 4 5 6 7 8 9 10; do
++  awk -F',' 'NR>1{tx+=$4;rx+=$5} END{if(tx>0) printf "%.2f\n", 100*rx/tx}' \
++      experiments/statistical/exp2_wsn_200_r${r}.csv
++done | awk '{s+=$1; ss+=$1*$1; n++} END{m=s/n; printf "mean=%.2f%%  std=%.2f%%  N=%d\n", m, sqrt(ss/n - m*m), n}'
++# Expected: mean ≈ 67.35 %  std ≈ 7.88 %  N=10
++```
++
++Any single seed should fall within about ±1 σ of the mean (so 59–75 %
++is normal variance; anything ≤ 5 % indicates you are on ns-3.41).
++
++---
++
++## Troubleshooting
++
++**All my PDRs are 0 %.**
++You are on ns-3.41 or later. `git checkout ns-3.40` in `~/ns-3-dev` and
++rebuild (`./ns3 build`).
++
++**`./ns3 run` says the scratch target is missing.**
++Re-run section 2 — the scratch copy step has to happen *before* the
++ns-3 build.
++
++**`scipy.stats.ttest_ind` fails in the analysis script.**
++Ensure `pip install -r requirements.txt` completed. The code uses
++`equal_var=False` (Welch's); this requires scipy ≥ 0.11 — trivially
++satisfied by any modern install.
++
++**I want to run only one set.**
++Each set is a self-contained block in `scripts/run-comparison.sh`;
++you can comment the others out or copy just the block you need.
+diff -ruN '--exclude=experiments' '--exclude=graphs' '--exclude=archive' '--exclude=diagrams' '--exclude=src' repo/ns3-miot-simulation-main/scripts/analyze_comparison.py fixed/scripts/analyze_comparison.py
+--- repo/ns3-miot-simulation-main/scripts/analyze_comparison.py	2026-04-19 16:08:42.000000000 +0000
++++ fixed/scripts/analyze_comparison.py	2026-04-19 17:40:33.000000000 +0000
+@@ -1,9 +1,53 @@
+ #!/usr/bin/env python3
+ """
+-WSN vs MQTT-SN Statistical Comparison Analysis (Bilingual TR/EN)
+-+ Multi-Broker Hierarchy Sweep (Direction 1)
+-================================================================
+-Usage: python3 scripts/analyze_comparison.py
++analyze_comparison.py — Bilingual (TR/EN) statistical analysis for
++  ns3-miot-simulation.
++
++Paper
++-----
++A. Baseet and İ. Bütün, "Performance Evaluation of Cluster-Based WSN-AODV
++and MQTT-SN Architectures for Medical IoT Using ns-3," SAUCIS, 2026
++(under review).  See README.md and REPRODUCE.md.
++
++Inputs  (paths are relative to the CURRENT WORKING DIRECTORY; typically ~/ns-3-dev)
++----------------------------------------------------------------------------------
++    experiments/statistical/
++        exp1_{wsn,mqtt}_{50,100,150,200}_r{1-10}.csv                    (80 files, Set 1)
++        exp2_{wsn,mqtt}_{50,100,150,200}_r{1-10}.csv                    (80 files, Set 2)
++        exp3_wsn_hetero_{50,100,150,200}_r{1-10}.csv                    (40 files, Set 3)
++        exp3b_wsn_hetero_broker_{50,100,150,200}_r{1-10}.csv            (40 files, Set 3b)
++    experiments/hier/
++        exp_hier_lb{2,4,5}_200_r{1-10}.csv                              (30 files, Set 5)
++    Total: 270 CSV files.
++
++    Each CSV is one row per IPv4 flow (FlowMonitor) with columns
++      FlowID, SrcAddr, DstAddr, TxPackets, RxPackets, LostPackets,
++      PDR_pct, Throughput_kbps, AvgDelay_ms, AvgJitter_ms
++    See the "CSV Output Schema" section of README.md.
++
++Outputs
++-------
++    graphs/comparison/*_en.png + *_tr.png   (24 figures — Sets 1, 2, 3, 3b)
++    graphs/hier/*_en.png      + *_tr.png    ( 4 figures — Set 5)
++    stdout                                  — full per-cell mean ± std
++                                              and Welch's t-test p-values.
++
++Usage
++-----
++    cd ~/ns-3-dev
++    python3 ~/ns3-miot-simulation/scripts/analyze_comparison.py \\
++        | tee experiments/statistical/full_analysis_output.txt
++
++Note on Set 5
++-------------
++    The LB=1 (single-broker) baseline is NOT re-simulated. The script reuses
++    the Set 2 200-node MQTT-SN data (exp2_mqtt_200_r{1-10}.csv) as that
++    baseline, and the Welch t-tests for LB=2/4/5 are computed against it.
++    This reuse is disclosed in paper §5.7.
++
++Requires
++--------
++    numpy, pandas, scipy, matplotlib  — see requirements.txt
+ """
+ 
+ import pandas as pd
+diff -ruN '--exclude=experiments' '--exclude=graphs' '--exclude=archive' '--exclude=diagrams' '--exclude=src' repo/ns3-miot-simulation-main/scripts/run-comparison.sh fixed/scripts/run-comparison.sh
+--- repo/ns3-miot-simulation-main/scripts/run-comparison.sh	2026-04-19 16:08:42.000000000 +0000
++++ fixed/scripts/run-comparison.sh	2026-04-19 17:51:00.000276762 +0000
+@@ -1,14 +1,42 @@
+-#!/bin/bash
++#!/usr/bin/env bash
+ # ============================================================
+-# WSN vs MQTT-SN Fair Comparison (Statistical Version)
+-# ============================================================
+-# Sets:
+-#   1  — No broker           (WSN vs MQTT-SN, 50/100/150/200 nodes)
+-#   2  — With broker         (WSN vs MQTT-SN, 50/100/150/200 nodes)
++# run-comparison.sh — drive all 270 ns-3 simulations for the SAUCIS paper.
++#
++# Paper:   A. Baseet and İ. Bütün, "Performance Evaluation of Cluster-Based
++#          WSN-AODV and MQTT-SN Architectures for Medical IoT Using ns-3,"
++#          SAUCIS, 2026 (under review).
++# Repo:    https://github.com/amirbaseet/ns3-miot-simulation
++#
++# Usage:
++#   bash scripts/run-comparison.sh                # Sets 1, 2, 3, 3b, 5  (270 runs)
++#   bash scripts/run-comparison.sh --set5-only    # Set 5 only           ( 30 runs)
++#
++# Prerequisites:
++#   * ns-3 v3.40 built under ~/ns-3-dev  (v3.41 causes PDR=0% — DO NOT USE)
++#   * Scratch targets cluster-aodv-mqtt and cluster-aodv-nosink installed
++#     (see README.md §Build and REPRODUCE.md)
++#   * tmux strongly recommended: ≈ 8 h on a 4-core machine.
++#
++# Sets produced:
++#   1  — No broker              (WSN vs MQTT-SN, 50/100/150/200 nodes)
++#   2  — With broker            (WSN vs MQTT-SN, 50/100/150/200 nodes)
+ #   3  — Equal load, no broker  (WSN-Hetero vs MQTT-SN)
+ #   3b — Equal load, with broker
+-#   5  — Multi-broker hierarchy (MQTT-SN, 200 nodes, LB=1/2/4/5)
+-# ============================================================
++#   5  — Multi-broker hierarchy (MQTT-SN, 200 nodes, LB=2/4/5 — LB=1 is
++#        reused from Set 2 and is not re-simulated here)
++#
++# Output:  ~/ns-3-dev/experiments/statistical/  and  ~/ns-3-dev/experiments/hier/
++# ============================================================
++set -uo pipefail
++
++# --- Argument parsing ---
++RUN_SETS_1_TO_3B=1
++case "${1:-}" in
++    --set5-only)      RUN_SETS_1_TO_3B=0 ;;
++    -h|--help)        sed -n '2,30p' "$0"; exit 0 ;;
++    "")               ;;   # default: run everything
++    *)                echo "Unknown argument: $1"; echo "Use --help for usage."; exit 2 ;;
++esac
+ 
+ cd ~/ns-3-dev
+ mkdir -p experiments/statistical experiments/hier
+@@ -20,8 +48,11 @@
+ echo "============================================================"
+ echo "  WSN vs MQTT-SN + Multi-Broker Hierarchy"
+ echo "  Seeds: $SEEDS | SimTime: ${SIMTIME}s"
++echo "  Mode:  $([ $RUN_SETS_1_TO_3B -eq 1 ] && echo 'full (Sets 1-3b + Set 5)' || echo 'Set 5 only')"
+ echo "============================================================"
+ 
++if [ $RUN_SETS_1_TO_3B -eq 1 ]; then
++
+ # ============================================================
+ # SET 1: NO BROKER
+ # ============================================================
+@@ -82,16 +113,21 @@
+     echo "[OK] Set3b N=$N complete"
+ done
+ 
++fi  # end of: if [ $RUN_SETS_1_TO_3B -eq 1 ]
++
+ # ============================================================
+ # SET 5: MULTI-BROKER HIERARCHY SWEEP
+ # Fixed: 200 nodes, 20 CHs, 10 seeds
+-# Varies: numLocalBrokers = 1 (baseline), 2, 4, 5
++# Varies: numLocalBrokers = 2, 4, 5
++# NOTE: LB=1 is NOT re-simulated here. The single-broker baseline
++#       reuses Set 2 200-node MQTT-SN data (exp2_mqtt_200_r{1-10}.csv);
++#       see paper §5.7 and scripts/analyze_comparison.py.
+ # ============================================================
+ echo ""
+ echo "======== SET 5: MULTI-BROKER HIERARCHY (200 nodes, 10 seeds) ========"
+ N=200
+ CH=20
+-for LB in 1 2 4 5; do
++for LB in 2 4 5; do
+     for RUN in $(seq 1 $SEEDS); do
+         echo "[Set5-Hier] LB=$LB Run=$RUN..."
+         ./ns3 run "cluster-aodv-mqtt --nSensors=$N --nCH=$CH --numLocalBrokers=$LB --run=$RUN --simTime=$SIMTIME --anim=false --csv=experiments/hier/exp_hier_lb${LB}_${N}_r${RUN}.csv" 2>/dev/null

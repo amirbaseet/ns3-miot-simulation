@@ -1,25 +1,40 @@
 cff-version: 1.2.0
-message: "If you use this software or data, please cite the accompanying paper."
+message: "If you use this software or data, please cite the accompanying paper AND the Zenodo archive."
 title: "ns3-miot-simulation: Cluster-Based WSN-AODV vs MQTT-SN for Medical IoT"
 authors:
   - family-names: Baseet
     given-names: Amro
-    affiliation: "Sakarya University"
+    orcid: https://orcid.org/0009-0004-5532-8182
+    affiliation: "Sakarya University, Computer Engineering Department"
   - family-names: Bütün
     given-names: İsmail
     orcid: https://orcid.org/0000-0002-1723-5741
-    affiliation: "Sakarya University"
+    affiliation: "Sakarya University, Software Engineering Department"
 repository-code: https://github.com/amirbaseet/ns3-miot-simulation
 version: "1.0"
 date-released: 2026-04-19
 license: MIT
+# After the Zenodo DOI is minted for release v1.0, replace the line below
+# with the real identifier (e.g. doi: 10.5281/zenodo.1234567).
+doi: 10.5281/zenodo.PENDING
+keywords:
+  - ns-3
+  - wireless-sensor-network
+  - mqtt-sn
+  - medical-iot
+  - aodv
+  - network-simulation
+  - reproducible-research
 preferred-citation:
   type: article
   title: "Performance Evaluation of Cluster-Based WSN-AODV and MQTT-SN Architectures for Medical IoT Using ns-3"
   authors:
     - family-names: Baseet
       given-names: Amro
+      orcid: https://orcid.org/0009-0004-5532-8182
     - family-names: Bütün
       given-names: İsmail
+      orcid: https://orcid.org/0000-0002-1723-5741
   journal: "Sakarya University Journal of Computer and Information Sciences"
   year: 2026
+  notes: "Under review."
