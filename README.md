@@ -127,7 +127,7 @@ computed against that baseline.
 ## Key Findings
 
 1. **MQTT-SN wins without broker** — Statistically significantly higher PDR at 150 and 200 nodes (p=0.0011). Significantly lower delay at 50–150 nodes.
-2. **WSN wins with broker at 150 nodes** — Gateway overhead (1ms/packet + QoS ACK) amplifies single-sink congestion (p=0.0002).
+2. **WSN wins with broker at 150 nodes (tie at 200, p=0.2601 ns)** — Gateway overhead (1ms/packet + QoS ACK) amplifies single-sink congestion (p=0.0002).
 3. **MQTT-SN protocol mechanisms are real** — Even under equal traffic load (Set 3), MQTT-SN still wins at 200 nodes (p=0.0149). The PDR advantage is not purely due to lower traffic volume.
 4. **Broker inversion** — Set 3b reverses Set 3: with a broker, WSN-Hetero wins at both 150 and 200 nodes (p=0.0066, p=0.0022). Gateway overhead dominates under centralised congestion.
 5. **Single-seed simulation is insufficient** — Preliminary single-seed runs showed MQTT-SN winning in Set 2. The 10-seed Welch t-test reversed this conclusion at 150 nodes. Multi-seed validation is essential.

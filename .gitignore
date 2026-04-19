@@ -7,3 +7,12 @@ __pycache__/
 
 # Prevent graph zip duplicates
 /*.zip
+*.a
+*.so
+CMakeCache.txt
+CMakeFiles/
+.vscode/
+.idea/
+*.swp
+.DS_Store
+.venv/
