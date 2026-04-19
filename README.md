@@ -2,7 +2,7 @@
 
 ## Performance Evaluation of Cluster-Based WSN-AODV and MQTT-SN Architectures for Medical IoT Using ns-3
 
-A statistically validated ns-3 simulation study comparing two cluster-based Medical IoT communication architectures across 240 independent simulation runs (10 seeds per configuration, Welch t-tests).
+A statistically validated ns-3 simulation study comparing two cluster-based Medical IoT communication architectures across **270 independent simulation runs** spanning five experimental sets (10 seeds per configuration, Welch t-tests). Reproduces all results in Baseet & Bütün, *SAUCIS* 2026.
 
 - **Architecture A (WSN):** Cluster-based AODV routing with fixed-rate UDP transmission
 - **Architecture B (MQTT-SN):** Priority-aware publish-subscribe with QoS differentiation
@@ -10,6 +10,21 @@ A statistically validated ns-3 simulation study comparing two cluster-based Medi
 **Paper:** *Performance Evaluation of Cluster-Based WSN-AODV and MQTT-SN Architectures for Medical IoT Using ns-3* — submitted to SAUCIS (Sakarya University Journal of Computer and Information Sciences)
 
 **SAVTEK 2026:** *Savunma Saha Sağlık Ağlarında Küme Tabanlı KAA-AODV ve MQTT-SN Mimarilerinin ns-3 ile Başarım Değerlendirmesi* — accepted
+
+---
+
+> ### ⚠️ Reproducibility Warning — ns-3 Version
+>
+> **This code reproduces the paper's results only on ns-3 v3.40.**
+>
+> ns-3 v3.41 introduced a regression that causes **PDR = 0 %** in ad-hoc
+> AODV+UDP mode (affects `cluster-aodv-nosink` in particular). Do **not**
+> use v3.41, v3.42, or v3.43 until the upstream fix is verified against
+> the CSVs in this repository.
+>
+> ```bash
+> cd ~/ns-3-dev && git describe --tags --exact-match   # should print: ns-3.40
+> ```
 
 ---
 
@@ -91,18 +106,21 @@ Same heterogeneous traffic as Set 3, broker active. MQTT-SN+broker data is ident
 | 150 | 80.4±2.9% | 76.3±3.1% | **0.0066 \*\*** |
 | 200 | 72.4±2.0% | 63.4±6.8% | **0.0022 \*\*** |
 
-### Set 5 — Multi-Broker Hierarchy Sweep (200 nodes, 1 seed)
+### Set 5 — Multi-Broker Hierarchy (200 nodes, 10 seeds)
 
-Two-tier broker architecture: N local tier-1 brokers + 1 root broker. Preliminary results.
+Two-tier broker architecture: N local tier-1 brokers + 1 root broker.
+The **LB=1 baseline is the MQTT-SN+broker data from Set 2** (reused to avoid
+a redundant re-run of an identical configuration); p-values below are
+computed against that baseline.
 
-| numLocalBrokers | Topology | PDR |
-|:---------------:|:--------:|:---:|
-| 1 | Single broker (baseline) | 73.4% |
-| 2 | Two-tier (2 local + 1 root) | 73.0% |
-| 4 | Two-tier (4 local + 1 root) | 74.5% |
-| 5 | Two-tier (5 local + 1 root) | 73.3% |
+| Configuration | PDR | p(vs LB=1) | Delay (ms) | p(Delay) |
+|:-------------:|:---:|:----------:|:----------:|:--------:|
+| LB=1 (baseline) | 63.4±6.8% | — | 217.8±27.8 | — |
+| LB=2 | 57.2±1.0% | 0.0183 * | 223.5±10.9 | 0.5595 ns |
+| LB=4 | 60.5±1.1% | 0.2217 ns | 172.5±9.2 | 0.0005 *** |
+| LB=5 | 60.1±1.5% | 0.1695 ns | 169.6±11.9 | 0.0003 *** |
 
-**Finding:** PDR is flat across all broker counts (~73–74%). The bottleneck is the shared 802.11b wireless channel, not the broker architecture. Broker distribution alone does not recover performance at this scale.
+**Finding:** No broker count recovers PDR beyond the single-broker baseline — shared IEEE 802.11b channel saturation, not broker architecture, is the binding constraint at 200 nodes. Delay improves at LB≥4, suggesting distributed aggregation relieves the single-broker queueing bottleneck even when it cannot recover the channel.
 
 ---
 
@@ -113,7 +131,7 @@ Two-tier broker architecture: N local tier-1 brokers + 1 root broker. Preliminar
 3. **MQTT-SN protocol mechanisms are real** — Even under equal traffic load (Set 3), MQTT-SN still wins at 200 nodes (p=0.0149). The PDR advantage is not purely due to lower traffic volume.
 4. **Broker inversion** — Set 3b reverses Set 3: with a broker, WSN-Hetero wins at both 150 and 200 nodes (p=0.0066, p=0.0022). Gateway overhead dominates under centralised congestion.
 5. **Single-seed simulation is insufficient** — Preliminary single-seed runs showed MQTT-SN winning in Set 2. The 10-seed Welch t-test reversed this conclusion at 150 nodes. Multi-seed validation is essential.
-6. **Broker distribution does not help** — Two-tier hierarchy with 1–5 local brokers produces flat PDR (~73–74%) at 200 nodes. Channel saturation is the limiting factor.
+6. **Broker distribution does not help PDR** — Two-tier hierarchy with 2–5 local brokers produces no PDR recovery (p>0.05 for LB=4,5; LB=2 actually worse, p=0.018). Channel saturation is the binding constraint. However, delay improves significantly at LB≥4 (p<0.001).
 
 ---
 
@@ -172,7 +190,7 @@ cd ~/ns-3-dev
 cd ~/ns-3-dev
 mkdir -p experiments/statistical experiments/hier
 
-# Full 4-set comparison (240 runs, ~8h on 4-core machine)
+# Full 5-set comparison (270 runs, ~10h on 4-core machine)
 tmux new-session -d -s experiments "bash ~/projects/ns3-miot-simulation/scripts/run-comparison.sh"
 tmux attach -t experiments
 
@@ -242,8 +260,8 @@ ns3-miot-simulation/
 │   │   ├── exp2_mqtt_{50,100,150,200}_r{1-10}.csv
 │   │   ├── exp3_wsn_hetero_{50,100,150,200}_r{1-10}.csv
 │   │   └── exp3b_wsn_hetero_broker_{50,100,150,200}_r{1-10}.csv
-│   └── hier/                            Multi-broker sweep CSVs (Set 5)
-│       └── exp_hier_lb{1,2,4,5}_200_r{1-10}.csv
+│   └── hier/                            30 CSVs (Set 5; LB=1 reuses Set 2)
+│       └── exp_hier_lb{2,4,5}_200_r{1-10}.csv
 │
 ├── graphs/
 │   ├── comparison/                      24 analysis graphs (TR+EN)
@@ -285,10 +303,9 @@ ns3-miot-simulation/
 - [x] Phase 3: Priority-aware gateway + emergency detection
 - [x] Phase 4: Broker/Sink + UdpForwarder + --hetero flag
 - [x] Statistical comparison: 10 seeds + Welch t-test (Sets 1, 2, 3, 3b)
-- [x] Multi-broker hierarchy: two-tier topology (Set 5)
+- [x] Multi-broker hierarchy: two-tier topology, 10 seeds + Welch t-test (Set 5)
 - [x] Energy model: standardised radio currents (both architectures)
 - [x] SAUCIS journal paper (English, submitted)
-- [ ] Set 5: 10-seed statistical confirmation of multi-broker findings
 - [ ] Energy analysis: comparative cross-architecture energy plots
 - [ ] IEEE 802.15.4 / BLE physical layer evaluation
 - [ ] Real testbed validation
@@ -322,3 +339,11 @@ Supervisor: Assoc. Prof. Dr. İsmail Bütün
 2. A. Stanford-Clark and H. L. Truong, "MQTT for Sensor Networks (MQTT-SN) v1.2," OASIS, 2013
 3. G. F. Riley and T. R. Henderson, "The ns-3 Network Simulator," Springer, 2010
 4. OASIS, "MQTT Version 5.0," 2019
+
+---
+
+## License
+
+This project is released under the MIT License. See [LICENSE](LICENSE) for details.
+Simulation data in `experiments/` and figures in `graphs/` are released under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
