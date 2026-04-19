@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this software or data, please cite the accompanying paper."
+title: "ns3-miot-simulation: Cluster-Based WSN-AODV vs MQTT-SN for Medical IoT"
+authors:
+  - family-names: Baseet
+    given-names: Amro
+    affiliation: "Sakarya University"
+  - family-names: Bütün
+    given-names: İsmail
+    orcid: https://orcid.org/0000-0002-1723-5741
+    affiliation: "Sakarya University"
+repository-code: https://github.com/amirbaseet/ns3-miot-simulation
+version: "1.0"
+date-released: 2026-04-19
+license: MIT
+preferred-citation:
+  type: article
+  title: "Performance Evaluation of Cluster-Based WSN-AODV and MQTT-SN Architectures for Medical IoT Using ns-3"
+  authors:
+    - family-names: Baseet
+      given-names: Amro
+    - family-names: Bütün
+      given-names: İsmail
+  journal: "Sakarya University Journal of Computer and Information Sciences"
+  year: 2026

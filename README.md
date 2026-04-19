@@ -194,7 +194,7 @@ mkdir -p experiments/statistical experiments/hier
 tmux new-session -d -s experiments "bash ~/projects/ns3-miot-simulation/scripts/run-comparison.sh"
 tmux attach -t experiments
 
-# Multi-broker hierarchy sweep (Set 5, 40 runs)
+# Multi-broker hierarchy sweep (Set 5, 30 runs; LB=1 reuses Set 2)
 tmux new-session -d -s set5 "bash ~/projects/ns3-miot-simulation/scripts/run-comparison.sh --set5-only"
 ```
 
@@ -316,11 +316,16 @@ ns3-miot-simulation/
 
 If you use this code or data in your research, please cite:
 
-```
-A. Baseet and I. Butun, "Performance Evaluation of Cluster-Based WSN-AODV
-and MQTT-SN Architectures for Medical IoT Using ns-3,"
-SAUCIS, 2026. (under review)
-https://github.com/amirbaseet/ns3-miot-simulation
+```bibtex
+@article{baseet2026saucis,
+  title     = {Performance Evaluation of Cluster-Based WSN-AODV and MQTT-SN
+               Architectures for Medical IoT Using ns-3},
+  author    = {Baseet, Amro and B{\"u}t{\"u}n, {\.I}smail},
+  journal   = {Sakarya University Journal of Computer and Information Sciences},
+  year      = {2026},
+  note      = {Under review},
+  url       = {https://github.com/amirbaseet/ns3-miot-simulation}
+}
 ```
 
 ---
