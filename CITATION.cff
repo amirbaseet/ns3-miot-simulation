@@ -16,7 +16,7 @@ date-released: 2026-04-19
 license: MIT
 # After the Zenodo DOI is minted for release v1.0, replace the line below
 # with the real identifier (e.g. doi: 10.5281/zenodo.1234567).
-doi: 10.5281/zenodo.PENDING
+# doi: 10.5281/zenodo.PENDING
 keywords:
   - ns-3
   - wireless-sensor-network
