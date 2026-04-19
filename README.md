@@ -237,6 +237,35 @@ Generates 24 graphs (TR+EN) in `graphs/comparison/` and `graphs/hier/`, plus ful
 
 ---
 
+## CSV Output Schema
+
+Each simulation writes a per-flow CSV (one row per IPv4 flow, from FlowMonitor):
+
+| # | Column | Unit | Description |
+|---|--------|------|-------------|
+| 1 | FlowID | int | FlowMonitor flow identifier |
+| 2 | SrcAddr | IPv4 | Source address |
+| 3 | DstAddr | IPv4 | Destination address |
+| 4 | TxPackets | count | Packets transmitted in this flow |
+| 5 | RxPackets | count | Packets received in this flow |
+| 6 | LostPackets | count | Tx − Rx |
+| 7 | PDR_pct | % | Per-flow delivery ratio |
+| 8 | Throughput_kbps | kbps | Mean throughput |
+| 9 | AvgDelay_ms | ms | Mean end-to-end delay |
+| 10 | AvgJitter_ms | ms | Mean inter-arrival jitter |
+
+MQTT-SN runs additionally write `<name>.csv.energy.csv` with columns:
+`NodeID, Type, InitialEnergy_J, RemainingEnergy_J, ConsumedEnergy_J, ConsumedPct`.
+
+**Sanity check** — aggregate PDR from one run:
+````bash
+awk -F',"' 'NR>1 {tx+=$4; rx+=$5} END {printf "PDR = %.2f%%\n", 100*rx/tx}' \
+    experiments/statistical/exp2_wsn_200_r1.csv
+```
+Single seed will vary (~70–75%); the 10-seed mean matches the paper's 67.4 ± 8.3%.
+
+---
+
 ## Project Structure
 
 ```
