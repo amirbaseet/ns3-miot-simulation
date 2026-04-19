@@ -1,5 +1,20 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /*
+ * ns3-miot-simulation — Cluster-Based MIoT Comparison
+ *
+ * File:         cluster-aodv-mqtt.cc
+ * Description:  Main simulation driver for MQTT-SN publish-subscribe architecture.
+ *
+ * Authors:      Amro Baseet, İsmail Bütün
+ * Institution:  Sakarya University, Türkiye
+ * Paper:        A. Baseet and İ. Bütün, "Performance Evaluation of
+ *               Cluster-Based WSN-AODV and MQTT-SN Architectures for
+ *               Medical IoT Using ns-3," SAUCIS, 2026.
+ * Repository:   https://github.com/amirbaseet/ns3-miot-simulation
+ * Requires:     ns-3 v3.40 (v3.41+ has a known PDR=0% regression)
+ * License:      MIT (see LICENSE)
+ */
+/*
  * Priority-Aware MQTT-SN for MIoT — Multi-Broker Hierarchy Extension
  * ====================================================================
  * Topology modes (--numLocalBrokers):

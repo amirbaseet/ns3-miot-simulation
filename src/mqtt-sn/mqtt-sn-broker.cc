@@ -1,4 +1,19 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+/*
+ * ns3-miot-simulation — Cluster-Based MIoT Comparison
+ *
+ * File:         mqtt-sn-broker.cc
+ * Description:  MQTT-SN broker implementation with hierarchical aggregation.
+ *
+ * Authors:      Amro Baseet, İsmail Bütün
+ * Institution:  Sakarya University, Türkiye
+ * Paper:        A. Baseet and İ. Bütün, "Performance Evaluation of
+ *               Cluster-Based WSN-AODV and MQTT-SN Architectures for
+ *               Medical IoT Using ns-3," SAUCIS, 2026.
+ * Repository:   https://github.com/amirbaseet/ns3-miot-simulation
+ * Requires:     ns-3 v3.40 (v3.41+ has a known PDR=0% regression)
+ * License:      MIT (see LICENSE)
+ */
 #include "mqtt-sn-broker.h"
 #include "mqtt-sn-header.h"
 #include "ns3/log.h"
