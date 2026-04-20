@@ -1,0 +1,3184 @@
+=== SET5 STARTED: Tue Apr 14 11:12:48 +03 2026 ===
+[Set5] LB=1 Run=1 11:12
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+Process was interrupted by the user
+[Set5] LB=1 Run=2 13:01
+
+=== SET5 FINISHED: Tue Apr 14 13:01:44 +03 2026 ===
+ls: cannot access 'experiments/hier/*.csv': No such file or directory
+0
+[?2004h(aigpu) [01;32mtest1@ailab1[00m:[01;34m~/networkSimulation/ns-3-dev[00m$ === SET5 STARTED: Tue Apr 14 15:49:07 +03 2026 ===
+[Set5] LB=2 Run=2 15:49
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+Process was interrupted by the user
+[Set5] LB=2 Run=3 15:49
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+Process was interrupted by the user
+[Set5] LB=2 Run=4 15:49
+
+[OK] LB=2 done at Tue Apr 14 15:49:11 +03 2026
+[Set5] LB=4 Run=1 15:49
+
+=== SET5 FINISHED: Tue Apr 14 15:49:11 +03 2026 ===
+6
+[?2004h(aigpu) [01;32mtest1@ailab1[00m:[01;34m~/networkSimulation/ns-3-dev[00m$ === SET5 STARTED: Tue Apr 14 15:52:14 +03 2026 ===
+[Set5] LB=2 Run=2 15:52
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | LocalBrokers: 2 | numLocalBrokers=2 | Total: 223
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/hier/exp_hier_lb2_200_r2.csv
+============================================================
+
+  Mobility: Static
+  Local Brokers: 2 (grid placement)
+  Clusters: min=5 max=16 avg=10.0
+  Topology: TWO-TIER HIERARCHY (2 local brokers + 1 root)
+  CH-to-LocalBroker assignment:
+    LocalBroker[0]: 12 CHs
+    LocalBroker[1]: 8 CHs
+  Sensors: 66 ECG + 66 HR + 68 Temp
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+============================================================
+  RESULTS  (sensor-origin flows only)
+============================================================
+  Flows: 3346 (dead: 440)
+  Tx: 819712 | Rx: 501115
+  PDR: 61.13%
+  Avg Delay: 150.80 ms
+  Throughput: 794.92 kbps
+  Output: experiments/hier/exp_hier_lb2_200_r2.csv
+============================================================
+
+    CH200 | Rx:1619 Emerg:5 Fwd:1608 QDrop:0 | Pri[H:933 M:494 L:181] | Topics: ECG=928 HeartRate=494 Temperature=181 EMERGENCY=5
+    CH201 | Rx:2310 Emerg:16 Fwd:2294 QDrop:0 | Pri[H:1823 M:305 L:166] | Topics: ECG=1807 HeartRate=305 Temperature=166 EMERGENCY=16
+    CH202 | Rx:2509 Emerg:10 Fwd:2500 QDrop:0 | Pri[H:2239 M:211 L:50] | Topics: ECG=2229 HeartRate=211 Temperature=50 EMERGENCY=10
+    CH203 | Rx:3535 Emerg:17 Fwd:3523 QDrop:0 | Pri[H:2904 M:570 L:49] | Topics: ECG=2887 HeartRate=570 Temperature=49 EMERGENCY=17
+    CH204 | Rx:3477 Emerg:16 Fwd:3453 QDrop:0 | Pri[H:2088 M:1138 L:227] | Topics: ECG=2072 HeartRate=1138 Temperature=227 EMERGENCY=16
+    CH205 | Rx:2553 Emerg:9 Fwd:2540 QDrop:0 | Pri[H:1829 M:631 L:80] | Topics: ECG=1820 HeartRate=631 Temperature=80 EMERGENCY=9
+    CH206 | Rx:5264 Emerg:23 Fwd:5244 QDrop:0 | Pri[H:4312 M:829 L:103] | Topics: ECG=4289 HeartRate=829 Temperature=103 EMERGENCY=23
+    CH207 | Rx:3721 Emerg:20 Fwd:3702 QDrop:0 | Pri[H:3021 M:549 L:132] | Topics: ECG=3001 HeartRate=549 Temperature=132 EMERGENCY=20
+    CH208 | Rx:2617 Emerg:16 Fwd:2604 QDrop:0 | Pri[H:1950 M:555 L:99] | Topics: ECG=1934 HeartRate=555 Temperature=99 EMERGENCY=16
+    CH209 | Rx:2125 Emerg:9 Fwd:2115 QDrop:0 | Pri[H:1729 M:300 L:86] | Topics: ECG=1720 HeartRate=300 Temperature=86 EMERGENCY=9
+    CH210 | Rx:1041 Emerg:3 Fwd:1031 QDrop:0 | Pri[H:3 M:978 L:50] | Topics: HeartRate=978 Temperature=50 EMERGENCY=3
+    CH211 | Rx:4345 Emerg:16 Fwd:4327 QDrop:0 | Pri[H:3672 M:637 L:18] | Topics: ECG=3656 HeartRate=637 Temperature=18 EMERGENCY=16
+    CH212 | Rx:2923 Emerg:15 Fwd:2910 QDrop:0 | Pri[H:2233 M:570 L:107] | Topics: ECG=2218 HeartRate=570 Temperature=107 EMERGENCY=15
+    CH213 | Rx:1674 Emerg:6 Fwd:1659 QDrop:0 | Pri[H:1132 M:313 L:214] | Topics: ECG=1126 HeartRate=313 Temperature=214 EMERGENCY=6
+    CH214 | Rx:4124 Emerg:24 Fwd:4105 QDrop:0 | Pri[H:3502 M:457 L:146] | Topics: ECG=3478 HeartRate=457 Temperature=146 EMERGENCY=24
+    CH215 | Rx:5072 Emerg:27 Fwd:5048 QDrop:0 | Pri[H:3420 M:1491 L:137] | Topics: ECG=3393 HeartRate=1491 Temperature=137 EMERGENCY=27
+    CH216 | Rx:3988 Emerg:20 Fwd:3972 QDrop:0 | Pri[H:3171 M:732 L:69] | Topics: ECG=3151 HeartRate=732 Temperature=69 EMERGENCY=20
+    CH217 | Rx:3295 Emerg:16 Fwd:3278 QDrop:0 | Pri[H:2016 M:1121 L:141] | Topics: ECG=2000 HeartRate=1121 Temperature=141 EMERGENCY=16
+    CH218 | Rx:3316 Emerg:18 Fwd:3299 QDrop:0 | Pri[H:2931 M:194 L:174] | Topics: ECG=2913 HeartRate=194 Temperature=174 EMERGENCY=18
+    CH219 | Rx:3322 Emerg:16 Fwd:3308 QDrop:0 | Pri[H:3147 M:0 L:161] | Topics: ECG=3131 Temperature=161 EMERGENCY=16
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 700
+  Total Rx Bytes    : 83544
+  From Gateways     : 700
+  Emergencies       : 1
+  Forwarded to Root : 700
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 507 packets
+    HeartRate (ID=20): 170 packets
+    Temperature (ID=30): 22 packets
+    EMERGENCY (ID=99): 1 packets
+  Per-Priority Breakdown:
+    LOW (0): 22 packets
+    MEDIUM (1): 170 packets
+    HIGH (2): 507 packets
+    CRITICAL (3): 1 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 464
+  Total Rx Bytes    : 54496
+  From Gateways     : 464
+  Emergencies       : 6
+  Forwarded to Root : 464
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 329 packets
+    HeartRate (ID=20): 94 packets
+    Temperature (ID=30): 35 packets
+    EMERGENCY (ID=99): 6 packets
+  Per-Priority Breakdown:
+    LOW (0): 35 packets
+    MEDIUM (1): 94 packets
+    HIGH (2): 329 packets
+    CRITICAL (3): 6 packets
+  ============================================
+
+
+  ============================================
+  ROOT BROKER (tier-2) STATISTICS
+  ============================================
+  Total Rx Packets  : 6
+  Total Rx Bytes    : 348
+  From Local Brokers: 6
+  Emergencies       : 0
+  ---
+  Per-Topic Breakdown:
+    HeartRate (ID=20): 3 packets
+    Temperature (ID=30): 3 packets
+  Per-Priority Breakdown:
+    LOW (0): 3 packets
+    MEDIUM (1): 3 packets
+  ============================================
+
+  Total forwarded to root: 1164
+
+  Emergencies: 302 | Forwarded: 62520
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.5781 J
+    Consumed: 289.4219 J (72.4%)
+    Per sensor: avg=0.5529J  min=0.5401J  max=0.5641J
+    Dead sensors: 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 27.9814 J
+    Consumed: 72.0186 J (72.0%)
+    Per CH: avg=1.3991J  min=1.3889J  max=1.4090J
+    Dead CHs: 0
+  ============================================
+
+  Energy CSV: experiments/hier/exp_hier_lb2_200_r2.csv.energy.csv
+
+[DONE]
+
+[Set5] LB=2 Run=3 18:11
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | LocalBrokers: 2 | numLocalBrokers=2 | Total: 223
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/hier/exp_hier_lb2_200_r3.csv
+============================================================
+
+  Mobility: Static
+  Local Brokers: 2 (grid placement)
+  Clusters: min=4 max=16 avg=10.0
+  Topology: TWO-TIER HIERARCHY (2 local brokers + 1 root)
+  CH-to-LocalBroker assignment:
+    LocalBroker[0]: 12 CHs
+    LocalBroker[1]: 8 CHs
+  Sensors: 66 ECG + 66 HR + 68 Temp
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+============================================================
+  RESULTS  (sensor-origin flows only)
+============================================================
+  Flows: 3472 (dead: 495)
+  Tx: 877806 | Rx: 514183
+  PDR: 58.58%
+  Avg Delay: 158.50 ms
+  Throughput: 795.49 kbps
+  Output: experiments/hier/exp_hier_lb2_200_r3.csv
+============================================================
+
+    CH200 | Rx:2205 Emerg:12 Fwd:2193 QDrop:0 | Pri[H:983 M:1160 L:50] | Topics: ECG=971 HeartRate=1160 Temperature=50 EMERGENCY=12
+    CH201 | Rx:5651 Emerg:33 Fwd:5625 QDrop:0 | Pri[H:3955 M:1574 L:96] | Topics: ECG=3922 HeartRate=1574 Temperature=96 EMERGENCY=33
+    CH202 | Rx:2853 Emerg:12 Fwd:2839 QDrop:0 | Pri[H:1945 M:823 L:71] | Topics: ECG=1933 HeartRate=823 Temperature=71 EMERGENCY=12
+    CH203 | Rx:2208 Emerg:10 Fwd:2199 QDrop:0 | Pri[H:1803 M:339 L:57] | Topics: ECG=1793 HeartRate=339 Temperature=57 EMERGENCY=10
+    CH204 | Rx:3505 Emerg:26 Fwd:3485 QDrop:0 | Pri[H:2220 M:1107 L:158] | Topics: ECG=2194 HeartRate=1107 Temperature=158 EMERGENCY=26
+    CH205 | Rx:2013 Emerg:14 Fwd:1997 QDrop:0 | Pri[H:1294 M:470 L:233] | Topics: ECG=1280 HeartRate=470 Temperature=233 EMERGENCY=14
+    CH206 | Rx:3305 Emerg:27 Fwd:3285 QDrop:0 | Pri[H:1886 M:1367 L:32] | Topics: ECG=1859 HeartRate=1367 Temperature=32 EMERGENCY=27
+    CH207 | Rx:4313 Emerg:25 Fwd:4288 QDrop:0 | Pri[H:3746 M:370 L:172] | Topics: ECG=3721 HeartRate=370 Temperature=172 EMERGENCY=25
+    CH208 | Rx:211 Emerg:1 Fwd:206 QDrop:0 | Pri[H:2 M:111 L:93] | Topics: ECG=1 HeartRate=111 Temperature=93 EMERGENCY=1
+    CH209 | Rx:3045 Emerg:9 Fwd:3023 QDrop:0 | Pri[H:2084 M:578 L:361] | Topics: ECG=2075 HeartRate=578 Temperature=361 EMERGENCY=9
+    CH210 | Rx:2059 Emerg:9 Fwd:2044 QDrop:0 | Pri[H:1451 M:414 L:179] | Topics: ECG=1442 HeartRate=414 Temperature=179 EMERGENCY=9
+    CH211 | Rx:3292 Emerg:25 Fwd:3272 QDrop:0 | Pri[H:2732 M:408 L:132] | Topics: ECG=2707 HeartRate=408 Temperature=132 EMERGENCY=25
+    CH212 | Rx:1321 Emerg:6 Fwd:1315 QDrop:0 | Pri[H:1030 M:238 L:47] | Topics: ECG=1024 HeartRate=238 Temperature=47 EMERGENCY=6
+    CH213 | Rx:1617 Emerg:10 Fwd:1609 QDrop:0 | Pri[H:1180 M:425 L:4] | Topics: ECG=1170 HeartRate=425 Temperature=4 EMERGENCY=10
+    CH214 | Rx:3142 Emerg:18 Fwd:3125 QDrop:0 | Pri[H:2713 M:233 L:179] | Topics: ECG=2695 HeartRate=233 Temperature=179 EMERGENCY=18
+    CH215 | Rx:5417 Emerg:27 Fwd:5394 QDrop:0 | Pri[H:4869 M:247 L:278] | Topics: ECG=4842 HeartRate=247 Temperature=278 EMERGENCY=27
+    CH216 | Rx:2484 Emerg:7 Fwd:2473 QDrop:0 | Pri[H:1936 M:467 L:70] | Topics: ECG=1929 HeartRate=467 Temperature=70 EMERGENCY=7
+    CH217 | Rx:3688 Emerg:15 Fwd:3671 QDrop:0 | Pri[H:2980 M:542 L:149] | Topics: ECG=2965 HeartRate=542 Temperature=149 EMERGENCY=15
+    CH218 | Rx:3375 Emerg:21 Fwd:3357 QDrop:0 | Pri[H:2283 M:990 L:84] | Topics: ECG=2262 HeartRate=990 Temperature=84 EMERGENCY=21
+    CH219 | Rx:2940 Emerg:13 Fwd:2927 QDrop:0 | Pri[H:2197 M:679 L:51] | Topics: ECG=2184 HeartRate=679 Temperature=51 EMERGENCY=13
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 565
+  Total Rx Bytes    : 69202
+  From Gateways     : 565
+  Emergencies       : 4
+  Forwarded to Root : 565
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 439 packets
+    HeartRate (ID=20): 94 packets
+    Temperature (ID=30): 28 packets
+    EMERGENCY (ID=99): 4 packets
+  Per-Priority Breakdown:
+    LOW (0): 28 packets
+    MEDIUM (1): 94 packets
+    HIGH (2): 439 packets
+    CRITICAL (3): 4 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 309
+  Total Rx Bytes    : 34738
+  From Gateways     : 309
+  Emergencies       : 4
+  Forwarded to Root : 309
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 199 packets
+    HeartRate (ID=20): 77 packets
+    Temperature (ID=30): 29 packets
+    EMERGENCY (ID=99): 4 packets
+  Per-Priority Breakdown:
+    LOW (0): 29 packets
+    MEDIUM (1): 77 packets
+    HIGH (2): 199 packets
+    CRITICAL (3): 4 packets
+  ============================================
+
+
+  ============================================
+  ROOT BROKER (tier-2) STATISTICS
+  ============================================
+  Total Rx Packets  : 286
+  Total Rx Bytes    : 34124
+  From Local Brokers: 286
+  Emergencies       : 2
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 209 packets
+    HeartRate (ID=20): 58 packets
+    Temperature (ID=30): 17 packets
+    EMERGENCY (ID=99): 2 packets
+  Per-Priority Breakdown:
+    LOW (0): 17 packets
+    MEDIUM (1): 58 packets
+    HIGH (2): 209 packets
+    CRITICAL (3): 2 packets
+  ============================================
+
+  Total forwarded to root: 874
+
+  Emergencies: 320 | Forwarded: 58327
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.5661 J
+    Consumed: 289.4339 J (72.4%)
+    Per sensor: avg=0.5528J  min=0.5402J  max=0.5643J
+    Dead sensors: 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 28.0482 J
+    Consumed: 71.9518 J (72.0%)
+    Per CH: avg=1.4024J  min=1.3914J  max=1.4085J
+    Dead CHs: 0
+  ============================================
+
+  Energy CSV: experiments/hier/exp_hier_lb2_200_r3.csv.energy.csv
+
+[DONE]
+
+[Set5] LB=2 Run=4 20:37
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | LocalBrokers: 2 | numLocalBrokers=2 | Total: 223
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/hier/exp_hier_lb2_200_r4.csv
+============================================================
+
+  Mobility: Static
+  Local Brokers: 2 (grid placement)
+  Clusters: min=5 max=16 avg=10.0
+  Topology: TWO-TIER HIERARCHY (2 local brokers + 1 root)
+  CH-to-LocalBroker assignment:
+    LocalBroker[0]: 12 CHs
+    LocalBroker[1]: 8 CHs
+  Sensors: 66 ECG + 66 HR + 68 Temp
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+============================================================
+  RESULTS  (sensor-origin flows only)
+============================================================
+  Flows: 3502 (dead: 432)
+  Tx: 813617 | Rx: 476541
+  PDR: 58.57%
+  Avg Delay: 154.78 ms
+  Throughput: 745.67 kbps
+  Output: experiments/hier/exp_hier_lb2_200_r4.csv
+============================================================
+
+    CH200 | Rx:3755 Emerg:20 Fwd:3740 QDrop:0 | Pri[H:2836 M:857 L:47] | Topics: ECG=2816 HeartRate=857 Temperature=47 EMERGENCY=20
+    CH201 | Rx:2785 Emerg:12 Fwd:2771 QDrop:0 | Pri[H:2000 M:680 L:91] | Topics: ECG=1988 HeartRate=680 Temperature=91 EMERGENCY=12
+    CH202 | Rx:1050 Emerg:2 Fwd:1035 QDrop:0 | Pri[H:2 M:883 L:150] | Topics: HeartRate=883 Temperature=150 EMERGENCY=2
+    CH203 | Rx:2305 Emerg:13 Fwd:2291 QDrop:0 | Pri[H:1911 M:270 L:110] | Topics: ECG=1898 HeartRate=270 Temperature=110 EMERGENCY=13
+    CH204 | Rx:5459 Emerg:21 Fwd:5439 QDrop:0 | Pri[H:4371 M:963 L:105] | Topics: ECG=4350 HeartRate=963 Temperature=105 EMERGENCY=21
+    CH205 | Rx:1269 Emerg:7 Fwd:1250 QDrop:0 | Pri[H:7 M:995 L:248] | Topics: HeartRate=995 Temperature=248 EMERGENCY=7
+    CH206 | Rx:2983 Emerg:16 Fwd:2968 QDrop:0 | Pri[H:2565 M:357 L:46] | Topics: ECG=2549 HeartRate=357 Temperature=46 EMERGENCY=16
+    CH207 | Rx:706 Emerg:3 Fwd:696 QDrop:0 | Pri[H:3 M:577 L:116] | Topics: HeartRate=577 Temperature=116 EMERGENCY=3
+    CH208 | Rx:3518 Emerg:10 Fwd:3501 QDrop:0 | Pri[H:2970 M:419 L:112] | Topics: ECG=2960 HeartRate=419 Temperature=112 EMERGENCY=10
+    CH209 | Rx:2802 Emerg:7 Fwd:2786 QDrop:0 | Pri[H:2305 M:392 L:89] | Topics: ECG=2298 HeartRate=392 Temperature=89 EMERGENCY=7
+    CH210 | Rx:3973 Emerg:22 Fwd:3950 QDrop:0 | Pri[H:3401 M:327 L:222] | Topics: ECG=3379 HeartRate=327 Temperature=222 EMERGENCY=22
+    CH211 | Rx:2600 Emerg:10 Fwd:2590 QDrop:0 | Pri[H:2112 M:431 L:47] | Topics: ECG=2102 HeartRate=431 Temperature=47 EMERGENCY=10
+    CH212 | Rx:3596 Emerg:16 Fwd:3575 QDrop:0 | Pri[H:2392 M:1052 L:131] | Topics: ECG=2376 HeartRate=1052 Temperature=131 EMERGENCY=16
+    CH213 | Rx:590 Emerg:5 Fwd:583 QDrop:0 | Pri[H:300 M:249 L:34] | Topics: ECG=295 HeartRate=249 Temperature=34 EMERGENCY=5
+    CH214 | Rx:2834 Emerg:12 Fwd:2817 QDrop:0 | Pri[H:2411 M:231 L:175] | Topics: ECG=2399 HeartRate=231 Temperature=175 EMERGENCY=12
+    CH215 | Rx:2751 Emerg:12 Fwd:2734 QDrop:0 | Pri[H:1931 M:579 L:224] | Topics: ECG=1919 HeartRate=579 Temperature=224 EMERGENCY=12
+    CH216 | Rx:1284 Emerg:0 Fwd:1274 QDrop:0 | Pri[H:743 M:434 L:97] | Topics: ECG=743 HeartRate=434 Temperature=97
+    CH217 | Rx:1796 Emerg:4 Fwd:1783 QDrop:0 | Pri[H:1287 M:348 L:148] | Topics: ECG=1283 HeartRate=348 Temperature=148 EMERGENCY=4
+    CH218 | Rx:6650 Emerg:30 Fwd:6621 QDrop:0 | Pri[H:5273 M:1194 L:154] | Topics: ECG=5243 HeartRate=1194 Temperature=154 EMERGENCY=30
+    CH219 | Rx:4402 Emerg:21 Fwd:4387 QDrop:0 | Pri[H:3915 M:370 L:102] | Topics: ECG=3894 HeartRate=370 Temperature=102 EMERGENCY=21
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 611
+  Total Rx Bytes    : 74750
+  From Gateways     : 611
+  Emergencies       : 2
+  Forwarded to Root : 611
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 469 packets
+    HeartRate (ID=20): 123 packets
+    Temperature (ID=30): 17 packets
+    EMERGENCY (ID=99): 2 packets
+  Per-Priority Breakdown:
+    LOW (0): 17 packets
+    MEDIUM (1): 123 packets
+    HIGH (2): 469 packets
+    CRITICAL (3): 2 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 233
+  Total Rx Bytes    : 28090
+  From Gateways     : 233
+  Emergencies       : 0
+  Forwarded to Root : 233
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 176 packets
+    HeartRate (ID=20): 44 packets
+    Temperature (ID=30): 13 packets
+  Per-Priority Breakdown:
+    LOW (0): 13 packets
+    MEDIUM (1): 44 packets
+    HIGH (2): 176 packets
+  ============================================
+
+
+  ============================================
+  ROOT BROKER (tier-2) STATISTICS
+  ============================================
+  Total Rx Packets  : 73
+  Total Rx Bytes    : 7674
+  From Local Brokers: 73
+  Emergencies       : 0
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 40 packets
+    HeartRate (ID=20): 24 packets
+    Temperature (ID=30): 9 packets
+  Per-Priority Breakdown:
+    LOW (0): 9 packets
+    MEDIUM (1): 24 packets
+    HIGH (2): 40 packets
+  ============================================
+
+  Total forwarded to root: 844
+
+  Emergencies: 243 | Forwarded: 56791
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.4246 J
+    Consumed: 289.5754 J (72.4%)
+    Per sensor: avg=0.5521J  min=0.5405J  max=0.5633J
+    Dead sensors: 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 27.9206 J
+    Consumed: 72.0794 J (72.1%)
+    Per CH: avg=1.3960J  min=1.3880J  max=1.4106J
+    Dead CHs: 0
+  ============================================
+
+  Energy CSV: experiments/hier/exp_hier_lb2_200_r4.csv.energy.csv
+
+[DONE]
+
+[Set5] LB=2 Run=5 23:01
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | LocalBrokers: 2 | numLocalBrokers=2 | Total: 223
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/hier/exp_hier_lb2_200_r5.csv
+============================================================
+
+  Mobility: Static
+  Local Brokers: 2 (grid placement)
+  Clusters: min=3 max=19 avg=10.0
+  Topology: TWO-TIER HIERARCHY (2 local brokers + 1 root)
+  CH-to-LocalBroker assignment:
+    LocalBroker[0]: 12 CHs
+    LocalBroker[1]: 8 CHs
+  Sensors: 66 ECG + 66 HR + 68 Temp
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+============================================================
+  RESULTS  (sensor-origin flows only)
+============================================================
+  Flows: 3618 (dead: 424)
+  Tx: 749070 | Rx: 448029
+  PDR: 59.81%
+  Avg Delay: 149.17 ms
+  Throughput: 704.69 kbps
+  Output: experiments/hier/exp_hier_lb2_200_r5.csv
+============================================================
+
+    CH200 | Rx:4599 Emerg:19 Fwd:4585 QDrop:0 | Pri[H:3617 M:952 L:16] | Topics: ECG=3598 HeartRate=952 Temperature=16 EMERGENCY=19
+    CH201 | Rx:1998 Emerg:7 Fwd:1989 QDrop:0 | Pri[H:1013 M:971 L:5] | Topics: ECG=1006 HeartRate=971 Temperature=5 EMERGENCY=7
+    CH202 | Rx:1772 Emerg:3 Fwd:1759 QDrop:0 | Pri[H:1066 M:617 L:76] | Topics: ECG=1063 HeartRate=617 Temperature=76 EMERGENCY=3
+    CH203 | Rx:5963 Emerg:22 Fwd:5941 QDrop:0 | Pri[H:5157 M:677 L:107] | Topics: ECG=5135 HeartRate=677 Temperature=107 EMERGENCY=22
+    CH204 | Rx:4720 Emerg:19 Fwd:4687 QDrop:0 | Pri[H:3185 M:1140 L:362] | Topics: ECG=3166 HeartRate=1140 Temperature=362 EMERGENCY=19
+    CH205 | Rx:742 Emerg:2 Fwd:736 QDrop:0 | Pri[H:2 M:734 L:0] | Topics: HeartRate=734 EMERGENCY=2
+    CH206 | Rx:3380 Emerg:14 Fwd:3363 QDrop:0 | Pri[H:2384 M:889 L:90] | Topics: ECG=2370 HeartRate=889 Temperature=90 EMERGENCY=14
+    CH207 | Rx:2315 Emerg:11 Fwd:2301 QDrop:0 | Pri[H:2052 M:164 L:85] | Topics: ECG=2041 HeartRate=164 Temperature=85 EMERGENCY=11
+    CH208 | Rx:1097 Emerg:6 Fwd:1088 QDrop:0 | Pri[H:922 M:29 L:137] | Topics: ECG=916 HeartRate=29 Temperature=137 EMERGENCY=6
+    CH209 | Rx:2261 Emerg:18 Fwd:2241 QDrop:0 | Pri[H:1335 M:712 L:194] | Topics: ECG=1317 HeartRate=712 Temperature=194 EMERGENCY=18
+    CH210 | Rx:3581 Emerg:19 Fwd:3566 QDrop:0 | Pri[H:2568 M:949 L:49] | Topics: ECG=2549 HeartRate=949 Temperature=49 EMERGENCY=19
+    CH211 | Rx:2084 Emerg:16 Fwd:2076 QDrop:0 | Pri[H:1620 M:436 L:20] | Topics: ECG=1604 HeartRate=436 Temperature=20 EMERGENCY=16
+    CH212 | Rx:2823 Emerg:13 Fwd:2810 QDrop:0 | Pri[H:2204 M:558 L:48] | Topics: ECG=2191 HeartRate=558 Temperature=48 EMERGENCY=13
+    CH213 | Rx:2838 Emerg:15 Fwd:2825 QDrop:0 | Pri[H:2685 M:4 L:136] | Topics: ECG=2670 HeartRate=4 Temperature=136 EMERGENCY=15
+    CH214 | Rx:1145 Emerg:7 Fwd:1134 QDrop:0 | Pri[H:7 M:1039 L:88] | Topics: HeartRate=1039 Temperature=88 EMERGENCY=7
+    CH215 | Rx:3233 Emerg:20 Fwd:3223 QDrop:0 | Pri[H:3001 M:222 L:0] | Topics: ECG=2981 HeartRate=222 EMERGENCY=20
+    CH216 | Rx:1742 Emerg:11 Fwd:1733 QDrop:0 | Pri[H:1442 M:150 L:141] | Topics: ECG=1431 HeartRate=150 Temperature=141 EMERGENCY=11
+    CH217 | Rx:2628 Emerg:5 Fwd:2613 QDrop:0 | Pri[H:2225 M:238 L:150] | Topics: ECG=2220 HeartRate=238 Temperature=150 EMERGENCY=5
+    CH218 | Rx:3304 Emerg:17 Fwd:3285 QDrop:0 | Pri[H:2066 M:983 L:236] | Topics: ECG=2049 HeartRate=983 Temperature=236 EMERGENCY=17
+    CH219 | Rx:3514 Emerg:9 Fwd:3485 QDrop:0 | Pri[H:1911 M:1179 L:395] | Topics: ECG=1902 HeartRate=1179 Temperature=395 EMERGENCY=9
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 762
+  Total Rx Bytes    : 89220
+  From Gateways     : 762
+  Emergencies       : 7
+  Forwarded to Root : 762
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 515 packets
+    HeartRate (ID=20): 222 packets
+    Temperature (ID=30): 18 packets
+    EMERGENCY (ID=99): 7 packets
+  Per-Priority Breakdown:
+    LOW (0): 18 packets
+    MEDIUM (1): 222 packets
+    HIGH (2): 515 packets
+    CRITICAL (3): 7 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 240
+  Total Rx Bytes    : 22784
+  From Gateways     : 240
+  Emergencies       : 2
+  Forwarded to Root : 240
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 92 packets
+    HeartRate (ID=20): 120 packets
+    Temperature (ID=30): 26 packets
+    EMERGENCY (ID=99): 2 packets
+  Per-Priority Breakdown:
+    LOW (0): 26 packets
+    MEDIUM (1): 120 packets
+    HIGH (2): 92 packets
+    CRITICAL (3): 2 packets
+  ============================================
+
+
+  ============================================
+  ROOT BROKER (tier-2) STATISTICS
+  ============================================
+  Total Rx Packets  : 28
+  Total Rx Bytes    : 3096
+  From Local Brokers: 28
+  Emergencies       : 0
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 17 packets
+    HeartRate (ID=20): 9 packets
+    Temperature (ID=30): 2 packets
+  Per-Priority Breakdown:
+    LOW (0): 2 packets
+    MEDIUM (1): 9 packets
+    HIGH (2): 17 packets
+  ============================================
+
+  Total forwarded to root: 1002
+
+  Emergencies: 253 | Forwarded: 55440
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.5027 J
+    Consumed: 289.4973 J (72.4%)
+    Per sensor: avg=0.5525J  min=0.5411J  max=0.5636J
+    Dead sensors: 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 27.9741 J
+    Consumed: 72.0259 J (72.0%)
+    Per CH: avg=1.3987J  min=1.3874J  max=1.4085J
+    Dead CHs: 0
+  ============================================
+
+  Energy CSV: experiments/hier/exp_hier_lb2_200_r5.csv.energy.csv
+
+[DONE]
+
+[Set5] LB=2 Run=6 01:23
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | LocalBrokers: 2 | numLocalBrokers=2 | Total: 223
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/hier/exp_hier_lb2_200_r6.csv
+============================================================
+
+  Mobility: Static
+  Local Brokers: 2 (grid placement)
+  Clusters: min=5 max=18 avg=10.0
+  Topology: TWO-TIER HIERARCHY (2 local brokers + 1 root)
+  CH-to-LocalBroker assignment:
+    LocalBroker[0]: 12 CHs
+    LocalBroker[1]: 8 CHs
+  Sensors: 66 ECG + 66 HR + 68 Temp
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+============================================================
+  RESULTS  (sensor-origin flows only)
+============================================================
+  Flows: 3246 (dead: 364)
+  Tx: 794590 | Rx: 481229
+  PDR: 60.56%
+  Avg Delay: 143.70 ms
+  Throughput: 761.82 kbps
+  Output: experiments/hier/exp_hier_lb2_200_r6.csv
+============================================================
+
+    CH200 | Rx:3599 Emerg:20 Fwd:3572 QDrop:0 | Pri[H:2580 M:642 L:350] | Topics: ECG=2560 HeartRate=642 Temperature=350 EMERGENCY=20
+    CH201 | Rx:2704 Emerg:18 Fwd:2693 QDrop:0 | Pri[H:2279 M:414 L:0] | Topics: ECG=2261 HeartRate=414 EMERGENCY=18
+    CH202 | Rx:1806 Emerg:10 Fwd:1794 QDrop:0 | Pri[H:1394 M:253 L:147] | Topics: ECG=1384 HeartRate=253 Temperature=147 EMERGENCY=10
+    CH203 | Rx:3176 Emerg:16 Fwd:3154 QDrop:0 | Pri[H:2519 M:414 L:221] | Topics: ECG=2503 HeartRate=414 Temperature=221 EMERGENCY=16
+    CH204 | Rx:2581 Emerg:16 Fwd:2561 QDrop:0 | Pri[H:1017 M:1393 L:151] | Topics: ECG=1001 HeartRate=1393 Temperature=151 EMERGENCY=16
+    CH205 | Rx:4051 Emerg:19 Fwd:4037 QDrop:0 | Pri[H:3364 M:615 L:58] | Topics: ECG=3345 HeartRate=615 Temperature=58 EMERGENCY=19
+    CH206 | Rx:2331 Emerg:13 Fwd:2319 QDrop:0 | Pri[H:1650 M:669 L:0] | Topics: ECG=1637 HeartRate=669 EMERGENCY=13
+    CH207 | Rx:985 Emerg:1 Fwd:972 QDrop:0 | Pri[H:168 M:705 L:99] | Topics: ECG=167 HeartRate=705 Temperature=99 EMERGENCY=1
+    CH208 | Rx:3285 Emerg:12 Fwd:3265 QDrop:0 | Pri[H:2726 M:370 L:169] | Topics: ECG=2714 HeartRate=370 Temperature=169 EMERGENCY=12
+    CH209 | Rx:2746 Emerg:16 Fwd:2731 QDrop:0 | Pri[H:1716 M:986 L:29] | Topics: ECG=1700 HeartRate=986 Temperature=29 EMERGENCY=16
+    CH210 | Rx:4416 Emerg:29 Fwd:4391 QDrop:0 | Pri[H:3425 M:718 L:248] | Topics: ECG=3396 HeartRate=718 Temperature=248 EMERGENCY=29
+    CH211 | Rx:4212 Emerg:22 Fwd:4192 QDrop:0 | Pri[H:3421 M:650 L:121] | Topics: ECG=3399 HeartRate=650 Temperature=121 EMERGENCY=22
+    CH212 | Rx:3078 Emerg:12 Fwd:3065 QDrop:0 | Pri[H:2706 M:310 L:49] | Topics: ECG=2694 HeartRate=310 Temperature=49 EMERGENCY=12
+    CH213 | Rx:2769 Emerg:10 Fwd:2753 QDrop:0 | Pri[H:1726 M:873 L:154] | Topics: ECG=1716 HeartRate=873 Temperature=154 EMERGENCY=10
+    CH214 | Rx:2974 Emerg:15 Fwd:2963 QDrop:0 | Pri[H:2819 M:0 L:144] | Topics: ECG=2804 Temperature=144 EMERGENCY=15
+    CH215 | Rx:1393 Emerg:4 Fwd:1383 QDrop:0 | Pri[H:984 M:247 L:152] | Topics: ECG=980 HeartRate=247 Temperature=152 EMERGENCY=4
+    CH216 | Rx:2713 Emerg:8 Fwd:2698 QDrop:0 | Pri[H:2135 M:418 L:145] | Topics: ECG=2127 HeartRate=418 Temperature=145 EMERGENCY=8
+    CH217 | Rx:1852 Emerg:8 Fwd:1832 QDrop:0 | Pri[H:898 M:761 L:173] | Topics: ECG=890 HeartRate=761 Temperature=173 EMERGENCY=8
+    CH218 | Rx:3681 Emerg:18 Fwd:3670 QDrop:0 | Pri[H:3348 M:319 L:3] | Topics: ECG=3330 HeartRate=319 Temperature=3 EMERGENCY=18
+    CH219 | Rx:5871 Emerg:27 Fwd:5847 QDrop:0 | Pri[H:4697 M:999 L:151] | Topics: ECG=4670 HeartRate=999 Temperature=151 EMERGENCY=27
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 459
+  Total Rx Bytes    : 54830
+  From Gateways     : 459
+  Emergencies       : 1
+  Forwarded to Root : 459
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 335 packets
+    HeartRate (ID=20): 105 packets
+    Temperature (ID=30): 18 packets
+    EMERGENCY (ID=99): 1 packets
+  Per-Priority Breakdown:
+    LOW (0): 18 packets
+    MEDIUM (1): 105 packets
+    HIGH (2): 335 packets
+    CRITICAL (3): 1 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 639
+  Total Rx Bytes    : 74038
+  From Gateways     : 639
+  Emergencies       : 2
+  Forwarded to Root : 639
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 438 packets
+    HeartRate (ID=20): 155 packets
+    Temperature (ID=30): 44 packets
+    EMERGENCY (ID=99): 2 packets
+  Per-Priority Breakdown:
+    LOW (0): 44 packets
+    MEDIUM (1): 155 packets
+    HIGH (2): 438 packets
+    CRITICAL (3): 2 packets
+  ============================================
+
+
+  ============================================
+  ROOT BROKER (tier-2) STATISTICS
+  ============================================
+  Total Rx Packets  : 57
+  Total Rx Bytes    : 6394
+  From Local Brokers: 57
+  Emergencies       : 0
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 38 packets
+    HeartRate (ID=20): 11 packets
+    Temperature (ID=30): 8 packets
+  Per-Priority Breakdown:
+    LOW (0): 8 packets
+    MEDIUM (1): 11 packets
+    HIGH (2): 38 packets
+  ============================================
+
+  Total forwarded to root: 1098
+
+  Emergencies: 294 | Forwarded: 59892
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.4605 J
+    Consumed: 289.5395 J (72.4%)
+    Per sensor: avg=0.5523J  min=0.5410J  max=0.5644J
+    Dead sensors: 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 27.9681 J
+    Consumed: 72.0319 J (72.0%)
+    Per CH: avg=1.3984J  min=1.3870J  max=1.4116J
+    Dead CHs: 0
+  ============================================
+
+  Energy CSV: experiments/hier/exp_hier_lb2_200_r6.csv.energy.csv
+
+[DONE]
+
+[Set5] LB=2 Run=7 03:41
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | LocalBrokers: 2 | numLocalBrokers=2 | Total: 223
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/hier/exp_hier_lb2_200_r7.csv
+============================================================
+
+  Mobility: Static
+  Local Brokers: 2 (grid placement)
+  Clusters: min=5 max=13 avg=10.0
+  Topology: TWO-TIER HIERARCHY (2 local brokers + 1 root)
+  CH-to-LocalBroker assignment:
+    LocalBroker[0]: 12 CHs
+    LocalBroker[1]: 8 CHs
+  Sensors: 66 ECG + 66 HR + 68 Temp
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+============================================================
+  RESULTS  (sensor-origin flows only)
+============================================================
+  Flows: 3354 (dead: 395)
+  Tx: 846772 | Rx: 508829
+  PDR: 60.09%
+  Avg Delay: 155.97 ms
+  Throughput: 785.95 kbps
+  Output: experiments/hier/exp_hier_lb2_200_r7.csv
+============================================================
+
+    CH200 | Rx:1022 Emerg:6 Fwd:1014 QDrop:0 | Pri[H:695 M:229 L:90] | Topics: ECG=689 HeartRate=229 Temperature=90 EMERGENCY=6
+    CH201 | Rx:1326 Emerg:5 Fwd:1308 QDrop:0 | Pri[H:111 M:979 L:218] | Topics: ECG=106 HeartRate=979 Temperature=218 EMERGENCY=5
+    CH202 | Rx:5134 Emerg:22 Fwd:5116 QDrop:0 | Pri[H:3876 M:1173 L:67] | Topics: ECG=3854 HeartRate=1173 Temperature=67 EMERGENCY=22
+    CH203 | Rx:5320 Emerg:28 Fwd:5299 QDrop:0 | Pri[H:4285 M:869 L:145] | Topics: ECG=4257 HeartRate=869 Temperature=145 EMERGENCY=28
+    CH204 | Rx:2180 Emerg:8 Fwd:2171 QDrop:0 | Pri[H:1871 M:248 L:52] | Topics: ECG=1863 HeartRate=248 Temperature=52 EMERGENCY=8
+    CH205 | Rx:3340 Emerg:12 Fwd:3320 QDrop:0 | Pri[H:2615 M:598 L:107] | Topics: ECG=2603 HeartRate=598 Temperature=107 EMERGENCY=12
+    CH206 | Rx:1392 Emerg:5 Fwd:1379 QDrop:0 | Pri[H:1059 M:186 L:134] | Topics: ECG=1054 HeartRate=186 Temperature=134 EMERGENCY=5
+    CH207 | Rx:2716 Emerg:18 Fwd:2701 QDrop:0 | Pri[H:1875 M:782 L:44] | Topics: ECG=1857 HeartRate=782 Temperature=44 EMERGENCY=18
+    CH208 | Rx:2812 Emerg:7 Fwd:2794 QDrop:0 | Pri[H:2018 M:643 L:133] | Topics: ECG=2011 HeartRate=643 Temperature=133 EMERGENCY=7
+    CH209 | Rx:2725 Emerg:13 Fwd:2715 QDrop:0 | Pri[H:2556 M:0 L:159] | Topics: ECG=2543 Temperature=159 EMERGENCY=13
+    CH210 | Rx:4278 Emerg:23 Fwd:4265 QDrop:0 | Pri[H:3997 M:218 L:50] | Topics: ECG=3974 HeartRate=218 Temperature=50 EMERGENCY=23
+    CH211 | Rx:915 Emerg:4 Fwd:901 QDrop:0 | Pri[H:72 M:750 L:79] | Topics: ECG=68 HeartRate=750 Temperature=79 EMERGENCY=4
+    CH212 | Rx:1527 Emerg:4 Fwd:1516 QDrop:0 | Pri[H:1274 M:194 L:48] | Topics: ECG=1270 HeartRate=194 Temperature=48 EMERGENCY=4
+    CH213 | Rx:2163 Emerg:10 Fwd:2156 QDrop:0 | Pri[H:2028 M:14 L:114] | Topics: ECG=2018 HeartRate=14 Temperature=114 EMERGENCY=10
+    CH214 | Rx:3290 Emerg:20 Fwd:3272 QDrop:0 | Pri[H:2474 M:666 L:132] | Topics: ECG=2454 HeartRate=666 Temperature=132 EMERGENCY=20
+    CH215 | Rx:3043 Emerg:14 Fwd:3025 QDrop:0 | Pri[H:2236 M:559 L:230] | Topics: ECG=2222 HeartRate=559 Temperature=230 EMERGENCY=14
+    CH216 | Rx:2375 Emerg:14 Fwd:2357 QDrop:0 | Pri[H:1363 M:893 L:101] | Topics: ECG=1349 HeartRate=893 Temperature=101 EMERGENCY=14
+    CH217 | Rx:3322 Emerg:10 Fwd:3302 QDrop:0 | Pri[H:2349 M:719 L:234] | Topics: ECG=2339 HeartRate=719 Temperature=234 EMERGENCY=10
+    CH218 | Rx:5357 Emerg:22 Fwd:5336 QDrop:0 | Pri[H:4836 M:304 L:196] | Topics: ECG=4814 HeartRate=304 Temperature=196 EMERGENCY=22
+    CH219 | Rx:2799 Emerg:15 Fwd:2785 QDrop:0 | Pri[H:2138 M:496 L:151] | Topics: ECG=2123 HeartRate=496 Temperature=151 EMERGENCY=15
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 349
+  Total Rx Bytes    : 41794
+  From Gateways     : 349
+  Emergencies       : 1
+  Forwarded to Root : 349
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 258 packets
+    HeartRate (ID=20): 71 packets
+    Temperature (ID=30): 19 packets
+    EMERGENCY (ID=99): 1 packets
+  Per-Priority Breakdown:
+    LOW (0): 19 packets
+    MEDIUM (1): 71 packets
+    HIGH (2): 258 packets
+    CRITICAL (3): 1 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 467
+  Total Rx Bytes    : 55422
+  From Gateways     : 467
+  Emergencies       : 4
+  Forwarded to Root : 467
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 339 packets
+    HeartRate (ID=20): 95 packets
+    Temperature (ID=30): 29 packets
+    EMERGENCY (ID=99): 4 packets
+  Per-Priority Breakdown:
+    LOW (0): 29 packets
+    MEDIUM (1): 95 packets
+    HIGH (2): 339 packets
+    CRITICAL (3): 4 packets
+  ============================================
+
+
+  ============================================
+  ROOT BROKER (tier-2) STATISTICS
+  ============================================
+  Total Rx Packets  : 156
+  Total Rx Bytes    : 18904
+  From Local Brokers: 156
+  Emergencies       : 0
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 121 packets
+    HeartRate (ID=20): 23 packets
+    Temperature (ID=30): 12 packets
+  Per-Priority Breakdown:
+    LOW (0): 12 packets
+    MEDIUM (1): 23 packets
+    HIGH (2): 121 packets
+  ============================================
+
+  Total forwarded to root: 816
+
+  Emergencies: 260 | Forwarded: 56732
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.2637 J
+    Consumed: 289.7363 J (72.4%)
+    Per sensor: avg=0.5513J  min=0.5409J  max=0.5633J
+    Dead sensors: 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 28.0060 J
+    Consumed: 71.9940 J (72.0%)
+    Per CH: avg=1.4003J  min=1.3896J  max=1.4099J
+    Dead CHs: 0
+  ============================================
+
+  Energy CSV: experiments/hier/exp_hier_lb2_200_r7.csv.energy.csv
+
+[DONE]
+
+[Set5] LB=2 Run=8 06:10
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | LocalBrokers: 2 | numLocalBrokers=2 | Total: 223
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/hier/exp_hier_lb2_200_r8.csv
+============================================================
+
+  Mobility: Static
+  Local Brokers: 2 (grid placement)
+  Clusters: min=3 max=19 avg=10.0
+  Topology: TWO-TIER HIERARCHY (2 local brokers + 1 root)
+  CH-to-LocalBroker assignment:
+    LocalBroker[0]: 12 CHs
+    LocalBroker[1]: 8 CHs
+  Sensors: 66 ECG + 66 HR + 68 Temp
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+============================================================
+  RESULTS  (sensor-origin flows only)
+============================================================
+  Flows: 3518 (dead: 542)
+  Tx: 856494 | Rx: 500677
+  PDR: 58.46%
+  Avg Delay: 161.11 ms
+  Throughput: 785.63 kbps
+  Output: experiments/hier/exp_hier_lb2_200_r8.csv
+============================================================
+
+    CH200 | Rx:2431 Emerg:10 Fwd:2415 QDrop:0 | Pri[H:1926 M:247 L:242] | Topics: ECG=1916 HeartRate=247 Temperature=242 EMERGENCY=10
+    CH201 | Rx:2509 Emerg:16 Fwd:2493 QDrop:0 | Pri[H:1737 M:574 L:182] | Topics: ECG=1721 HeartRate=574 Temperature=182 EMERGENCY=16
+    CH202 | Rx:1358 Emerg:5 Fwd:1348 QDrop:0 | Pri[H:989 M:241 L:118] | Topics: ECG=984 HeartRate=241 Temperature=118 EMERGENCY=5
+    CH203 | Rx:2075 Emerg:17 Fwd:2059 QDrop:0 | Pri[H:1221 M:645 L:193] | Topics: ECG=1204 HeartRate=645 Temperature=193 EMERGENCY=17
+    CH204 | Rx:352 Emerg:1 Fwd:346 QDrop:0 | Pri[H:1 M:245 L:100] | Topics: HeartRate=245 Temperature=100 EMERGENCY=1
+    CH205 | Rx:3982 Emerg:25 Fwd:3964 QDrop:0 | Pri[H:3559 M:260 L:145] | Topics: ECG=3534 HeartRate=260 Temperature=145 EMERGENCY=25
+    CH206 | Rx:2827 Emerg:16 Fwd:2809 QDrop:0 | Pri[H:1845 M:797 L:167] | Topics: ECG=1829 HeartRate=797 Temperature=167 EMERGENCY=16
+    CH207 | Rx:4113 Emerg:30 Fwd:4095 QDrop:0 | Pri[H:3423 M:582 L:90] | Topics: ECG=3393 HeartRate=582 Temperature=90 EMERGENCY=30
+    CH208 | Rx:3442 Emerg:11 Fwd:3426 QDrop:0 | Pri[H:2344 M:1023 L:59] | Topics: ECG=2333 HeartRate=1023 Temperature=59 EMERGENCY=11
+    CH209 | Rx:5640 Emerg:26 Fwd:5621 QDrop:0 | Pri[H:5063 M:463 L:95] | Topics: ECG=5037 HeartRate=463 Temperature=95 EMERGENCY=26
+    CH210 | Rx:2085 Emerg:11 Fwd:2069 QDrop:0 | Pri[H:805 M:1218 L:46] | Topics: ECG=794 HeartRate=1218 Temperature=46 EMERGENCY=11
+    CH211 | Rx:3446 Emerg:16 Fwd:3431 QDrop:0 | Pri[H:3076 M:281 L:74] | Topics: ECG=3060 HeartRate=281 Temperature=74 EMERGENCY=16
+    CH212 | Rx:1804 Emerg:8 Fwd:1791 QDrop:0 | Pri[H:882 M:799 L:110] | Topics: ECG=874 HeartRate=799 Temperature=110 EMERGENCY=8
+    CH213 | Rx:1452 Emerg:9 Fwd:1444 QDrop:0 | Pri[H:1017 M:390 L:37] | Topics: ECG=1008 HeartRate=390 Temperature=37 EMERGENCY=9
+    CH214 | Rx:4598 Emerg:16 Fwd:4580 QDrop:0 | Pri[H:4312 M:128 L:140] | Topics: ECG=4296 HeartRate=128 Temperature=140 EMERGENCY=16
+    CH215 | Rx:3600 Emerg:18 Fwd:3582 QDrop:0 | Pri[H:3032 M:404 L:146] | Topics: ECG=3014 HeartRate=404 Temperature=146 EMERGENCY=18
+    CH216 | Rx:4861 Emerg:27 Fwd:4844 QDrop:0 | Pri[H:3828 M:968 L:48] | Topics: ECG=3801 HeartRate=968 Temperature=48 EMERGENCY=27
+    CH217 | Rx:2543 Emerg:13 Fwd:2530 QDrop:0 | Pri[H:1794 M:626 L:110] | Topics: ECG=1781 HeartRate=626 Temperature=110 EMERGENCY=13
+    CH218 | Rx:2874 Emerg:8 Fwd:2862 QDrop:0 | Pri[H:2179 M:550 L:133] | Topics: ECG=2171 HeartRate=550 Temperature=133 EMERGENCY=8
+    CH219 | Rx:3278 Emerg:14 Fwd:3265 QDrop:0 | Pri[H:2677 M:486 L:102] | Topics: ECG=2663 HeartRate=486 Temperature=102 EMERGENCY=14
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 257
+  Total Rx Bytes    : 31082
+  From Gateways     : 257
+  Emergencies       : 0
+  Forwarded to Root : 257
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 195 packets
+    HeartRate (ID=20): 49 packets
+    Temperature (ID=30): 13 packets
+  Per-Priority Breakdown:
+    LOW (0): 13 packets
+    MEDIUM (1): 49 packets
+    HIGH (2): 195 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 571
+  Total Rx Bytes    : 70734
+  From Gateways     : 571
+  Emergencies       : 3
+  Forwarded to Root : 571
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 448 packets
+    HeartRate (ID=20): 108 packets
+    Temperature (ID=30): 12 packets
+    EMERGENCY (ID=99): 3 packets
+  Per-Priority Breakdown:
+    LOW (0): 12 packets
+    MEDIUM (1): 108 packets
+    HIGH (2): 448 packets
+    CRITICAL (3): 3 packets
+  ============================================
+
+
+  ============================================
+  ROOT BROKER (tier-2) STATISTICS
+  ============================================
+  Total Rx Packets  : 17
+  Total Rx Bytes    : 2154
+  From Local Brokers: 17
+  Emergencies       : 1
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 13 packets
+    HeartRate (ID=20): 3 packets
+    EMERGENCY (ID=99): 1 packets
+  Per-Priority Breakdown:
+    MEDIUM (1): 3 packets
+    HIGH (2): 13 packets
+    CRITICAL (3): 1 packets
+  ============================================
+
+  Total forwarded to root: 828
+
+  Emergencies: 297 | Forwarded: 58974
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.4661 J
+    Consumed: 289.5339 J (72.4%)
+    Per sensor: avg=0.5523J  min=0.5404J  max=0.5651J
+    Dead sensors: 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 27.9960 J
+    Consumed: 72.0040 J (72.0%)
+    Per CH: avg=1.3998J  min=1.3900J  max=1.4094J
+    Dead CHs: 0
+  ============================================
+
+  Energy CSV: experiments/hier/exp_hier_lb2_200_r8.csv.energy.csv
+
+[DONE]
+
+[Set5] LB=2 Run=9 08:35
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | LocalBrokers: 2 | numLocalBrokers=2 | Total: 223
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/hier/exp_hier_lb2_200_r9.csv
+============================================================
+
+  Mobility: Static
+  Local Brokers: 2 (grid placement)
+  Clusters: min=6 max=19 avg=10.0
+  Topology: TWO-TIER HIERARCHY (2 local brokers + 1 root)
+  CH-to-LocalBroker assignment:
+    LocalBroker[0]: 12 CHs
+    LocalBroker[1]: 8 CHs
+  Sensors: 66 ECG + 66 HR + 68 Temp
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+============================================================
+  RESULTS  (sensor-origin flows only)
+============================================================
+  Flows: 3639 (dead: 501)
+  Tx: 842499 | Rx: 484210
+  PDR: 57.47%
+  Avg Delay: 171.24 ms
+  Throughput: 757.74 kbps
+  Output: experiments/hier/exp_hier_lb2_200_r9.csv
+============================================================
+
+    CH200 | Rx:4231 Emerg:20 Fwd:4209 QDrop:0 | Pri[H:3235 M:756 L:218] | Topics: ECG=3215 HeartRate=756 Temperature=218 EMERGENCY=20
+    CH201 | Rx:3004 Emerg:13 Fwd:2991 QDrop:0 | Pri[H:2567 M:289 L:135] | Topics: ECG=2554 HeartRate=289 Temperature=135 EMERGENCY=13
+    CH202 | Rx:1761 Emerg:7 Fwd:1749 QDrop:0 | Pri[H:1082 M:589 L:78] | Topics: ECG=1075 HeartRate=589 Temperature=78 EMERGENCY=7
+    CH203 | Rx:623 Emerg:1 Fwd:611 QDrop:0 | Pri[H:1 M:468 L:142] | Topics: HeartRate=468 Temperature=142 EMERGENCY=1
+    CH204 | Rx:1146 Emerg:2 Fwd:1134 QDrop:0 | Pri[H:294 M:690 L:150] | Topics: ECG=292 HeartRate=690 Temperature=150 EMERGENCY=2
+    CH205 | Rx:5592 Emerg:34 Fwd:5570 QDrop:0 | Pri[H:4871 M:480 L:219] | Topics: ECG=4837 HeartRate=480 Temperature=219 EMERGENCY=34
+    CH206 | Rx:2309 Emerg:10 Fwd:2297 QDrop:0 | Pri[H:1809 M:413 L:75] | Topics: ECG=1799 HeartRate=413 Temperature=75 EMERGENCY=10
+    CH207 | Rx:1012 Emerg:6 Fwd:996 QDrop:0 | Pri[H:6 M:853 L:137] | Topics: HeartRate=853 Temperature=137 EMERGENCY=6
+    CH208 | Rx:3244 Emerg:13 Fwd:3234 QDrop:0 | Pri[H:2857 M:345 L:32] | Topics: ECG=2844 HeartRate=345 Temperature=32 EMERGENCY=13
+    CH209 | Rx:1417 Emerg:7 Fwd:1407 QDrop:0 | Pri[H:971 M:271 L:165] | Topics: ECG=964 HeartRate=271 Temperature=165 EMERGENCY=7
+    CH210 | Rx:2195 Emerg:18 Fwd:2181 QDrop:0 | Pri[H:1079 M:926 L:176] | Topics: ECG=1061 HeartRate=926 Temperature=176 EMERGENCY=18
+    CH211 | Rx:4065 Emerg:20 Fwd:4050 QDrop:0 | Pri[H:3530 M:515 L:5] | Topics: ECG=3510 HeartRate=515 Temperature=5 EMERGENCY=20
+    CH212 | Rx:5584 Emerg:21 Fwd:5564 QDrop:0 | Pri[H:4834 M:674 L:56] | Topics: ECG=4813 HeartRate=674 Temperature=56 EMERGENCY=21
+    CH213 | Rx:1803 Emerg:7 Fwd:1799 QDrop:0 | Pri[H:1717 M:0 L:82] | Topics: ECG=1710 Temperature=82 EMERGENCY=7
+    CH214 | Rx:2336 Emerg:9 Fwd:2323 QDrop:0 | Pri[H:1190 M:1096 L:37] | Topics: ECG=1181 HeartRate=1096 Temperature=37 EMERGENCY=9
+    CH215 | Rx:2235 Emerg:11 Fwd:2220 QDrop:0 | Pri[H:1005 M:1083 L:132] | Topics: ECG=994 HeartRate=1083 Temperature=132 EMERGENCY=11
+    CH216 | Rx:3224 Emerg:13 Fwd:3208 QDrop:0 | Pri[H:2671 M:434 L:103] | Topics: ECG=2658 HeartRate=434 Temperature=103 EMERGENCY=13
+    CH217 | Rx:3473 Emerg:15 Fwd:3461 QDrop:0 | Pri[H:3134 M:228 L:99] | Topics: ECG=3119 HeartRate=228 Temperature=99 EMERGENCY=15
+    CH218 | Rx:4513 Emerg:15 Fwd:4492 QDrop:0 | Pri[H:3058 M:1328 L:106] | Topics: ECG=3043 HeartRate=1328 Temperature=106 EMERGENCY=15
+    CH219 | Rx:3471 Emerg:23 Fwd:3460 QDrop:0 | Pri[H:3133 M:234 L:93] | Topics: ECG=3110 HeartRate=234 Temperature=93 EMERGENCY=23
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 115
+  Total Rx Bytes    : 13758
+  From Gateways     : 115
+  Emergencies       : 0
+  Forwarded to Root : 115
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 85 packets
+    HeartRate (ID=20): 24 packets
+    Temperature (ID=30): 6 packets
+  Per-Priority Breakdown:
+    LOW (0): 6 packets
+    MEDIUM (1): 24 packets
+    HIGH (2): 85 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 521
+  Total Rx Bytes    : 64378
+  From Gateways     : 521
+  Emergencies       : 0
+  Forwarded to Root : 521
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 417 packets
+    HeartRate (ID=20): 77 packets
+    Temperature (ID=30): 27 packets
+  Per-Priority Breakdown:
+    LOW (0): 27 packets
+    MEDIUM (1): 77 packets
+    HIGH (2): 417 packets
+  ============================================
+
+
+  ============================================
+  ROOT BROKER (tier-2) STATISTICS
+  ============================================
+  Total Rx Packets  : 47
+  Total Rx Bytes    : 5430
+  From Local Brokers: 47
+  Emergencies       : 0
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 32 packets
+    HeartRate (ID=20): 12 packets
+    Temperature (ID=30): 3 packets
+  Per-Priority Breakdown:
+    LOW (0): 3 packets
+    MEDIUM (1): 12 packets
+    HIGH (2): 32 packets
+  ============================================
+
+  Total forwarded to root: 636
+
+  Emergencies: 265 | Forwarded: 56956
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.4983 J
+    Consumed: 289.5017 J (72.4%)
+    Per sensor: avg=0.5525J  min=0.5412J  max=0.5643J
+    Dead sensors: 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 27.9632 J
+    Consumed: 72.0368 J (72.0%)
+    Per CH: avg=1.3982J  min=1.3873J  max=1.4076J
+    Dead CHs: 0
+  ============================================
+
+  Energy CSV: experiments/hier/exp_hier_lb2_200_r9.csv.energy.csv
+
+[DONE]
+
+[Set5] LB=2 Run=10 11:00
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | LocalBrokers: 2 | numLocalBrokers=2 | Total: 223
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/hier/exp_hier_lb2_200_r10.csv
+============================================================
+
+  Mobility: Static
+  Local Brokers: 2 (grid placement)
+  Clusters: min=7 max=13 avg=10.0
+  Topology: TWO-TIER HIERARCHY (2 local brokers + 1 root)
+  CH-to-LocalBroker assignment:
+    LocalBroker[0]: 12 CHs
+    LocalBroker[1]: 8 CHs
+  Sensors: 66 ECG + 66 HR + 68 Temp
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+============================================================
+  RESULTS  (sensor-origin flows only)
+============================================================
+  Flows: 3355 (dead: 384)
+  Tx: 829747 | Rx: 492727
+  PDR: 59.38%
+  Avg Delay: 150.86 ms
+  Throughput: 770.05 kbps
+  Output: experiments/hier/exp_hier_lb2_200_r10.csv
+============================================================
+
+    CH200 | Rx:4394 Emerg:22 Fwd:4371 QDrop:0 | Pri[H:3160 M:970 L:241] | Topics: ECG=3138 HeartRate=970 Temperature=241 EMERGENCY=22
+    CH201 | Rx:3297 Emerg:11 Fwd:3286 QDrop:0 | Pri[H:2991 M:222 L:73] | Topics: ECG=2980 HeartRate=222 Temperature=73 EMERGENCY=11
+    CH202 | Rx:3989 Emerg:20 Fwd:3971 QDrop:0 | Pri[H:3405 M:414 L:152] | Topics: ECG=3385 HeartRate=414 Temperature=152 EMERGENCY=20
+    CH203 | Rx:2528 Emerg:17 Fwd:2513 QDrop:0 | Pri[H:1563 M:832 L:118] | Topics: ECG=1546 HeartRate=832 Temperature=118 EMERGENCY=17
+    CH204 | Rx:3105 Emerg:17 Fwd:3086 QDrop:0 | Pri[H:2206 M:627 L:253] | Topics: ECG=2189 HeartRate=627 Temperature=253 EMERGENCY=17
+    CH205 | Rx:2855 Emerg:18 Fwd:2842 QDrop:0 | Pri[H:2206 M:567 L:69] | Topics: ECG=2188 HeartRate=567 Temperature=69 EMERGENCY=18
+    CH206 | Rx:990 Emerg:5 Fwd:982 QDrop:0 | Pri[H:689 M:245 L:48] | Topics: ECG=684 HeartRate=245 Temperature=48 EMERGENCY=5
+    CH207 | Rx:1011 Emerg:4 Fwd:1005 QDrop:0 | Pri[H:401 M:560 L:44] | Topics: ECG=397 HeartRate=560 Temperature=44 EMERGENCY=4
+    CH208 | Rx:433 Emerg:1 Fwd:423 QDrop:0 | Pri[H:1 M:240 L:182] | Topics: HeartRate=240 Temperature=182 EMERGENCY=1
+    CH209 | Rx:4333 Emerg:20 Fwd:4314 QDrop:0 | Pri[H:3516 M:636 L:162] | Topics: ECG=3496 HeartRate=636 Temperature=162 EMERGENCY=20
+    CH210 | Rx:3826 Emerg:18 Fwd:3809 QDrop:0 | Pri[H:2965 M:794 L:50] | Topics: ECG=2947 HeartRate=794 Temperature=50 EMERGENCY=18
+    CH211 | Rx:3035 Emerg:15 Fwd:3021 QDrop:0 | Pri[H:2623 M:233 L:165] | Topics: ECG=2608 HeartRate=233 Temperature=165 EMERGENCY=15
+    CH212 | Rx:3553 Emerg:16 Fwd:3538 QDrop:0 | Pri[H:3186 M:220 L:132] | Topics: ECG=3170 HeartRate=220 Temperature=132 EMERGENCY=16
+    CH213 | Rx:3372 Emerg:19 Fwd:3354 QDrop:0 | Pri[H:2649 M:454 L:251] | Topics: ECG=2630 HeartRate=454 Temperature=251 EMERGENCY=19
+    CH214 | Rx:2382 Emerg:6 Fwd:2367 QDrop:0 | Pri[H:1799 M:418 L:150] | Topics: ECG=1793 HeartRate=418 Temperature=150 EMERGENCY=6
+    CH215 | Rx:3308 Emerg:14 Fwd:3290 QDrop:0 | Pri[H:2111 M:1131 L:48] | Topics: ECG=2097 HeartRate=1131 Temperature=48 EMERGENCY=14
+    CH216 | Rx:2859 Emerg:11 Fwd:2847 QDrop:0 | Pri[H:2254 M:546 L:47] | Topics: ECG=2243 HeartRate=546 Temperature=47 EMERGENCY=11
+    CH217 | Rx:1371 Emerg:8 Fwd:1361 QDrop:0 | Pri[H:707 M:553 L:101] | Topics: ECG=699 HeartRate=553 Temperature=101 EMERGENCY=8
+    CH218 | Rx:4359 Emerg:23 Fwd:4342 QDrop:0 | Pri[H:3788 M:455 L:99] | Topics: ECG=3765 HeartRate=455 Temperature=99 EMERGENCY=23
+    CH219 | Rx:3221 Emerg:16 Fwd:3200 QDrop:0 | Pri[H:1990 M:995 L:215] | Topics: ECG=1974 HeartRate=995 Temperature=215 EMERGENCY=16
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 296
+  Total Rx Bytes    : 35344
+  From Gateways     : 296
+  Emergencies       : 2
+  Forwarded to Root : 296
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 220 packets
+    HeartRate (ID=20): 50 packets
+    Temperature (ID=30): 24 packets
+    EMERGENCY (ID=99): 2 packets
+  Per-Priority Breakdown:
+    LOW (0): 24 packets
+    MEDIUM (1): 50 packets
+    HIGH (2): 220 packets
+    CRITICAL (3): 2 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 529
+  Total Rx Bytes    : 60874
+  From Gateways     : 529
+  Emergencies       : 3
+  Forwarded to Root : 529
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 368 packets
+    HeartRate (ID=20): 98 packets
+    Temperature (ID=30): 60 packets
+    EMERGENCY (ID=99): 3 packets
+  Per-Priority Breakdown:
+    LOW (0): 60 packets
+    MEDIUM (1): 98 packets
+    HIGH (2): 368 packets
+    CRITICAL (3): 3 packets
+  ============================================
+
+
+  ============================================
+  ROOT BROKER (tier-2) STATISTICS
+  ============================================
+  Total Rx Packets  : 45
+  Total Rx Bytes    : 5474
+  From Local Brokers: 45
+  Emergencies       : 0
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 36 packets
+    HeartRate (ID=20): 4 packets
+    Temperature (ID=30): 5 packets
+  Per-Priority Breakdown:
+    LOW (0): 5 packets
+    MEDIUM (1): 4 packets
+    HIGH (2): 36 packets
+  ============================================
+
+  Total forwarded to root: 825
+
+  Emergencies: 281 | Forwarded: 57922
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.5790 J
+    Consumed: 289.4210 J (72.4%)
+    Per sensor: avg=0.5529J  min=0.5401J  max=0.5642J
+    Dead sensors: 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 28.0071 J
+    Consumed: 71.9929 J (72.0%)
+    Per CH: avg=1.4004J  min=1.3908J  max=1.4092J
+    Dead CHs: 0
+  ============================================
+
+  Energy CSV: experiments/hier/exp_hier_lb2_200_r10.csv.energy.csv
+
+[DONE]
+
+[OK] LB=2 done at Wed Apr 15 13:28:04 +03 2026
+[Set5] LB=4 Run=1 13:28
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | LocalBrokers: 4 | numLocalBrokers=4 | Total: 225
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/hier/exp_hier_lb4_200_r1.csv
+============================================================
+
+  Mobility: Static
+  Local Brokers: 4 (grid placement)
+  Clusters: min=3 max=15 avg=10.0
+  Topology: TWO-TIER HIERARCHY (4 local brokers + 1 root)
+  CH-to-LocalBroker assignment:
+    LocalBroker[0]: 6 CHs
+    LocalBroker[1]: 4 CHs
+    LocalBroker[2]: 6 CHs
+    LocalBroker[3]: 4 CHs
+  Sensors: 66 ECG + 66 HR + 68 Temp
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+============================================================
+  RESULTS  (sensor-origin flows only)
+============================================================
+  Flows: 3395 (dead: 352)
+  Tx: 660171 | Rx: 414432
+  PDR: 62.78%
+  Avg Delay: 116.92 ms
+  Throughput: 683.92 kbps
+  Output: experiments/hier/exp_hier_lb4_200_r1.csv
+============================================================
+
+    CH200 | Rx:4603 Emerg:18 Fwd:4575 QDrop:0 | Pri[H:3586 M:702 L:287] | Topics: ECG=3568 HeartRate=702 Temperature=287 EMERGENCY=18
+    CH201 | Rx:2186 Emerg:13 Fwd:2173 QDrop:0 | Pri[H:1183 M:982 L:8] | Topics: ECG=1170 HeartRate=982 Temperature=8 EMERGENCY=13
+    CH202 | Rx:1430 Emerg:8 Fwd:1410 QDrop:0 | Pri[H:551 M:580 L:279] | Topics: ECG=543 HeartRate=580 Temperature=279 EMERGENCY=8
+    CH203 | Rx:4691 Emerg:24 Fwd:4672 QDrop:0 | Pri[H:4455 M:0 L:217] | Topics: ECG=4431 Temperature=217 EMERGENCY=24
+    CH204 | Rx:3232 Emerg:14 Fwd:3212 QDrop:0 | Pri[H:2026 M:992 L:194] | Topics: ECG=2012 HeartRate=992 Temperature=194 EMERGENCY=14
+    CH205 | Rx:2821 Emerg:11 Fwd:2802 QDrop:0 | Pri[H:1629 M:1051 L:122] | Topics: ECG=1618 HeartRate=1051 Temperature=122 EMERGENCY=11
+    CH206 | Rx:3050 Emerg:16 Fwd:3033 QDrop:0 | Pri[H:2382 M:459 L:192] | Topics: ECG=2366 HeartRate=459 Temperature=192 EMERGENCY=16
+    CH207 | Rx:1536 Emerg:12 Fwd:1524 QDrop:0 | Pri[H:1041 M:318 L:165] | Topics: ECG=1029 HeartRate=318 Temperature=165 EMERGENCY=12
+    CH208 | Rx:2391 Emerg:11 Fwd:2372 QDrop:0 | Pri[H:759 M:1587 L:26] | Topics: ECG=748 HeartRate=1587 Temperature=26 EMERGENCY=11
+    CH209 | Rx:3217 Emerg:16 Fwd:3202 QDrop:0 | Pri[H:2641 M:413 L:148] | Topics: ECG=2625 HeartRate=413 Temperature=148 EMERGENCY=16
+    CH210 | Rx:2203 Emerg:19 Fwd:2187 QDrop:0 | Pri[H:963 M:1078 L:146] | Topics: ECG=944 HeartRate=1078 Temperature=146 EMERGENCY=19
+    CH211 | Rx:3212 Emerg:13 Fwd:3191 QDrop:0 | Pri[H:2314 M:666 L:211] | Topics: ECG=2301 HeartRate=666 Temperature=211 EMERGENCY=13
+    CH212 | Rx:3030 Emerg:18 Fwd:3015 QDrop:0 | Pri[H:2655 M:229 L:131] | Topics: ECG=2637 HeartRate=229 Temperature=131 EMERGENCY=18
+    CH213 | Rx:3023 Emerg:18 Fwd:3006 QDrop:0 | Pri[H:2237 M:674 L:95] | Topics: ECG=2219 HeartRate=674 Temperature=95 EMERGENCY=18
+    CH214 | Rx:2672 Emerg:17 Fwd:2658 QDrop:0 | Pri[H:2068 M:505 L:85] | Topics: ECG=2051 HeartRate=505 Temperature=85 EMERGENCY=17
+    CH215 | Rx:2365 Emerg:13 Fwd:2357 QDrop:0 | Pri[H:2048 M:258 L:51] | Topics: ECG=2035 HeartRate=258 Temperature=51 EMERGENCY=13
+    CH216 | Rx:4275 Emerg:26 Fwd:4262 QDrop:0 | Pri[H:3560 M:666 L:36] | Topics: ECG=3534 HeartRate=666 Temperature=36 EMERGENCY=26
+    CH217 | Rx:1211 Emerg:2 Fwd:1205 QDrop:0 | Pri[H:1004 M:149 L:52] | Topics: ECG=1002 HeartRate=149 Temperature=52 EMERGENCY=2
+    CH218 | Rx:4091 Emerg:28 Fwd:4074 QDrop:0 | Pri[H:3443 M:482 L:149] | Topics: ECG=3415 HeartRate=482 Temperature=149 EMERGENCY=28
+    CH219 | Rx:7333 Emerg:42 Fwd:7306 QDrop:0 | Pri[H:5888 M:1341 L:77] | Topics: ECG=5846 HeartRate=1341 Temperature=77 EMERGENCY=42
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 1161
+  Total Rx Bytes    : 127418
+  From Gateways     : 1161
+  Emergencies       : 4
+  Forwarded to Root : 1161
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 671 packets
+    HeartRate (ID=20): 433 packets
+    Temperature (ID=30): 53 packets
+    EMERGENCY (ID=99): 4 packets
+  Per-Priority Breakdown:
+    LOW (0): 53 packets
+    MEDIUM (1): 433 packets
+    HIGH (2): 671 packets
+    CRITICAL (3): 4 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 1180
+  Total Rx Bytes    : 128856
+  From Gateways     : 1180
+  Emergencies       : 5
+  Forwarded to Root : 1180
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 679 packets
+    HeartRate (ID=20): 432 packets
+    Temperature (ID=30): 64 packets
+    EMERGENCY (ID=99): 5 packets
+  Per-Priority Breakdown:
+    LOW (0): 64 packets
+    MEDIUM (1): 432 packets
+    HIGH (2): 679 packets
+    CRITICAL (3): 5 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 2322
+  Total Rx Bytes    : 273876
+  From Gateways     : 2322
+  Emergencies       : 16
+  Forwarded to Root : 2322
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 1628 packets
+    HeartRate (ID=20): 593 packets
+    Temperature (ID=30): 85 packets
+    EMERGENCY (ID=99): 16 packets
+  Per-Priority Breakdown:
+    LOW (0): 85 packets
+    MEDIUM (1): 593 packets
+    HIGH (2): 1628 packets
+    CRITICAL (3): 16 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 2874
+  Total Rx Bytes    : 354180
+  From Gateways     : 2874
+  Emergencies       : 21
+  Forwarded to Root : 2874
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 2231 packets
+    HeartRate (ID=20): 552 packets
+    Temperature (ID=30): 70 packets
+    EMERGENCY (ID=99): 21 packets
+  Per-Priority Breakdown:
+    LOW (0): 70 packets
+    MEDIUM (1): 552 packets
+    HIGH (2): 2231 packets
+    CRITICAL (3): 21 packets
+  ============================================
+
+
+  ============================================
+  ROOT BROKER (tier-2) STATISTICS
+  ============================================
+  Total Rx Packets  : 27
+  Total Rx Bytes    : 3022
+  From Local Brokers: 27
+  Emergencies       : 1
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 17 packets
+    HeartRate (ID=20): 5 packets
+    Temperature (ID=30): 4 packets
+    EMERGENCY (ID=99): 1 packets
+  Per-Priority Breakdown:
+    LOW (0): 4 packets
+    MEDIUM (1): 5 packets
+    HIGH (2): 17 packets
+    CRITICAL (3): 1 packets
+  ============================================
+
+  Total forwarded to root: 7537
+
+  Emergencies: 339 | Forwarded: 62236
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.5356 J
+    Consumed: 289.4644 J (72.4%)
+    Per sensor: avg=0.5527J  min=0.5412J  max=0.5644J
+    Dead sensors: 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 27.9647 J
+    Consumed: 72.0353 J (72.0%)
+    Per CH: avg=1.3982J  min=1.3882J  max=1.4103J
+    Dead CHs: 0
+  ============================================
+
+  Energy CSV: experiments/hier/exp_hier_lb4_200_r1.csv.energy.csv
+
+[DONE]
+
+[Set5] LB=4 Run=2 15:40
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | LocalBrokers: 4 | numLocalBrokers=4 | Total: 225
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/hier/exp_hier_lb4_200_r2.csv
+============================================================
+
+  Mobility: Static
+  Local Brokers: 4 (grid placement)
+  Clusters: min=4 max=18 avg=10.0
+  Topology: TWO-TIER HIERARCHY (4 local brokers + 1 root)
+  CH-to-LocalBroker assignment:
+    LocalBroker[0]: 6 CHs
+    LocalBroker[1]: 4 CHs
+    LocalBroker[2]: 6 CHs
+    LocalBroker[3]: 4 CHs
+  Sensors: 66 ECG + 66 HR + 68 Temp
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+============================================================
+  RESULTS  (sensor-origin flows only)
+============================================================
+  Flows: 3375 (dead: 258)
+  Tx: 645293 | Rx: 426745
+  PDR: 66.13%
+  Avg Delay: 106.43 ms
+  Throughput: 712.30 kbps
+  Output: experiments/hier/exp_hier_lb4_200_r2.csv
+============================================================
+
+    CH200 | Rx:5324 Emerg:27 Fwd:5302 QDrop:0 | Pri[H:4898 M:248 L:156] | Topics: ECG=4871 HeartRate=248 Temperature=156 EMERGENCY=27
+    CH201 | Rx:2496 Emerg:14 Fwd:2481 QDrop:0 | Pri[H:1911 M:380 L:190] | Topics: ECG=1897 HeartRate=380 Temperature=190 EMERGENCY=14
+    CH202 | Rx:4446 Emerg:18 Fwd:4428 QDrop:0 | Pri[H:3792 M:502 L:134] | Topics: ECG=3774 HeartRate=502 Temperature=134 EMERGENCY=18
+    CH203 | Rx:3137 Emerg:17 Fwd:3122 QDrop:0 | Pri[H:1925 M:1146 L:51] | Topics: ECG=1908 HeartRate=1146 Temperature=51 EMERGENCY=17
+    CH204 | Rx:3223 Emerg:9 Fwd:3207 QDrop:0 | Pri[H:2939 M:0 L:268] | Topics: ECG=2930 Temperature=268 EMERGENCY=9
+    CH205 | Rx:7262 Emerg:36 Fwd:7230 QDrop:0 | Pri[H:5738 M:1323 L:169] | Topics: ECG=5702 HeartRate=1323 Temperature=169 EMERGENCY=36
+    CH206 | Rx:2649 Emerg:7 Fwd:2636 QDrop:0 | Pri[H:2357 M:103 L:176] | Topics: ECG=2350 HeartRate=103 Temperature=176 EMERGENCY=7
+    CH207 | Rx:1040 Emerg:5 Fwd:1028 QDrop:0 | Pri[H:539 M:256 L:233] | Topics: ECG=534 HeartRate=256 Temperature=233 EMERGENCY=5
+    CH208 | Rx:1393 Emerg:8 Fwd:1387 QDrop:0 | Pri[H:1301 M:0 L:86] | Topics: ECG=1293 Temperature=86 EMERGENCY=8
+    CH209 | Rx:5118 Emerg:34 Fwd:5091 QDrop:0 | Pri[H:3748 M:1146 L:197] | Topics: ECG=3714 HeartRate=1146 Temperature=197 EMERGENCY=34
+    CH210 | Rx:2663 Emerg:7 Fwd:2652 QDrop:0 | Pri[H:2229 M:291 L:132] | Topics: ECG=2222 HeartRate=291 Temperature=132 EMERGENCY=7
+    CH211 | Rx:2520 Emerg:15 Fwd:2508 QDrop:0 | Pri[H:1726 M:722 L:60] | Topics: ECG=1711 HeartRate=722 Temperature=60 EMERGENCY=15
+    CH212 | Rx:1380 Emerg:10 Fwd:1374 QDrop:0 | Pri[H:1079 M:245 L:50] | Topics: ECG=1069 HeartRate=245 Temperature=50 EMERGENCY=10
+    CH213 | Rx:4798 Emerg:27 Fwd:4776 QDrop:0 | Pri[H:3050 M:1657 L:69] | Topics: ECG=3023 HeartRate=1657 Temperature=69 EMERGENCY=27
+    CH214 | Rx:2272 Emerg:9 Fwd:2254 QDrop:0 | Pri[H:1382 M:714 L:158] | Topics: ECG=1373 HeartRate=714 Temperature=158 EMERGENCY=9
+    CH215 | Rx:6834 Emerg:37 Fwd:6814 QDrop:0 | Pri[H:6041 M:730 L:43] | Topics: ECG=6004 HeartRate=730 Temperature=43 EMERGENCY=37
+    CH216 | Rx:3344 Emerg:10 Fwd:3327 QDrop:0 | Pri[H:2805 M:336 L:186] | Topics: ECG=2795 HeartRate=336 Temperature=186 EMERGENCY=10
+    CH217 | Rx:3813 Emerg:22 Fwd:3798 QDrop:0 | Pri[H:2848 M:901 L:49] | Topics: ECG=2826 HeartRate=901 Temperature=49 EMERGENCY=22
+    CH218 | Rx:2308 Emerg:9 Fwd:2290 QDrop:0 | Pri[H:1007 M:1100 L:183] | Topics: ECG=998 HeartRate=1100 Temperature=183 EMERGENCY=9
+    CH219 | Rx:419 Emerg:2 Fwd:411 QDrop:0 | Pri[H:2 M:257 L:152] | Topics: HeartRate=257 Temperature=152 EMERGENCY=2
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 2411
+  Total Rx Bytes    : 300110
+  From Gateways     : 2411
+  Emergencies       : 14
+  Forwarded to Root : 2411
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 1965 packets
+    HeartRate (ID=20): 280 packets
+    Temperature (ID=30): 152 packets
+    EMERGENCY (ID=99): 14 packets
+  Per-Priority Breakdown:
+    LOW (0): 152 packets
+    MEDIUM (1): 280 packets
+    HIGH (2): 1965 packets
+    CRITICAL (3): 14 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 3030
+  Total Rx Bytes    : 368796
+  From Gateways     : 3030
+  Emergencies       : 11
+  Forwarded to Root : 3030
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 2341 packets
+    HeartRate (ID=20): 499 packets
+    Temperature (ID=30): 179 packets
+    EMERGENCY (ID=99): 11 packets
+  Per-Priority Breakdown:
+    LOW (0): 179 packets
+    MEDIUM (1): 499 packets
+    HIGH (2): 2341 packets
+    CRITICAL (3): 11 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 1531
+  Total Rx Bytes    : 186830
+  From Gateways     : 1531
+  Emergencies       : 3
+  Forwarded to Root : 1531
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 1188 packets
+    HeartRate (ID=20): 258 packets
+    Temperature (ID=30): 82 packets
+    EMERGENCY (ID=99): 3 packets
+  Per-Priority Breakdown:
+    LOW (0): 82 packets
+    MEDIUM (1): 258 packets
+    HIGH (2): 1188 packets
+    CRITICAL (3): 3 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 2128
+  Total Rx Bytes    : 223776
+  From Gateways     : 2128
+  Emergencies       : 15
+  Forwarded to Root : 2128
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 1096 packets
+    HeartRate (ID=20): 883 packets
+    Temperature (ID=30): 134 packets
+    EMERGENCY (ID=99): 15 packets
+  Per-Priority Breakdown:
+    LOW (0): 134 packets
+    MEDIUM (1): 883 packets
+    HIGH (2): 1096 packets
+    CRITICAL (3): 15 packets
+  ============================================
+
+
+  ============================================
+  ROOT BROKER (tier-2) STATISTICS
+  ============================================
+  Total Rx Packets  : 37
+  Total Rx Bytes    : 3762
+  From Local Brokers: 37
+  Emergencies       : 0
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 19 packets
+    HeartRate (ID=20): 12 packets
+    Temperature (ID=30): 6 packets
+  Per-Priority Breakdown:
+    LOW (0): 6 packets
+    MEDIUM (1): 12 packets
+    HIGH (2): 19 packets
+  ============================================
+
+  Total forwarded to root: 9100
+
+  Emergencies: 323 | Forwarded: 66116
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.6829 J
+    Consumed: 289.3171 J (72.3%)
+    Per sensor: avg=0.5534J  min=0.5408J  max=0.5649J
+    Dead sensors: 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 28.0134 J
+    Consumed: 71.9866 J (72.0%)
+    Per CH: avg=1.4007J  min=1.3875J  max=1.4102J
+    Dead CHs: 0
+  ============================================
+
+  Energy CSV: experiments/hier/exp_hier_lb4_200_r2.csv.energy.csv
+
+[DONE]
+
+[Set5] LB=4 Run=3 17:52
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | LocalBrokers: 4 | numLocalBrokers=4 | Total: 225
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/hier/exp_hier_lb4_200_r3.csv
+============================================================
+
+  Mobility: Static
+  Local Brokers: 4 (grid placement)
+  Clusters: min=6 max=15 avg=10.0
+  Topology: TWO-TIER HIERARCHY (4 local brokers + 1 root)
+  CH-to-LocalBroker assignment:
+    LocalBroker[0]: 6 CHs
+    LocalBroker[1]: 4 CHs
+    LocalBroker[2]: 6 CHs
+    LocalBroker[3]: 4 CHs
+  Sensors: 66 ECG + 66 HR + 68 Temp
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+============================================================
+  RESULTS  (sensor-origin flows only)
+============================================================
+  Flows: 3376 (dead: 331)
+  Tx: 656754 | Rx: 416299
+  PDR: 63.39%
+  Avg Delay: 114.01 ms
+  Throughput: 688.96 kbps
+  Output: experiments/hier/exp_hier_lb4_200_r3.csv
+============================================================
+
+    CH200 | Rx:4278 Emerg:17 Fwd:4255 QDrop:0 | Pri[H:2485 M:1678 L:92] | Topics: ECG=2468 HeartRate=1678 Temperature=92 EMERGENCY=17
+    CH201 | Rx:4399 Emerg:22 Fwd:4381 QDrop:0 | Pri[H:3364 M:931 L:86] | Topics: ECG=3342 HeartRate=931 Temperature=86 EMERGENCY=22
+    CH202 | Rx:1470 Emerg:8 Fwd:1460 QDrop:0 | Pri[H:1203 M:46 L:211] | Topics: ECG=1195 HeartRate=46 Temperature=211 EMERGENCY=8
+    CH203 | Rx:5592 Emerg:29 Fwd:5571 QDrop:0 | Pri[H:4403 M:1119 L:49] | Topics: ECG=4374 HeartRate=1119 Temperature=49 EMERGENCY=29
+    CH204 | Rx:2998 Emerg:12 Fwd:2985 QDrop:0 | Pri[H:2309 M:523 L:153] | Topics: ECG=2297 HeartRate=523 Temperature=153 EMERGENCY=12
+    CH205 | Rx:4387 Emerg:28 Fwd:4368 QDrop:0 | Pri[H:3758 M:497 L:113] | Topics: ECG=3730 HeartRate=497 Temperature=113 EMERGENCY=28
+    CH206 | Rx:690 Emerg:6 Fwd:678 QDrop:0 | Pri[H:6 M:523 L:149] | Topics: HeartRate=523 Temperature=149 EMERGENCY=6
+    CH207 | Rx:1720 Emerg:5 Fwd:1704 QDrop:0 | Pri[H:992 M:522 L:190] | Topics: ECG=987 HeartRate=522 Temperature=190 EMERGENCY=5
+    CH208 | Rx:2696 Emerg:11 Fwd:2676 QDrop:0 | Pri[H:1920 M:541 L:215] | Topics: ECG=1909 HeartRate=541 Temperature=215 EMERGENCY=11
+    CH209 | Rx:3772 Emerg:19 Fwd:3754 QDrop:0 | Pri[H:2307 M:1354 L:93] | Topics: ECG=2288 HeartRate=1354 Temperature=93 EMERGENCY=19
+    CH210 | Rx:3303 Emerg:19 Fwd:3289 QDrop:0 | Pri[H:2945 M:212 L:132] | Topics: ECG=2926 HeartRate=212 Temperature=132 EMERGENCY=19
+    CH211 | Rx:4144 Emerg:19 Fwd:4128 QDrop:0 | Pri[H:3812 M:197 L:119] | Topics: ECG=3793 HeartRate=197 Temperature=119 EMERGENCY=19
+    CH212 | Rx:3749 Emerg:23 Fwd:3731 QDrop:0 | Pri[H:3406 M:187 L:138] | Topics: ECG=3383 HeartRate=187 Temperature=138 EMERGENCY=23
+    CH213 | Rx:4426 Emerg:16 Fwd:4402 QDrop:0 | Pri[H:3522 M:645 L:235] | Topics: ECG=3506 HeartRate=645 Temperature=235 EMERGENCY=16
+    CH214 | Rx:3227 Emerg:20 Fwd:3207 QDrop:0 | Pri[H:1996 M:1027 L:184] | Topics: ECG=1976 HeartRate=1027 Temperature=184 EMERGENCY=20
+    CH215 | Rx:2892 Emerg:12 Fwd:2873 QDrop:0 | Pri[H:1236 M:1441 L:196] | Topics: ECG=1224 HeartRate=1441 Temperature=196 EMERGENCY=12
+    CH216 | Rx:3258 Emerg:23 Fwd:3247 QDrop:0 | Pri[H:2846 M:353 L:48] | Topics: ECG=2823 HeartRate=353 Temperature=48 EMERGENCY=23
+    CH217 | Rx:3250 Emerg:16 Fwd:3238 QDrop:0 | Pri[H:2891 M:248 L:99] | Topics: ECG=2875 HeartRate=248 Temperature=99 EMERGENCY=16
+    CH218 | Rx:1334 Emerg:5 Fwd:1320 QDrop:0 | Pri[H:299 M:861 L:160] | Topics: ECG=294 HeartRate=861 Temperature=160 EMERGENCY=5
+    CH219 | Rx:2449 Emerg:10 Fwd:2437 QDrop:0 | Pri[H:2032 M:257 L:148] | Topics: ECG=2022 HeartRate=257 Temperature=148 EMERGENCY=10
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 1510
+  Total Rx Bytes    : 172572
+  From Gateways     : 1510
+  Emergencies       : 11
+  Forwarded to Root : 1510
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 989 packets
+    HeartRate (ID=20): 423 packets
+    Temperature (ID=30): 87 packets
+    EMERGENCY (ID=99): 11 packets
+  Per-Priority Breakdown:
+    LOW (0): 87 packets
+    MEDIUM (1): 423 packets
+    HIGH (2): 989 packets
+    CRITICAL (3): 11 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 1115
+  Total Rx Bytes    : 132878
+  From Gateways     : 1115
+  Emergencies       : 3
+  Forwarded to Root : 1115
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 806 packets
+    HeartRate (ID=20): 264 packets
+    Temperature (ID=30): 42 packets
+    EMERGENCY (ID=99): 3 packets
+  Per-Priority Breakdown:
+    LOW (0): 42 packets
+    MEDIUM (1): 264 packets
+    HIGH (2): 806 packets
+    CRITICAL (3): 3 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 2028
+  Total Rx Bytes    : 256216
+  From Gateways     : 2028
+  Emergencies       : 13
+  Forwarded to Root : 2028
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 1681 packets
+    HeartRate (ID=20): 265 packets
+    Temperature (ID=30): 69 packets
+    EMERGENCY (ID=99): 13 packets
+  Per-Priority Breakdown:
+    LOW (0): 69 packets
+    MEDIUM (1): 265 packets
+    HIGH (2): 1681 packets
+    CRITICAL (3): 13 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 1887
+  Total Rx Bytes    : 207382
+  From Gateways     : 1887
+  Emergencies       : 7
+  Forwarded to Root : 1887
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 1133 packets
+    HeartRate (ID=20): 590 packets
+    Temperature (ID=30): 157 packets
+    EMERGENCY (ID=99): 7 packets
+  Per-Priority Breakdown:
+    LOW (0): 157 packets
+    MEDIUM (1): 590 packets
+    HIGH (2): 1133 packets
+    CRITICAL (3): 7 packets
+  ============================================
+
+
+  ============================================
+  ROOT BROKER (tier-2) STATISTICS
+  ============================================
+  Total Rx Packets  : 198
+  Total Rx Bytes    : 22268
+  From Local Brokers: 198
+  Emergencies       : 0
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 129 packets
+    HeartRate (ID=20): 49 packets
+    Temperature (ID=30): 20 packets
+  Per-Priority Breakdown:
+    LOW (0): 20 packets
+    MEDIUM (1): 49 packets
+    HIGH (2): 129 packets
+  ============================================
+
+  Total forwarded to root: 6540
+
+  Emergencies: 320 | Forwarded: 63704
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.4577 J
+    Consumed: 289.5423 J (72.4%)
+    Per sensor: avg=0.5523J  min=0.5402J  max=0.5651J
+    Dead sensors: 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 27.9905 J
+    Consumed: 72.0095 J (72.0%)
+    Per CH: avg=1.3995J  min=1.3884J  max=1.4104J
+    Dead CHs: 0
+  ============================================
+
+  Energy CSV: experiments/hier/exp_hier_lb4_200_r3.csv.energy.csv
+
+[DONE]
+
+[Set5] LB=4 Run=4 20:06
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | LocalBrokers: 4 | numLocalBrokers=4 | Total: 225
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/hier/exp_hier_lb4_200_r4.csv
+============================================================
+
+  Mobility: Static
+  Local Brokers: 4 (grid placement)
+  Clusters: min=4 max=18 avg=10.0
+  Topology: TWO-TIER HIERARCHY (4 local brokers + 1 root)
+  CH-to-LocalBroker assignment:
+    LocalBroker[0]: 6 CHs
+    LocalBroker[1]: 4 CHs
+    LocalBroker[2]: 6 CHs
+    LocalBroker[3]: 4 CHs
+  Sensors: 66 ECG + 66 HR + 68 Temp
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+============================================================
+  RESULTS  (sensor-origin flows only)
+============================================================
+  Flows: 3502 (dead: 414)
+  Tx: 710726 | Rx: 452898
+  PDR: 63.72%
+  Avg Delay: 109.01 ms
+  Throughput: 741.02 kbps
+  Output: experiments/hier/exp_hier_lb4_200_r4.csv
+============================================================
+
+    CH200 | Rx:3416 Emerg:24 Fwd:3404 QDrop:0 | Pri[H:2507 M:897 L:0] | Topics: ECG=2483 HeartRate=897 EMERGENCY=24
+    CH201 | Rx:3337 Emerg:11 Fwd:3323 QDrop:0 | Pri[H:2510 M:713 L:100] | Topics: ECG=2499 HeartRate=713 Temperature=100 EMERGENCY=11
+    CH202 | Rx:3066 Emerg:18 Fwd:3053 QDrop:0 | Pri[H:2525 M:428 L:100] | Topics: ECG=2507 HeartRate=428 Temperature=100 EMERGENCY=18
+    CH203 | Rx:1849 Emerg:10 Fwd:1834 QDrop:0 | Pri[H:984 M:647 L:203] | Topics: ECG=974 HeartRate=647 Temperature=203 EMERGENCY=10
+    CH204 | Rx:3855 Emerg:26 Fwd:3845 QDrop:0 | Pri[H:3794 M:0 L:51] | Topics: ECG=3768 Temperature=51 EMERGENCY=26
+    CH205 | Rx:4284 Emerg:25 Fwd:4253 QDrop:0 | Pri[H:2367 M:1574 L:312] | Topics: ECG=2342 HeartRate=1574 Temperature=312 EMERGENCY=25
+    CH206 | Rx:707 Emerg:6 Fwd:695 QDrop:0 | Pri[H:6 M:567 L:122] | Topics: HeartRate=567 Temperature=122 EMERGENCY=6
+    CH207 | Rx:4519 Emerg:17 Fwd:4504 QDrop:0 | Pri[H:4234 M:214 L:56] | Topics: ECG=4217 HeartRate=214 Temperature=56 EMERGENCY=17
+    CH208 | Rx:435 Emerg:4 Fwd:430 QDrop:0 | Pri[H:4 M:372 L:54] | Topics: HeartRate=372 Temperature=54 EMERGENCY=4
+    CH209 | Rx:3784 Emerg:21 Fwd:3766 QDrop:0 | Pri[H:3162 M:470 L:134] | Topics: ECG=3141 HeartRate=470 Temperature=134 EMERGENCY=21
+    CH210 | Rx:4502 Emerg:26 Fwd:4476 QDrop:0 | Pri[H:3471 M:707 L:298] | Topics: ECG=3445 HeartRate=707 Temperature=298 EMERGENCY=26
+    CH211 | Rx:4960 Emerg:29 Fwd:4942 QDrop:0 | Pri[H:4561 M:274 L:107] | Topics: ECG=4532 HeartRate=274 Temperature=107 EMERGENCY=29
+    CH212 | Rx:4139 Emerg:15 Fwd:4122 QDrop:0 | Pri[H:3652 M:417 L:53] | Topics: ECG=3637 HeartRate=417 Temperature=53 EMERGENCY=15
+    CH213 | Rx:1439 Emerg:5 Fwd:1420 QDrop:0 | Pri[H:584 M:653 L:183] | Topics: ECG=579 HeartRate=653 Temperature=183 EMERGENCY=5
+    CH214 | Rx:3121 Emerg:13 Fwd:3099 QDrop:0 | Pri[H:1929 M:969 L:201] | Topics: ECG=1916 HeartRate=969 Temperature=201 EMERGENCY=13
+    CH215 | Rx:3596 Emerg:17 Fwd:3573 QDrop:0 | Pri[H:1858 M:1591 L:124] | Topics: ECG=1841 HeartRate=1591 Temperature=124 EMERGENCY=17
+    CH216 | Rx:2045 Emerg:11 Fwd:2037 QDrop:0 | Pri[H:1727 M:260 L:50] | Topics: ECG=1716 HeartRate=260 Temperature=50 EMERGENCY=11
+    CH217 | Rx:3072 Emerg:13 Fwd:3057 QDrop:0 | Pri[H:2045 M:941 L:71] | Topics: ECG=2032 HeartRate=941 Temperature=71 EMERGENCY=13
+    CH218 | Rx:4567 Emerg:19 Fwd:4543 QDrop:0 | Pri[H:3783 M:490 L:270] | Topics: ECG=3764 HeartRate=490 Temperature=270 EMERGENCY=19
+    CH219 | Rx:4609 Emerg:24 Fwd:4594 QDrop:0 | Pri[H:4195 M:251 L:148] | Topics: ECG=4171 HeartRate=251 Temperature=148 EMERGENCY=24
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 882
+  Total Rx Bytes    : 94132
+  From Gateways     : 882
+  Emergencies       : 4
+  Forwarded to Root : 882
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 480 packets
+    HeartRate (ID=20): 337 packets
+    Temperature (ID=30): 61 packets
+    EMERGENCY (ID=99): 4 packets
+  Per-Priority Breakdown:
+    LOW (0): 61 packets
+    MEDIUM (1): 337 packets
+    HIGH (2): 480 packets
+    CRITICAL (3): 4 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 800
+  Total Rx Bytes    : 82816
+  From Gateways     : 800
+  Emergencies       : 6
+  Forwarded to Root : 800
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 413 packets
+    HeartRate (ID=20): 289 packets
+    Temperature (ID=30): 92 packets
+    EMERGENCY (ID=99): 6 packets
+  Per-Priority Breakdown:
+    LOW (0): 92 packets
+    MEDIUM (1): 289 packets
+    HIGH (2): 413 packets
+    CRITICAL (3): 6 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 1349
+  Total Rx Bytes    : 158290
+  From Gateways     : 1349
+  Emergencies       : 8
+  Forwarded to Root : 1349
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 938 packets
+    HeartRate (ID=20): 348 packets
+    Temperature (ID=30): 55 packets
+    EMERGENCY (ID=99): 8 packets
+  Per-Priority Breakdown:
+    LOW (0): 55 packets
+    MEDIUM (1): 348 packets
+    HIGH (2): 938 packets
+    CRITICAL (3): 8 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 1238
+  Total Rx Bytes    : 143996
+  From Gateways     : 1238
+  Emergencies       : 5
+  Forwarded to Root : 1238
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 868 packets
+    HeartRate (ID=20): 264 packets
+    Temperature (ID=30): 101 packets
+    EMERGENCY (ID=99): 5 packets
+  Per-Priority Breakdown:
+    LOW (0): 101 packets
+    MEDIUM (1): 264 packets
+    HIGH (2): 868 packets
+    CRITICAL (3): 5 packets
+  ============================================
+
+
+  ============================================
+  ROOT BROKER (tier-2) STATISTICS
+  ============================================
+  Total Rx Packets  : 325
+  Total Rx Bytes    : 37426
+  From Local Brokers: 325
+  Emergencies       : 3
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 222 packets
+    HeartRate (ID=20): 71 packets
+    Temperature (ID=30): 29 packets
+    EMERGENCY (ID=99): 3 packets
+  Per-Priority Breakdown:
+    LOW (0): 29 packets
+    MEDIUM (1): 71 packets
+    HIGH (2): 222 packets
+    CRITICAL (3): 3 packets
+  ============================================
+
+  Total forwarded to root: 4269
+
+  Emergencies: 334 | Forwarded: 64970
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.4044 J
+    Consumed: 289.5956 J (72.4%)
+    Per sensor: avg=0.5520J  min=0.5408J  max=0.5637J
+    Dead sensors: 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 27.9732 J
+    Consumed: 72.0268 J (72.0%)
+    Per CH: avg=1.3987J  min=1.3870J  max=1.4087J
+    Dead CHs: 0
+  ============================================
+
+  Energy CSV: experiments/hier/exp_hier_lb4_200_r4.csv.energy.csv
+
+[DONE]
+
+[Set5] LB=4 Run=5 22:22
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | LocalBrokers: 4 | numLocalBrokers=4 | Total: 225
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/hier/exp_hier_lb4_200_r5.csv
+============================================================
+
+  Mobility: Static
+  Local Brokers: 4 (grid placement)
+  Clusters: min=4 max=16 avg=10.0
+  Topology: TWO-TIER HIERARCHY (4 local brokers + 1 root)
+  CH-to-LocalBroker assignment:
+    LocalBroker[0]: 6 CHs
+    LocalBroker[1]: 4 CHs
+    LocalBroker[2]: 6 CHs
+    LocalBroker[3]: 4 CHs
+  Sensors: 66 ECG + 66 HR + 68 Temp
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+============================================================
+  RESULTS  (sensor-origin flows only)
+============================================================
+  Flows: 3466 (dead: 443)
+  Tx: 693604 | Rx: 434396
+  PDR: 62.63%
+  Avg Delay: 118.25 ms
+  Throughput: 710.41 kbps
+  Output: experiments/hier/exp_hier_lb4_200_r5.csv
+============================================================
+
+    CH200 | Rx:2555 Emerg:8 Fwd:2543 QDrop:0 | Pri[H:1975 M:471 L:97] | Topics: ECG=1967 HeartRate=471 Temperature=97 EMERGENCY=8
+    CH201 | Rx:4134 Emerg:18 Fwd:4117 QDrop:0 | Pri[H:3153 M:917 L:47] | Topics: ECG=3135 HeartRate=917 Temperature=47 EMERGENCY=18
+    CH202 | Rx:3346 Emerg:10 Fwd:3325 QDrop:0 | Pri[H:2262 M:931 L:132] | Topics: ECG=2252 HeartRate=931 Temperature=132 EMERGENCY=10
+    CH203 | Rx:4464 Emerg:15 Fwd:4445 QDrop:0 | Pri[H:3057 M:1388 L:0] | Topics: ECG=3042 HeartRate=1388 EMERGENCY=15
+    CH204 | Rx:1953 Emerg:7 Fwd:1931 QDrop:0 | Pri[H:7 M:1776 L:148] | Topics: HeartRate=1776 Temperature=148 EMERGENCY=7
+    CH205 | Rx:2890 Emerg:12 Fwd:2865 QDrop:0 | Pri[H:1738 M:899 L:228] | Topics: ECG=1726 HeartRate=899 Temperature=228 EMERGENCY=12
+    CH206 | Rx:4434 Emerg:19 Fwd:4417 QDrop:0 | Pri[H:3867 M:439 L:111] | Topics: ECG=3848 HeartRate=439 Temperature=111 EMERGENCY=19
+    CH207 | Rx:874 Emerg:5 Fwd:862 QDrop:0 | Pri[H:47 M:683 L:132] | Topics: ECG=42 HeartRate=683 Temperature=132 EMERGENCY=5
+    CH208 | Rx:949 Emerg:2 Fwd:938 QDrop:0 | Pri[H:302 M:491 L:145] | Topics: ECG=300 HeartRate=491 Temperature=145 EMERGENCY=2
+    CH209 | Rx:3676 Emerg:10 Fwd:3660 QDrop:0 | Pri[H:2972 M:508 L:180] | Topics: ECG=2962 HeartRate=508 Temperature=180 EMERGENCY=10
+    CH210 | Rx:5925 Emerg:30 Fwd:5900 QDrop:0 | Pri[H:5306 M:474 L:120] | Topics: ECG=5276 HeartRate=474 Temperature=120 EMERGENCY=30
+    CH211 | Rx:2419 Emerg:8 Fwd:2406 QDrop:0 | Pri[H:1838 M:422 L:146] | Topics: ECG=1830 HeartRate=422 Temperature=146 EMERGENCY=8
+    CH212 | Rx:4000 Emerg:20 Fwd:3981 QDrop:0 | Pri[H:3454 M:443 L:84] | Topics: ECG=3434 HeartRate=443 Temperature=84 EMERGENCY=20
+    CH213 | Rx:3341 Emerg:19 Fwd:3325 QDrop:0 | Pri[H:2983 M:97 L:245] | Topics: ECG=2964 HeartRate=97 Temperature=245 EMERGENCY=19
+    CH214 | Rx:3102 Emerg:18 Fwd:3094 QDrop:0 | Pri[H:2885 M:209 L:0] | Topics: ECG=2867 HeartRate=209 EMERGENCY=18
+    CH215 | Rx:3000 Emerg:13 Fwd:2982 QDrop:0 | Pri[H:1981 M:892 L:109] | Topics: ECG=1968 HeartRate=892 Temperature=109 EMERGENCY=13
+    CH216 | Rx:4592 Emerg:29 Fwd:4568 QDrop:0 | Pri[H:3632 M:685 L:251] | Topics: ECG=3603 HeartRate=685 Temperature=251 EMERGENCY=29
+    CH217 | Rx:1223 Emerg:5 Fwd:1214 QDrop:0 | Pri[H:1020 M:0 L:194] | Topics: ECG=1015 Temperature=194 EMERGENCY=5
+    CH218 | Rx:2377 Emerg:8 Fwd:2364 QDrop:0 | Pri[H:1971 M:244 L:149] | Topics: ECG=1963 HeartRate=244 Temperature=149 EMERGENCY=8
+    CH219 | Rx:3561 Emerg:10 Fwd:3544 QDrop:0 | Pri[H:2647 M:749 L:148] | Topics: ECG=2637 HeartRate=749 Temperature=148 EMERGENCY=10
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 1366
+  Total Rx Bytes    : 161372
+  From Gateways     : 1366
+  Emergencies       : 8
+  Forwarded to Root : 1366
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 965 packets
+    HeartRate (ID=20): 337 packets
+    Temperature (ID=30): 56 packets
+    EMERGENCY (ID=99): 8 packets
+  Per-Priority Breakdown:
+    LOW (0): 56 packets
+    MEDIUM (1): 337 packets
+    HIGH (2): 965 packets
+    CRITICAL (3): 8 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 1483
+  Total Rx Bytes    : 150158
+  From Gateways     : 1483
+  Emergencies       : 7
+  Forwarded to Root : 1483
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 670 packets
+    HeartRate (ID=20): 723 packets
+    Temperature (ID=30): 83 packets
+    EMERGENCY (ID=99): 7 packets
+  Per-Priority Breakdown:
+    LOW (0): 83 packets
+    MEDIUM (1): 723 packets
+    HIGH (2): 670 packets
+    CRITICAL (3): 7 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 851
+  Total Rx Bytes    : 99838
+  From Gateways     : 851
+  Emergencies       : 2
+  Forwarded to Root : 851
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 601 packets
+    HeartRate (ID=20): 196 packets
+    Temperature (ID=30): 52 packets
+    EMERGENCY (ID=99): 2 packets
+  Per-Priority Breakdown:
+    LOW (0): 52 packets
+    MEDIUM (1): 196 packets
+    HIGH (2): 601 packets
+    CRITICAL (3): 2 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 3518
+  Total Rx Bytes    : 433484
+  From Gateways     : 3518
+  Emergencies       : 12
+  Forwarded to Root : 3518
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 2810 packets
+    HeartRate (ID=20): 472 packets
+    Temperature (ID=30): 224 packets
+    EMERGENCY (ID=99): 12 packets
+  Per-Priority Breakdown:
+    LOW (0): 224 packets
+    MEDIUM (1): 472 packets
+    HIGH (2): 2810 packets
+    CRITICAL (3): 12 packets
+  ============================================
+
+
+  ============================================
+  ROOT BROKER (tier-2) STATISTICS
+  ============================================
+  Total Rx Packets  : 148
+  Total Rx Bytes    : 17640
+  From Local Brokers: 148
+  Emergencies       : 0
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 109 packets
+    HeartRate (ID=20): 30 packets
+    Temperature (ID=30): 9 packets
+  Per-Priority Breakdown:
+    LOW (0): 9 packets
+    MEDIUM (1): 30 packets
+    HIGH (2): 109 packets
+  ============================================
+
+  Total forwarded to root: 7218
+
+  Emergencies: 266 | Forwarded: 62481
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.4622 J
+    Consumed: 289.5378 J (72.4%)
+    Per sensor: avg=0.5523J  min=0.5406J  max=0.5641J
+    Dead sensors: 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 27.9711 J
+    Consumed: 72.0289 J (72.0%)
+    Per CH: avg=1.3986J  min=1.3883J  max=1.4099J
+    Dead CHs: 0
+  ============================================
+
+  Energy CSV: experiments/hier/exp_hier_lb4_200_r5.csv.energy.csv
+
+[DONE]
+
+[Set5] LB=4 Run=6 00:36
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | LocalBrokers: 4 | numLocalBrokers=4 | Total: 225
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/hier/exp_hier_lb4_200_r6.csv
+============================================================
+
+  Mobility: Static
+  Local Brokers: 4 (grid placement)
+  Clusters: min=4 max=18 avg=10.0
+  Topology: TWO-TIER HIERARCHY (4 local brokers + 1 root)
+  CH-to-LocalBroker assignment:
+    LocalBroker[0]: 6 CHs
+    LocalBroker[1]: 4 CHs
+    LocalBroker[2]: 6 CHs
+    LocalBroker[3]: 4 CHs
+  Sensors: 66 ECG + 66 HR + 68 Temp
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+============================================================
+  RESULTS  (sensor-origin flows only)
+============================================================
+  Flows: 3423 (dead: 312)
+  Tx: 664763 | Rx: 436700
+  PDR: 65.69%
+  Avg Delay: 109.01 ms
+  Throughput: 715.01 kbps
+  Output: experiments/hier/exp_hier_lb4_200_r6.csv
+============================================================
+
+    CH200 | Rx:2912 Emerg:10 Fwd:2896 QDrop:0 | Pri[H:1898 M:851 L:147] | Topics: ECG=1888 HeartRate=851 Temperature=147 EMERGENCY=10
+    CH201 | Rx:3144 Emerg:16 Fwd:3134 QDrop:0 | Pri[H:2925 M:160 L:49] | Topics: ECG=2909 HeartRate=160 Temperature=49 EMERGENCY=16
+    CH202 | Rx:3779 Emerg:23 Fwd:3763 QDrop:0 | Pri[H:2868 M:889 L:6] | Topics: ECG=2845 HeartRate=889 Temperature=6 EMERGENCY=23
+    CH203 | Rx:4311 Emerg:18 Fwd:4292 QDrop:0 | Pri[H:3079 M:1213 L:0] | Topics: ECG=3061 HeartRate=1213 EMERGENCY=18
+    CH204 | Rx:8058 Emerg:46 Fwd:8026 QDrop:0 | Pri[H:6590 M:1363 L:73] | Topics: ECG=6544 HeartRate=1363 Temperature=73 EMERGENCY=46
+    CH205 | Rx:2918 Emerg:13 Fwd:2898 QDrop:0 | Pri[H:1921 M:735 L:242] | Topics: ECG=1908 HeartRate=735 Temperature=242 EMERGENCY=13
+    CH206 | Rx:1229 Emerg:0 Fwd:1211 QDrop:0 | Pri[H:261 M:784 L:166] | Topics: ECG=261 HeartRate=784 Temperature=166
+    CH207 | Rx:2067 Emerg:14 Fwd:2044 QDrop:0 | Pri[H:919 M:931 L:194] | Topics: ECG=905 HeartRate=931 Temperature=194 EMERGENCY=14
+    CH208 | Rx:3077 Emerg:13 Fwd:3062 QDrop:0 | Pri[H:2275 M:706 L:81] | Topics: ECG=2262 HeartRate=706 Temperature=81 EMERGENCY=13
+    CH209 | Rx:3310 Emerg:21 Fwd:3290 QDrop:0 | Pri[H:2079 M:1042 L:169] | Topics: ECG=2058 HeartRate=1042 Temperature=169 EMERGENCY=21
+    CH210 | Rx:3806 Emerg:17 Fwd:3782 QDrop:0 | Pri[H:2610 M:983 L:189] | Topics: ECG=2593 HeartRate=983 Temperature=189 EMERGENCY=17
+    CH211 | Rx:793 Emerg:12 Fwd:786 QDrop:0 | Pri[H:739 M:0 L:47] | Topics: ECG=727 Temperature=47 EMERGENCY=12
+    CH212 | Rx:3158 Emerg:12 Fwd:3145 QDrop:0 | Pri[H:3013 M:0 L:132] | Topics: ECG=3001 Temperature=132 EMERGENCY=12
+    CH213 | Rx:383 Emerg:3 Fwd:375 QDrop:0 | Pri[H:3 M:249 L:123] | Topics: HeartRate=249 Temperature=123 EMERGENCY=3
+    CH214 | Rx:2706 Emerg:8 Fwd:2696 QDrop:0 | Pri[H:2604 M:0 L:92] | Topics: ECG=2596 Temperature=92 EMERGENCY=8
+    CH215 | Rx:1410 Emerg:8 Fwd:1401 QDrop:0 | Pri[H:1012 M:243 L:146] | Topics: ECG=1004 HeartRate=243 Temperature=146 EMERGENCY=8
+    CH216 | Rx:4721 Emerg:22 Fwd:4698 QDrop:0 | Pri[H:3721 M:745 L:232] | Topics: ECG=3699 HeartRate=745 Temperature=232 EMERGENCY=22
+    CH217 | Rx:2564 Emerg:14 Fwd:2545 QDrop:0 | Pri[H:1549 M:734 L:262] | Topics: ECG=1535 HeartRate=734 Temperature=262 EMERGENCY=14
+    CH218 | Rx:4513 Emerg:21 Fwd:4493 QDrop:0 | Pri[H:3391 M:949 L:153] | Topics: ECG=3370 HeartRate=949 Temperature=153 EMERGENCY=21
+    CH219 | Rx:5323 Emerg:19 Fwd:5304 QDrop:0 | Pri[H:4657 M:498 L:149] | Topics: ECG=4638 HeartRate=498 Temperature=149 EMERGENCY=19
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 929
+  Total Rx Bytes    : 114570
+  From Gateways     : 929
+  Emergencies       : 1
+  Forwarded to Root : 929
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 735 packets
+    HeartRate (ID=20): 153 packets
+    Temperature (ID=30): 40 packets
+    EMERGENCY (ID=99): 1 packets
+  Per-Priority Breakdown:
+    LOW (0): 40 packets
+    MEDIUM (1): 153 packets
+    HIGH (2): 735 packets
+    CRITICAL (3): 1 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 1175
+  Total Rx Bytes    : 137702
+  From Gateways     : 1175
+  Emergencies       : 2
+  Forwarded to Root : 1175
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 810 packets
+    HeartRate (ID=20): 329 packets
+    Temperature (ID=30): 34 packets
+    EMERGENCY (ID=99): 2 packets
+  Per-Priority Breakdown:
+    LOW (0): 34 packets
+    MEDIUM (1): 329 packets
+    HIGH (2): 810 packets
+    CRITICAL (3): 2 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 1628
+  Total Rx Bytes    : 191320
+  From Gateways     : 1628
+  Emergencies       : 11
+  Forwarded to Root : 1628
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 1162 packets
+    HeartRate (ID=20): 326 packets
+    Temperature (ID=30): 129 packets
+    EMERGENCY (ID=99): 11 packets
+  Per-Priority Breakdown:
+    LOW (0): 129 packets
+    MEDIUM (1): 326 packets
+    HIGH (2): 1162 packets
+    CRITICAL (3): 11 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 2259
+  Total Rx Bytes    : 274910
+  From Gateways     : 2259
+  Emergencies       : 13
+  Forwarded to Root : 2259
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 1742 packets
+    HeartRate (ID=20): 365 packets
+    Temperature (ID=30): 139 packets
+    EMERGENCY (ID=99): 13 packets
+  Per-Priority Breakdown:
+    LOW (0): 139 packets
+    MEDIUM (1): 365 packets
+    HIGH (2): 1742 packets
+    CRITICAL (3): 13 packets
+  ============================================
+
+
+  ============================================
+  ROOT BROKER (tier-2) STATISTICS
+  ============================================
+  Total Rx Packets  : 14
+  Total Rx Bytes    : 1548
+  From Local Brokers: 14
+  Emergencies       : 0
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 10 packets
+    Temperature (ID=30): 4 packets
+  Per-Priority Breakdown:
+    LOW (0): 4 packets
+    HIGH (2): 10 packets
+  ============================================
+
+  Total forwarded to root: 5991
+
+  Emergencies: 310 | Forwarded: 63841
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.6000 J
+    Consumed: 289.4000 J (72.4%)
+    Per sensor: avg=0.5530J  min=0.5417J  max=0.5647J
+    Dead sensors: 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 27.9497 J
+    Consumed: 72.0503 J (72.1%)
+    Per CH: avg=1.3975J  min=1.3878J  max=1.4078J
+    Dead CHs: 0
+  ============================================
+
+  Energy CSV: experiments/hier/exp_hier_lb4_200_r6.csv.energy.csv
+
+[DONE]
+
+[Set5] LB=4 Run=7 02:51
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | LocalBrokers: 4 | numLocalBrokers=4 | Total: 225
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/hier/exp_hier_lb4_200_r7.csv
+============================================================
+
+  Mobility: Static
+  Local Brokers: 4 (grid placement)
+  Clusters: min=4 max=18 avg=10.0
+  Topology: TWO-TIER HIERARCHY (4 local brokers + 1 root)
+  CH-to-LocalBroker assignment:
+    LocalBroker[0]: 6 CHs
+    LocalBroker[1]: 4 CHs
+    LocalBroker[2]: 6 CHs
+    LocalBroker[3]: 4 CHs
+  Sensors: 66 ECG + 66 HR + 68 Temp
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+============================================================
+  RESULTS  (sensor-origin flows only)
+============================================================
+  Flows: 3515 (dead: 353)
+  Tx: 681089 | Rx: 425167
+  PDR: 62.42%
+  Avg Delay: 118.75 ms
+  Throughput: 698.91 kbps
+  Output: experiments/hier/exp_hier_lb4_200_r7.csv
+============================================================
+
+    CH200 | Rx:2896 Emerg:11 Fwd:2878 QDrop:0 | Pri[H:1987 M:729 L:162] | Topics: ECG=1976 HeartRate=729 Temperature=162 EMERGENCY=11
+    CH201 | Rx:5628 Emerg:32 Fwd:5606 QDrop:0 | Pri[H:4652 M:828 L:126] | Topics: ECG=4620 HeartRate=828 Temperature=126 EMERGENCY=32
+    CH202 | Rx:2071 Emerg:8 Fwd:2062 QDrop:0 | Pri[H:1527 M:485 L:50] | Topics: ECG=1519 HeartRate=485 Temperature=50 EMERGENCY=8
+    CH203 | Rx:4503 Emerg:11 Fwd:4485 QDrop:0 | Pri[H:3802 M:483 L:200] | Topics: ECG=3791 HeartRate=483 Temperature=200 EMERGENCY=11
+    CH204 | Rx:6115 Emerg:27 Fwd:6091 QDrop:0 | Pri[H:4965 M:972 L:154] | Topics: ECG=4938 HeartRate=972 Temperature=154 EMERGENCY=27
+    CH205 | Rx:4157 Emerg:25 Fwd:4135 QDrop:0 | Pri[H:3580 M:383 L:172] | Topics: ECG=3555 HeartRate=383 Temperature=172 EMERGENCY=25
+    CH206 | Rx:2785 Emerg:13 Fwd:2766 QDrop:0 | Pri[H:1748 M:907 L:111] | Topics: ECG=1735 HeartRate=907 Temperature=111 EMERGENCY=13
+    CH207 | Rx:2635 Emerg:8 Fwd:2620 QDrop:0 | Pri[H:1525 M:995 L:100] | Topics: ECG=1517 HeartRate=995 Temperature=100 EMERGENCY=8
+    CH208 | Rx:3055 Emerg:12 Fwd:3040 QDrop:0 | Pri[H:2905 M:0 L:135] | Topics: ECG=2893 Temperature=135 EMERGENCY=12
+    CH209 | Rx:2007 Emerg:14 Fwd:1997 QDrop:0 | Pri[H:1464 M:370 L:163] | Topics: ECG=1450 HeartRate=370 Temperature=163 EMERGENCY=14
+    CH210 | Rx:4440 Emerg:16 Fwd:4428 QDrop:0 | Pri[H:4139 M:257 L:32] | Topics: ECG=4123 HeartRate=257 Temperature=32 EMERGENCY=16
+    CH211 | Rx:1460 Emerg:9 Fwd:1447 QDrop:0 | Pri[H:444 M:889 L:114] | Topics: ECG=435 HeartRate=889 Temperature=114 EMERGENCY=9
+    CH212 | Rx:1428 Emerg:4 Fwd:1420 QDrop:0 | Pri[H:910 M:471 L:39] | Topics: ECG=906 HeartRate=471 Temperature=39 EMERGENCY=4
+    CH213 | Rx:1552 Emerg:9 Fwd:1542 QDrop:0 | Pri[H:1025 M:493 L:24] | Topics: ECG=1016 HeartRate=493 Temperature=24 EMERGENCY=9
+    CH214 | Rx:2448 Emerg:10 Fwd:2441 QDrop:0 | Pri[H:1962 M:479 L:0] | Topics: ECG=1952 HeartRate=479 EMERGENCY=10
+    CH215 | Rx:4762 Emerg:22 Fwd:4740 QDrop:0 | Pri[H:3860 M:709 L:171] | Topics: ECG=3838 HeartRate=709 Temperature=171 EMERGENCY=22
+    CH216 | Rx:1898 Emerg:13 Fwd:1885 QDrop:0 | Pri[H:1315 M:435 L:135] | Topics: ECG=1302 HeartRate=435 Temperature=135 EMERGENCY=13
+    CH217 | Rx:3130 Emerg:20 Fwd:3112 QDrop:0 | Pri[H:2012 M:979 L:121] | Topics: ECG=1992 HeartRate=979 Temperature=121 EMERGENCY=20
+    CH218 | Rx:2393 Emerg:13 Fwd:2361 QDrop:0 | Pri[H:444 M:1430 L:487] | Topics: ECG=431 HeartRate=1430 Temperature=487 EMERGENCY=13
+    CH219 | Rx:3666 Emerg:8 Fwd:3648 QDrop:0 | Pri[H:2996 M:469 L:183] | Topics: ECG=2988 HeartRate=469 Temperature=183 EMERGENCY=8
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 440
+  Total Rx Bytes    : 50192
+  From Gateways     : 440
+  Emergencies       : 2
+  Forwarded to Root : 440
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 285 packets
+    HeartRate (ID=20): 130 packets
+    Temperature (ID=30): 23 packets
+    EMERGENCY (ID=99): 2 packets
+  Per-Priority Breakdown:
+    LOW (0): 23 packets
+    MEDIUM (1): 130 packets
+    HIGH (2): 285 packets
+    CRITICAL (3): 2 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 2312
+  Total Rx Bytes    : 291440
+  From Gateways     : 2312
+  Emergencies       : 9
+  Forwarded to Root : 2312
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 1929 packets
+    HeartRate (ID=20): 259 packets
+    Temperature (ID=30): 115 packets
+    EMERGENCY (ID=99): 9 packets
+  Per-Priority Breakdown:
+    LOW (0): 115 packets
+    MEDIUM (1): 259 packets
+    HIGH (2): 1929 packets
+    CRITICAL (3): 9 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 1156
+  Total Rx Bytes    : 133512
+  From Gateways     : 1156
+  Emergencies       : 5
+  Forwarded to Root : 1156
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 780 packets
+    HeartRate (ID=20): 306 packets
+    Temperature (ID=30): 65 packets
+    EMERGENCY (ID=99): 5 packets
+  Per-Priority Breakdown:
+    LOW (0): 65 packets
+    MEDIUM (1): 306 packets
+    HIGH (2): 780 packets
+    CRITICAL (3): 5 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 2404
+  Total Rx Bytes    : 256136
+  From Gateways     : 2404
+  Emergencies       : 12
+  Forwarded to Root : 2404
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 1326 packets
+    HeartRate (ID=20): 843 packets
+    Temperature (ID=30): 223 packets
+    EMERGENCY (ID=99): 12 packets
+  Per-Priority Breakdown:
+    LOW (0): 223 packets
+    MEDIUM (1): 843 packets
+    HIGH (2): 1326 packets
+    CRITICAL (3): 12 packets
+  ============================================
+
+
+  ============================================
+  ROOT BROKER (tier-2) STATISTICS
+  ============================================
+  Total Rx Packets  : 5
+  Total Rx Bytes    : 626
+  From Local Brokers: 5
+  Emergencies       : 0
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 4 packets
+    HeartRate (ID=20): 1 packets
+  Per-Priority Breakdown:
+    MEDIUM (1): 1 packets
+    HIGH (2): 4 packets
+  ============================================
+
+  Total forwarded to root: 6312
+
+  Emergencies: 285 | Forwarded: 62704
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.6577 J
+    Consumed: 289.3423 J (72.3%)
+    Per sensor: avg=0.5533J  min=0.5412J  max=0.5634J
+    Dead sensors: 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 27.9921 J
+    Consumed: 72.0079 J (72.0%)
+    Per CH: avg=1.3996J  min=1.3910J  max=1.4091J
+    Dead CHs: 0
+  ============================================
+
+  Energy CSV: experiments/hier/exp_hier_lb4_200_r7.csv.energy.csv
+
+[DONE]
+
+[Set5] LB=4 Run=8 05:03
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | LocalBrokers: 4 | numLocalBrokers=4 | Total: 225
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/hier/exp_hier_lb4_200_r8.csv
+============================================================
+
+  Mobility: Static
+  Local Brokers: 4 (grid placement)
+  Clusters: min=4 max=19 avg=10.0
+  Topology: TWO-TIER HIERARCHY (4 local brokers + 1 root)
+  CH-to-LocalBroker assignment:
+    LocalBroker[0]: 6 CHs
+    LocalBroker[1]: 4 CHs
+    LocalBroker[2]: 6 CHs
+    LocalBroker[3]: 4 CHs
+  Sensors: 66 ECG + 66 HR + 68 Temp
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+============================================================
+  RESULTS  (sensor-origin flows only)
+============================================================
+  Flows: 3448 (dead: 361)
+  Tx: 683864 | Rx: 435273
+  PDR: 63.65%
+  Avg Delay: 112.30 ms
+  Throughput: 707.41 kbps
+  Output: experiments/hier/exp_hier_lb4_200_r8.csv
+============================================================
+
+    CH200 | Rx:2790 Emerg:12 Fwd:2772 QDrop:0 | Pri[H:996 M:1728 L:48] | Topics: ECG=984 HeartRate=1728 Temperature=48 EMERGENCY=12
+    CH201 | Rx:3491 Emerg:20 Fwd:3479 QDrop:0 | Pri[H:2894 M:401 L:184] | Topics: ECG=2874 HeartRate=401 Temperature=184 EMERGENCY=20
+    CH202 | Rx:5920 Emerg:34 Fwd:5901 QDrop:0 | Pri[H:5373 M:457 L:71] | Topics: ECG=5339 HeartRate=457 Temperature=71 EMERGENCY=34
+    CH203 | Rx:2090 Emerg:15 Fwd:2080 QDrop:0 | Pri[H:1381 M:600 L:99] | Topics: ECG=1366 HeartRate=600 Temperature=99 EMERGENCY=15
+    CH204 | Rx:7723 Emerg:41 Fwd:7698 QDrop:0 | Pri[H:6599 M:952 L:147] | Topics: ECG=6558 HeartRate=952 Temperature=147 EMERGENCY=41
+    CH205 | Rx:2365 Emerg:5 Fwd:2349 QDrop:0 | Pri[H:975 M:1266 L:108] | Topics: ECG=970 HeartRate=1266 Temperature=108 EMERGENCY=5
+    CH206 | Rx:1267 Emerg:4 Fwd:1258 QDrop:0 | Pri[H:598 M:579 L:81] | Topics: ECG=594 HeartRate=579 Temperature=81 EMERGENCY=4
+    CH207 | Rx:2215 Emerg:5 Fwd:2210 QDrop:0 | Pri[H:2111 M:45 L:54] | Topics: ECG=2106 HeartRate=45 Temperature=54 EMERGENCY=5
+    CH208 | Rx:1023 Emerg:5 Fwd:1014 QDrop:0 | Pri[H:839 M:0 L:175] | Topics: ECG=834 Temperature=175 EMERGENCY=5
+    CH209 | Rx:463 Emerg:1 Fwd:457 QDrop:0 | Pri[H:1 M:411 L:45] | Topics: HeartRate=411 Temperature=45 EMERGENCY=1
+    CH210 | Rx:1273 Emerg:11 Fwd:1264 QDrop:0 | Pri[H:999 M:134 L:131] | Topics: ECG=988 HeartRate=134 Temperature=131 EMERGENCY=11
+    CH211 | Rx:5424 Emerg:16 Fwd:5401 QDrop:0 | Pri[H:4091 M:1172 L:138] | Topics: ECG=4075 HeartRate=1172 Temperature=138 EMERGENCY=16
+    CH212 | Rx:3054 Emerg:12 Fwd:3038 QDrop:0 | Pri[H:2505 M:440 L:93] | Topics: ECG=2493 HeartRate=440 Temperature=93 EMERGENCY=12
+    CH213 | Rx:3066 Emerg:15 Fwd:3045 QDrop:0 | Pri[H:1841 M:958 L:246] | Topics: ECG=1826 HeartRate=958 Temperature=246 EMERGENCY=15
+    CH214 | Rx:2611 Emerg:17 Fwd:2603 QDrop:0 | Pri[H:2365 M:238 L:0] | Topics: ECG=2348 HeartRate=238 EMERGENCY=17
+    CH215 | Rx:6615 Emerg:37 Fwd:6585 QDrop:0 | Pri[H:5194 M:1049 L:342] | Topics: ECG=5157 HeartRate=1049 Temperature=342 EMERGENCY=37
+    CH216 | Rx:2917 Emerg:18 Fwd:2899 QDrop:0 | Pri[H:1989 M:671 L:239] | Topics: ECG=1971 HeartRate=671 Temperature=239 EMERGENCY=18
+    CH217 | Rx:2982 Emerg:14 Fwd:2970 QDrop:0 | Pri[H:2335 M:536 L:99] | Topics: ECG=2321 HeartRate=536 Temperature=99 EMERGENCY=14
+    CH218 | Rx:2575 Emerg:6 Fwd:2557 QDrop:0 | Pri[H:1472 M:908 L:177] | Topics: ECG=1466 HeartRate=908 Temperature=177 EMERGENCY=6
+    CH219 | Rx:2696 Emerg:10 Fwd:2676 QDrop:0 | Pri[H:1038 M:1489 L:149] | Topics: ECG=1028 HeartRate=1489 Temperature=149 EMERGENCY=10
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 2763
+  Total Rx Bytes    : 295022
+  From Gateways     : 2763
+  Emergencies       : 11
+  Forwarded to Root : 2763
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 1474 packets
+    HeartRate (ID=20): 1149 packets
+    Temperature (ID=30): 129 packets
+    EMERGENCY (ID=99): 11 packets
+  Per-Priority Breakdown:
+    LOW (0): 129 packets
+    MEDIUM (1): 1149 packets
+    HIGH (2): 1474 packets
+    CRITICAL (3): 11 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 2993
+  Total Rx Bytes    : 363626
+  From Gateways     : 2993
+  Emergencies       : 22
+  Forwarded to Root : 2993
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 2284 packets
+    HeartRate (ID=20): 519 packets
+    Temperature (ID=30): 168 packets
+    EMERGENCY (ID=99): 22 packets
+  Per-Priority Breakdown:
+    LOW (0): 168 packets
+    MEDIUM (1): 519 packets
+    HIGH (2): 2284 packets
+    CRITICAL (3): 22 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 914
+  Total Rx Bytes    : 105108
+  From Gateways     : 914
+  Emergencies       : 5
+  Forwarded to Root : 914
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 621 packets
+    HeartRate (ID=20): 213 packets
+    Temperature (ID=30): 75 packets
+    EMERGENCY (ID=99): 5 packets
+  Per-Priority Breakdown:
+    LOW (0): 75 packets
+    MEDIUM (1): 213 packets
+    HIGH (2): 621 packets
+    CRITICAL (3): 5 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 2123
+  Total Rx Bytes    : 238638
+  From Gateways     : 2123
+  Emergencies       : 14
+  Forwarded to Root : 2123
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 1323 packets
+    HeartRate (ID=20): 672 packets
+    Temperature (ID=30): 114 packets
+    EMERGENCY (ID=99): 14 packets
+  Per-Priority Breakdown:
+    LOW (0): 114 packets
+    MEDIUM (1): 672 packets
+    HIGH (2): 1323 packets
+    CRITICAL (3): 14 packets
+  ============================================
+
+
+  ============================================
+  ROOT BROKER (tier-2) STATISTICS
+  ============================================
+  Total Rx Packets  : 58
+  Total Rx Bytes    : 6884
+  From Local Brokers: 58
+  Emergencies       : 1
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 43 packets
+    HeartRate (ID=20): 7 packets
+    Temperature (ID=30): 7 packets
+    EMERGENCY (ID=99): 1 packets
+  Per-Priority Breakdown:
+    LOW (0): 7 packets
+    MEDIUM (1): 7 packets
+    HIGH (2): 43 packets
+    CRITICAL (3): 1 packets
+  ============================================
+
+  Total forwarded to root: 8793
+
+  Emergencies: 298 | Forwarded: 62256
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.3309 J
+    Consumed: 289.6691 J (72.4%)
+    Per sensor: avg=0.5517J  min=0.5404J  max=0.5642J
+    Dead sensors: 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 27.9781 J
+    Consumed: 72.0219 J (72.0%)
+    Per CH: avg=1.3989J  min=1.3889J  max=1.4098J
+    Dead CHs: 0
+  ============================================
+
+  Energy CSV: experiments/hier/exp_hier_lb4_200_r8.csv.energy.csv
+
+[DONE]
+
+[Set5] LB=4 Run=9 07:15
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | LocalBrokers: 4 | numLocalBrokers=4 | Total: 225
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/hier/exp_hier_lb4_200_r9.csv
+============================================================
+
+  Mobility: Static
+  Local Brokers: 4 (grid placement)
+  Clusters: min=4 max=14 avg=10.0
+  Topology: TWO-TIER HIERARCHY (4 local brokers + 1 root)
+  CH-to-LocalBroker assignment:
+    LocalBroker[0]: 6 CHs
+    LocalBroker[1]: 4 CHs
+    LocalBroker[2]: 6 CHs
+    LocalBroker[3]: 4 CHs
+  Sensors: 66 ECG + 66 HR + 68 Temp
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+============================================================
+  RESULTS  (sensor-origin flows only)
+============================================================
+  Flows: 3453 (dead: 299)
+  Tx: 669741 | Rx: 431044
+  PDR: 64.36%
+  Avg Delay: 118.27 ms
+  Throughput: 692.24 kbps
+  Output: experiments/hier/exp_hier_lb4_200_r9.csv
+============================================================
+
+    CH200 | Rx:3189 Emerg:14 Fwd:3163 QDrop:0 | Pri[H:1379 M:1572 L:212] | Topics: ECG=1365 HeartRate=1572 Temperature=212 EMERGENCY=14
+    CH201 | Rx:1708 Emerg:6 Fwd:1700 QDrop:0 | Pri[H:1383 M:222 L:95] | Topics: ECG=1377 HeartRate=222 Temperature=95 EMERGENCY=6
+    CH202 | Rx:3897 Emerg:19 Fwd:3879 QDrop:0 | Pri[H:3155 M:600 L:124] | Topics: ECG=3136 HeartRate=600 Temperature=124 EMERGENCY=19
+    CH203 | Rx:5135 Emerg:20 Fwd:5114 QDrop:0 | Pri[H:4475 M:477 L:162] | Topics: ECG=4455 HeartRate=477 Temperature=162 EMERGENCY=20
+    CH204 | Rx:4773 Emerg:20 Fwd:4755 QDrop:0 | Pri[H:3579 M:1176 L:0] | Topics: ECG=3559 HeartRate=1176 EMERGENCY=20
+    CH205 | Rx:3799 Emerg:21 Fwd:3784 QDrop:0 | Pri[H:3366 M:254 L:164] | Topics: ECG=3345 HeartRate=254 Temperature=164 EMERGENCY=21
+    CH206 | Rx:3189 Emerg:10 Fwd:3172 QDrop:0 | Pri[H:2334 M:699 L:139] | Topics: ECG=2324 HeartRate=699 Temperature=139 EMERGENCY=10
+    CH207 | Rx:1906 Emerg:5 Fwd:1893 QDrop:0 | Pri[H:1260 M:551 L:82] | Topics: ECG=1255 HeartRate=551 Temperature=82 EMERGENCY=5
+    CH208 | Rx:3238 Emerg:14 Fwd:3218 QDrop:0 | Pri[H:2258 M:769 L:191] | Topics: ECG=2244 HeartRate=769 Temperature=191 EMERGENCY=14
+    CH209 | Rx:1242 Emerg:7 Fwd:1234 QDrop:0 | Pri[H:463 M:738 L:33] | Topics: ECG=456 HeartRate=738 Temperature=33 EMERGENCY=7
+    CH210 | Rx:1296 Emerg:8 Fwd:1287 QDrop:0 | Pri[H:922 M:258 L:107] | Topics: ECG=914 HeartRate=258 Temperature=107 EMERGENCY=8
+    CH211 | Rx:1711 Emerg:6 Fwd:1694 QDrop:0 | Pri[H:791 M:705 L:198] | Topics: ECG=785 HeartRate=705 Temperature=198 EMERGENCY=6
+    CH212 | Rx:1346 Emerg:6 Fwd:1335 QDrop:0 | Pri[H:1166 M:48 L:121] | Topics: ECG=1160 HeartRate=48 Temperature=121 EMERGENCY=6
+    CH213 | Rx:1187 Emerg:6 Fwd:1175 QDrop:0 | Pri[H:113 M:947 L:115] | Topics: ECG=107 HeartRate=947 Temperature=115 EMERGENCY=6
+    CH214 | Rx:3270 Emerg:25 Fwd:3246 QDrop:0 | Pri[H:1410 M:1676 L:160] | Topics: ECG=1385 HeartRate=1676 Temperature=160 EMERGENCY=25
+    CH215 | Rx:1370 Emerg:7 Fwd:1362 QDrop:0 | Pri[H:1031 M:248 L:83] | Topics: ECG=1024 HeartRate=248 Temperature=83 EMERGENCY=7
+    CH216 | Rx:2875 Emerg:22 Fwd:2854 QDrop:0 | Pri[H:2060 M:568 L:226] | Topics: ECG=2038 HeartRate=568 Temperature=226 EMERGENCY=22
+    CH217 | Rx:4632 Emerg:19 Fwd:4610 QDrop:0 | Pri[H:4025 M:392 L:193] | Topics: ECG=4006 HeartRate=392 Temperature=193 EMERGENCY=19
+    CH218 | Rx:4090 Emerg:14 Fwd:4070 QDrop:0 | Pri[H:3372 M:547 L:151] | Topics: ECG=3358 HeartRate=547 Temperature=151 EMERGENCY=14
+    CH219 | Rx:5289 Emerg:33 Fwd:5261 QDrop:0 | Pri[H:3986 M:1145 L:130] | Topics: ECG=3953 HeartRate=1145 Temperature=130 EMERGENCY=33
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 957
+  Total Rx Bytes    : 108866
+  From Gateways     : 957
+  Emergencies       : 3
+  Forwarded to Root : 957
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 625 packets
+    HeartRate (ID=20): 266 packets
+    Temperature (ID=30): 63 packets
+    EMERGENCY (ID=99): 3 packets
+  Per-Priority Breakdown:
+    LOW (0): 63 packets
+    MEDIUM (1): 266 packets
+    HIGH (2): 625 packets
+    CRITICAL (3): 3 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 1901
+  Total Rx Bytes    : 231522
+  From Gateways     : 1901
+  Emergencies       : 4
+  Forwarded to Root : 1901
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 1453 packets
+    HeartRate (ID=20): 371 packets
+    Temperature (ID=30): 73 packets
+    EMERGENCY (ID=99): 4 packets
+  Per-Priority Breakdown:
+    LOW (0): 73 packets
+    MEDIUM (1): 371 packets
+    HIGH (2): 1453 packets
+    CRITICAL (3): 4 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 1085
+  Total Rx Bytes    : 117986
+  From Gateways     : 1085
+  Emergencies       : 9
+  Forwarded to Root : 1085
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 645 packets
+    HeartRate (ID=20): 310 packets
+    Temperature (ID=30): 121 packets
+    EMERGENCY (ID=99): 9 packets
+  Per-Priority Breakdown:
+    LOW (0): 121 packets
+    MEDIUM (1): 310 packets
+    HIGH (2): 645 packets
+    CRITICAL (3): 9 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 1586
+  Total Rx Bytes    : 167412
+  From Gateways     : 1586
+  Emergencies       : 7
+  Forwarded to Root : 1586
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 825 packets
+    HeartRate (ID=20): 661 packets
+    Temperature (ID=30): 93 packets
+    EMERGENCY (ID=99): 7 packets
+  Per-Priority Breakdown:
+    LOW (0): 93 packets
+    MEDIUM (1): 661 packets
+    HIGH (2): 825 packets
+    CRITICAL (3): 7 packets
+  ============================================
+
+
+  ============================================
+  ROOT BROKER (tier-2) STATISTICS
+  ============================================
+  Total Rx Packets  : 7
+  Total Rx Bytes    : 614
+  From Local Brokers: 7
+  Emergencies       : 0
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 3 packets
+    HeartRate (ID=20): 1 packets
+    Temperature (ID=30): 3 packets
+  Per-Priority Breakdown:
+    LOW (0): 3 packets
+    MEDIUM (1): 1 packets
+    HIGH (2): 3 packets
+  ============================================
+
+  Total forwarded to root: 5529
+
+  Emergencies: 282 | Forwarded: 58806
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.4592 J
+    Consumed: 289.5408 J (72.4%)
+    Per sensor: avg=0.5523J  min=0.5404J  max=0.5643J
+    Dead sensors: 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 27.9805 J
+    Consumed: 72.0195 J (72.0%)
+    Per CH: avg=1.3990J  min=1.3884J  max=1.4101J
+    Dead CHs: 0
+  ============================================
+
+  Energy CSV: experiments/hier/exp_hier_lb4_200_r9.csv.energy.csv
+
+[DONE]
+
+[Set5] LB=4 Run=10 09:32
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+============================================================
+  MQTT-SN MIoT Simulation
+  Sensors: 200 | CHs: 20 | LocalBrokers: 4 | numLocalBrokers=4 | Total: 225
+  Area: 1000x1000m | AODV | 300s
+  CSV: experiments/hier/exp_hier_lb4_200_r10.csv
+============================================================
+
+  Mobility: Static
+  Local Brokers: 4 (grid placement)
+  Clusters: min=5 max=16 avg=10.0
+  Topology: TWO-TIER HIERARCHY (4 local brokers + 1 root)
+  CH-to-LocalBroker assignment:
+    LocalBroker[0]: 6 CHs
+    LocalBroker[1]: 4 CHs
+    LocalBroker[2]: 6 CHs
+    LocalBroker[3]: 4 CHs
+  Sensors: 66 ECG + 66 HR + 68 Temp
+
+  Energy: Sensors=2.0J, CHs=5.0J
+
+[RUN] 300.0s...
+============================================================
+  RESULTS  (sensor-origin flows only)
+============================================================
+  Flows: 3422 (dead: 374)
+  Tx: 709496 | Rx: 458837
+  PDR: 64.67%
+  Avg Delay: 111.01 ms
+  Throughput: 743.20 kbps
+  Output: experiments/hier/exp_hier_lb4_200_r10.csv
+============================================================
+
+    CH200 | Rx:3253 Emerg:10 Fwd:3237 QDrop:0 | Pri[H:2548 M:489 L:200] | Topics: ECG=2538 HeartRate=489 Temperature=200 EMERGENCY=10
+    CH201 | Rx:5041 Emerg:25 Fwd:5021 QDrop:0 | Pri[H:4038 M:809 L:174] | Topics: ECG=4013 HeartRate=809 Temperature=174 EMERGENCY=25
+    CH202 | Rx:2144 Emerg:8 Fwd:2124 QDrop:0 | Pri[H:1104 M:846 L:174] | Topics: ECG=1096 HeartRate=846 Temperature=174 EMERGENCY=8
+    CH203 | Rx:1060 Emerg:4 Fwd:1050 QDrop:0 | Pri[H:4 M:993 L:53] | Topics: HeartRate=993 Temperature=53 EMERGENCY=4
+    CH204 | Rx:4695 Emerg:20 Fwd:4676 QDrop:0 | Pri[H:3608 M:969 L:99] | Topics: ECG=3588 HeartRate=969 Temperature=99 EMERGENCY=20
+    CH205 | Rx:4560 Emerg:22 Fwd:4533 QDrop:0 | Pri[H:2938 M:1350 L:245] | Topics: ECG=2916 HeartRate=1350 Temperature=245 EMERGENCY=22
+    CH206 | Rx:2062 Emerg:13 Fwd:2047 QDrop:0 | Pri[H:1092 M:839 L:116] | Topics: ECG=1079 HeartRate=839 Temperature=116 EMERGENCY=13
+    CH207 | Rx:593 Emerg:3 Fwd:580 QDrop:0 | Pri[H:284 M:88 L:208] | Topics: ECG=281 HeartRate=88 Temperature=208 EMERGENCY=3
+    CH208 | Rx:3842 Emerg:14 Fwd:3821 QDrop:0 | Pri[H:2393 M:1218 L:210] | Topics: ECG=2379 HeartRate=1218 Temperature=210 EMERGENCY=14
+    CH209 | Rx:2619 Emerg:11 Fwd:2608 QDrop:0 | Pri[H:1999 M:493 L:116] | Topics: ECG=1988 HeartRate=493 Temperature=116 EMERGENCY=11
+    CH210 | Rx:1163 Emerg:4 Fwd:1158 QDrop:0 | Pri[H:626 M:498 L:34] | Topics: ECG=622 HeartRate=498 Temperature=34 EMERGENCY=4
+    CH211 | Rx:4314 Emerg:20 Fwd:4296 QDrop:0 | Pri[H:3533 M:695 L:68] | Topics: ECG=3513 HeartRate=695 Temperature=68 EMERGENCY=20
+    CH212 | Rx:6124 Emerg:33 Fwd:6102 QDrop:0 | Pri[H:5969 M:0 L:133] | Topics: ECG=5936 Temperature=133 EMERGENCY=33
+    CH213 | Rx:1809 Emerg:4 Fwd:1797 QDrop:0 | Pri[H:1015 M:712 L:70] | Topics: ECG=1011 HeartRate=712 Temperature=70 EMERGENCY=4
+    CH214 | Rx:3665 Emerg:11 Fwd:3645 QDrop:0 | Pri[H:2963 M:433 L:249] | Topics: ECG=2952 HeartRate=433 Temperature=249 EMERGENCY=11
+    CH215 | Rx:5287 Emerg:23 Fwd:5266 QDrop:0 | Pri[H:4459 M:662 L:145] | Topics: ECG=4436 HeartRate=662 Temperature=145 EMERGENCY=23
+    CH216 | Rx:1389 Emerg:5 Fwd:1381 QDrop:0 | Pri[H:932 M:348 L:101] | Topics: ECG=927 HeartRate=348 Temperature=101 EMERGENCY=5
+    CH217 | Rx:4112 Emerg:20 Fwd:4098 QDrop:0 | Pri[H:3173 M:877 L:48] | Topics: ECG=3153 HeartRate=877 Temperature=48 EMERGENCY=20
+    CH218 | Rx:2364 Emerg:17 Fwd:2352 QDrop:0 | Pri[H:1965 M:241 L:146] | Topics: ECG=1948 HeartRate=241 Temperature=146 EMERGENCY=17
+    CH219 | Rx:3746 Emerg:16 Fwd:3730 QDrop:0 | Pri[H:2971 M:649 L:110] | Topics: ECG=2955 HeartRate=649 Temperature=110 EMERGENCY=16
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 867
+  Total Rx Bytes    : 97598
+  From Gateways     : 867
+  Emergencies       : 7
+  Forwarded to Root : 867
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 545 packets
+    HeartRate (ID=20): 264 packets
+    Temperature (ID=30): 51 packets
+    EMERGENCY (ID=99): 7 packets
+  Per-Priority Breakdown:
+    LOW (0): 51 packets
+    MEDIUM (1): 264 packets
+    HIGH (2): 545 packets
+    CRITICAL (3): 7 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 2580
+  Total Rx Bytes    : 287304
+  From Gateways     : 2580
+  Emergencies       : 12
+  Forwarded to Root : 2580
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 1571 packets
+    HeartRate (ID=20): 853 packets
+    Temperature (ID=30): 144 packets
+    EMERGENCY (ID=99): 12 packets
+  Per-Priority Breakdown:
+    LOW (0): 144 packets
+    MEDIUM (1): 853 packets
+    HIGH (2): 1571 packets
+    CRITICAL (3): 12 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 1689
+  Total Rx Bytes    : 201722
+  From Gateways     : 1689
+  Emergencies       : 6
+  Forwarded to Root : 1689
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 1235 packets
+    HeartRate (ID=20): 376 packets
+    Temperature (ID=30): 72 packets
+    EMERGENCY (ID=99): 6 packets
+  Per-Priority Breakdown:
+    LOW (0): 72 packets
+    MEDIUM (1): 376 packets
+    HIGH (2): 1235 packets
+    CRITICAL (3): 6 packets
+  ============================================
+
+
+  ============================================
+  LOCAL BROKER (tier-1) STATISTICS
+  ============================================
+  Total Rx Packets  : 1829
+  Total Rx Bytes    : 218802
+  From Gateways     : 1829
+  Emergencies       : 6
+  Forwarded to Root : 1829
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 1355 packets
+    HeartRate (ID=20): 362 packets
+    Temperature (ID=30): 106 packets
+    EMERGENCY (ID=99): 6 packets
+  Per-Priority Breakdown:
+    LOW (0): 106 packets
+    MEDIUM (1): 362 packets
+    HIGH (2): 1355 packets
+    CRITICAL (3): 6 packets
+  ============================================
+
+
+  ============================================
+  ROOT BROKER (tier-2) STATISTICS
+  ============================================
+  Total Rx Packets  : 18
+  Total Rx Bytes    : 1716
+  From Local Brokers: 18
+  Emergencies       : 0
+  ---
+  Per-Topic Breakdown:
+    ECG (ID=10): 8 packets
+    HeartRate (ID=20): 6 packets
+    Temperature (ID=30): 4 packets
+  Per-Priority Breakdown:
+    LOW (0): 4 packets
+    MEDIUM (1): 6 packets
+    HIGH (2): 8 packets
+  ============================================
+
+  Total forwarded to root: 6965
+
+  Emergencies: 283 | Forwarded: 63522
+
+  ============================================
+  ENERGY REPORT
+  ============================================
+  Sensor Energy:
+    Initial: 400.0000 J (200 x 2.0 J)
+    Remaining: 110.6000 J
+    Consumed: 289.4000 J (72.4%)
+    Per sensor: avg=0.5530J  min=0.5408J  max=0.5650J
+    Dead sensors: 0
+  CH Energy:
+    Initial: 100.0000 J (20 x 5.0 J)
+    Remaining: 27.9570 J
+    Consumed: 72.0430 J (72.0%)
+    Per CH: avg=1.3979J  min=1.3910J  max=1.4097J
+    Dead CHs: 0
+  ============================================
+
+  Energy CSV: experiments/hier/exp_hier_lb4_200_r10.csv.energy.csv
+
+[DONE]
+
+[OK] LB=4 done at Thu Apr 16 11:48:13 +03 2026
+[Set5] LB=5 Run=1 11:48
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
